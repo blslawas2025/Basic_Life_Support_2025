@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, TextInput, Alert, Modal } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, TextInput, Alert, Modal, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
@@ -7,45 +7,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { ProfileService, Profile, UpdateProfile } from "../services/ProfileService";
 import { CourseSessionService } from "../services/CourseSessionService";
 import { CourseSession } from "../types/CourseSession";
-
-const { width, height } = Dimensions.get('window');
-
-// Responsive design helpers
-const isSmallScreen = width < 375;
-const isMediumScreen = width >= 375 && width < 768;
-const isLargeScreen = width >= 768;
-const isTablet = width >= 768 && height >= 1024;
-
-const getResponsiveSize = (small: number, medium: number, large: number) => {
-  if (isSmallScreen) return small;
-  if (isMediumScreen) return medium;
-  return large;
-};
-
-const getResponsiveFontSize = (small: number, medium: number, large: number) => {
-  if (isSmallScreen) return small;
-  if (isMediumScreen) return medium;
-  return large;
-};
-
-const getResponsiveColumnWidth = (small: number, medium: number, large: number) => {
-  if (isSmallScreen) return small;
-  if (isMediumScreen) return medium;
-  return large;
-};
-
-const getResponsivePadding = () => {
-  if (isSmallScreen) return 16;
-  if (isMediumScreen) return 20;
-  if (isTablet) return 32;
-  return 24;
-};
+import { useResponsive } from "../utils/responsiveHelpers";
 
 interface ViewParticipantsScreenProps {
   onBack: () => void;
 }
 
 export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScreenProps) {
+  const { width, height, isSmallScreen, isMediumScreen, isTablet, getResponsiveSize, getResponsiveFontSize, getResponsivePadding } = useResponsive();
+  const windowDims = useWindowDimensions();
+  
   const [participants, setParticipants] = useState<Profile[]>([]);
   const [filteredParticipants, setFilteredParticipants] = useState<Profile[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -1629,9 +1600,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: getResponsiveSize(8, 10, 12),
     gap: getResponsiveSize(12, 16, 20),
+    flexWrap: 'wrap',
   },
   filterGroup: {
     flex: 1,
+    minWidth: isSmallScreen ? '100%' : '45%',
   },
   filterLabel: {
     fontSize: getResponsiveFontSize(12, 14, 16),
@@ -1654,19 +1627,22 @@ const styles = StyleSheet.create({
     gap: getResponsiveSize(4, 6, 8),
   },
   filterButton: {
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(4, 6, 8),
+    paddingHorizontal: getResponsiveSize(12, 14, 16),
+    paddingVertical: getResponsiveSize(8, 10, 12),
+    borderRadius: getResponsiveSize(6, 8, 10),
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
+    minHeight: getResponsiveSize(36, 40, 44),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   filterButtonActive: {
     backgroundColor: '#6366f1',
     borderColor: '#6366f1',
   },
   filterButtonText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: getResponsiveFontSize(12, 14, 16),
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1840,13 +1816,14 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: getResponsiveSize(6, 8, 10),
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(6, 8, 10),
+    paddingHorizontal: getResponsiveSize(12, 14, 16),
+    paddingVertical: getResponsiveSize(10, 12, 14),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
+    minHeight: getResponsiveSize(40, 44, 48),
   },
   dropdownText: {
     fontSize: getResponsiveFontSize(12, 14, 16),
