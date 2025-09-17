@@ -1,0 +1,480 @@
+import React, { useState, useRef } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
+import * as Haptics from "expo-haptics";
+import { Ionicons } from "@expo/vector-icons";
+
+const { width, height } = Dimensions.get('window');
+
+// Responsive design helpers
+const isSmallScreen = width < 375;
+const isMediumScreen = width >= 375 && width < 768;
+const isLargeScreen = width >= 768;
+const isTablet = width >= 768 && height >= 1024;
+
+const getResponsiveSize = (small: number, medium: number, large: number) => {
+  if (isSmallScreen) return small;
+  if (isMediumScreen) return medium;
+  return large;
+};
+
+const getResponsiveFontSize = (small: number, medium: number, large: number) => {
+  if (isSmallScreen) return small;
+  if (isMediumScreen) return medium;
+  return large;
+};
+
+const getResponsivePadding = () => {
+  if (isSmallScreen) return 16;
+  if (isMediumScreen) return 20;
+  if (isTablet) return 32;
+  return 24;
+};
+
+interface PreTestScreenProps {
+  onBack: () => void;
+  userName: string;
+  onStartTest?: () => void;
+}
+
+export default function PreTestScreen({ onBack, userName, onStartTest }: PreTestScreenProps) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(40)).current;
+  const scaleAnim = useRef(new Animated.Value(0.9)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  React.useEffect(() => {
+    startAnimations();
+  }, []);
+
+  const startAnimations = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.05,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
+
+  const handleStartTest = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    if (onStartTest) {
+      onStartTest();
+    } else {
+      // Fallback: Show alert if no test handler provided
+      Alert.alert(
+        'Pre Test Ready',
+        'The pre-test is ready to begin! This will navigate to the actual test interface.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { 
+            text: 'Start Test', 
+            onPress: () => {
+              // For now, just show a success message
+              Alert.alert('Test Started', 'Pre-test has begun! (Test interface coming soon)');
+            }
+          }
+        ]
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      
+      {/* Background */}
+      <Animated.View style={styles.backgroundContainer}>
+        <LinearGradient 
+          colors={["#0a0a0a", "#1a1a2e", "#16213e", "#0f3460", "#533483", "#0a0a0a"]} 
+          style={styles.backgroundGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        />
+      </Animated.View>
+
+      {/* Header */}
+      <Animated.View style={[
+        styles.header,
+        {
+          opacity: fadeAnim,
+          transform: [
+            { translateY: slideAnim },
+            { scale: scaleAnim }
+          ]
+        }
+      ]}>
+        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+        </TouchableOpacity>
+        
+        <View style={styles.headerContent}>
+          <Animated.View style={[
+            styles.headerIcon,
+            {
+              transform: [{ scale: pulseAnim }]
+            }
+          ]}>
+            <LinearGradient 
+              colors={["#00ff88", "#5b73ff", "#00d4ff"]} 
+              style={styles.headerIconGradient}
+            >
+              <Ionicons name="play-circle" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+            </LinearGradient>
+          </Animated.View>
+          
+          <View style={styles.headerText}>
+            <Text style={styles.headerTitle}>Pre Test</Text>
+            <Text style={styles.headerSubtitle}>Basic Life Support Assessment</Text>
+          </View>
+        </View>
+      </Animated.View>
+
+      {/* Content */}
+      <Animated.ScrollView 
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          styles.content,
+          {
+            opacity: fadeAnim,
+            transform: [
+              { translateY: slideAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [60, 0]
+              }) }
+            ]
+          }
+        ]}
+      >
+        {/* Test Info Card */}
+        <View style={styles.infoCard}>
+          <LinearGradient
+            colors={['rgba(0, 255, 136, 0.1)', 'rgba(0, 212, 255, 0.1)']}
+            style={styles.infoCardGradient}
+          >
+            <View style={styles.infoHeader}>
+              <Ionicons name="information-circle" size={getResponsiveSize(24, 26, 28)} color="#00ff88" />
+              <Text style={styles.infoTitle}>Test Information</Text>
+            </View>
+            <Text style={styles.infoText}>
+              This pre-test will assess your current knowledge of Basic Life Support. 
+              The test consists of multiple choice questions and will help identify areas for improvement.
+            </Text>
+          </LinearGradient>
+        </View>
+
+        {/* Test Details */}
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailItem}>
+            <View style={styles.detailIcon}>
+              <Ionicons name="time" size={getResponsiveSize(20, 22, 24)} color="#00d4ff" />
+            </View>
+            <View style={styles.detailContent}>
+              <Text style={styles.detailTitle}>Duration</Text>
+              <Text style={styles.detailValue}>30 minutes</Text>
+            </View>
+          </View>
+
+          <View style={styles.detailItem}>
+            <View style={styles.detailIcon}>
+              <Ionicons name="help-circle" size={getResponsiveSize(20, 22, 24)} color="#5b73ff" />
+            </View>
+            <View style={styles.detailContent}>
+              <Text style={styles.detailTitle}>Questions</Text>
+              <Text style={styles.detailValue}>30 questions</Text>
+            </View>
+          </View>
+
+          <View style={styles.detailItem}>
+            <View style={styles.detailIcon}>
+              <Ionicons name="trophy" size={getResponsiveSize(20, 22, 24)} color="#ffaa00" />
+            </View>
+            <View style={styles.detailContent}>
+              <Text style={styles.detailTitle}>Passing Score</Text>
+              <Text style={styles.detailValue}>Clinical: 25/30, Non-clinical: 20/30</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Start Test Button */}
+        <TouchableOpacity 
+          style={styles.startButton}
+          onPress={handleStartTest}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#00ff88', '#00d4ff', '#5b73ff']}
+            style={styles.startButtonGradient}
+          >
+            <Ionicons name="play" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Text style={styles.startButtonText}>Start Pre Test</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
+        {/* Instructions */}
+        <View style={styles.instructionsContainer}>
+          <Text style={styles.instructionsTitle}>Instructions</Text>
+          <View style={styles.instructionsList}>
+            <View style={styles.instructionItem}>
+              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#00ff88" />
+              <Text style={styles.instructionText}>Read each question carefully</Text>
+            </View>
+            <View style={styles.instructionItem}>
+              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#00ff88" />
+              <Text style={styles.instructionText}>Select the best answer for each question</Text>
+            </View>
+            <View style={styles.instructionItem}>
+              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#00ff88" />
+              <Text style={styles.instructionText}>You can review and change answers before submitting</Text>
+            </View>
+            <View style={styles.instructionItem}>
+              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#00ff88" />
+              <Text style={styles.instructionText}>The test will auto-submit when time runs out</Text>
+            </View>
+          </View>
+        </View>
+      </Animated.ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0a0a0a',
+  },
+  backgroundContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  backgroundGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: getResponsivePadding(),
+    paddingTop: getResponsiveSize(25, 30, 35),
+    paddingBottom: getResponsiveSize(20, 25, 30),
+    backgroundColor: 'rgba(0, 255, 136, 0.15)',
+    borderBottomWidth: 2,
+    borderBottomColor: 'rgba(0, 255, 136, 0.4)',
+    shadowColor: '#00ff88',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+  backButton: {
+    padding: getResponsiveSize(12, 14, 16),
+    borderRadius: getResponsiveSize(12, 14, 16),
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    marginRight: getResponsiveSize(15, 18, 20),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  headerIcon: {
+    width: getResponsiveSize(50, 55, 60),
+    height: getResponsiveSize(50, 55, 60),
+    borderRadius: getResponsiveSize(25, 27, 30),
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: getResponsiveSize(15, 18, 20),
+    shadowColor: '#00ff88',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  headerIconGradient: {
+    width: getResponsiveSize(50, 55, 60),
+    height: getResponsiveSize(50, 55, 60),
+    borderRadius: getResponsiveSize(25, 27, 30),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontWeight: '900',
+    color: '#ffffff',
+    letterSpacing: 1,
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 10,
+  },
+  headerSubtitle: {
+    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.8)',
+    marginTop: 4,
+    letterSpacing: 0.5,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
+    paddingHorizontal: getResponsivePadding(),
+    paddingVertical: getResponsiveSize(20, 25, 30),
+    paddingBottom: getResponsiveSize(40, 50, 60),
+  },
+  infoCard: {
+    marginBottom: getResponsiveSize(20, 25, 30),
+    borderRadius: getResponsiveSize(12, 14, 16),
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 136, 0.3)',
+  },
+  infoCardGradient: {
+    padding: getResponsiveSize(20, 24, 28),
+  },
+  infoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: getResponsiveSize(12, 16, 20),
+  },
+  infoTitle: {
+    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontWeight: '700',
+    color: '#ffffff',
+    marginLeft: getResponsiveSize(8, 12, 16),
+  },
+  infoText: {
+    fontSize: getResponsiveFontSize(14, 16, 18),
+    color: 'rgba(255, 255, 255, 0.8)',
+    lineHeight: getResponsiveFontSize(20, 22, 24),
+  },
+  detailsContainer: {
+    marginBottom: getResponsiveSize(20, 25, 30),
+  },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: getResponsiveSize(16, 20, 24),
+    marginBottom: getResponsiveSize(12, 16, 20),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  detailIcon: {
+    width: getResponsiveSize(40, 44, 48),
+    height: getResponsiveSize(40, 44, 48),
+    borderRadius: getResponsiveSize(20, 22, 24),
+    backgroundColor: 'rgba(0, 212, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: getResponsiveSize(12, 16, 20),
+  },
+  detailContent: {
+    flex: 1,
+  },
+  detailTitle: {
+    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginBottom: getResponsiveSize(2, 4, 6),
+  },
+  detailValue: {
+    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  startButton: {
+    marginBottom: getResponsiveSize(20, 25, 30),
+    borderRadius: getResponsiveSize(16, 18, 20),
+    overflow: 'hidden',
+    shadowColor: '#00ff88',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  startButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: getResponsiveSize(18, 20, 22),
+    paddingHorizontal: getResponsiveSize(24, 28, 32),
+    gap: getResponsiveSize(12, 14, 16),
+  },
+  startButtonText: {
+    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 0.5,
+  },
+  instructionsContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: getResponsiveSize(20, 24, 28),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  instructionsTitle: {
+    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontWeight: '700',
+    color: '#ffffff',
+    marginBottom: getResponsiveSize(12, 16, 20),
+  },
+  instructionsList: {
+    gap: getResponsiveSize(8, 10, 12),
+  },
+  instructionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: getResponsiveSize(6, 8, 10),
+  },
+  instructionText: {
+    fontSize: getResponsiveFontSize(14, 16, 18),
+    color: 'rgba(255, 255, 255, 0.8)',
+    marginLeft: getResponsiveSize(8, 10, 12),
+    flex: 1,
+  },
+});

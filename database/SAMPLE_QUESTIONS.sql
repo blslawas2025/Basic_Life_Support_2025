@@ -1,0 +1,257 @@
+-- Sample questions for Basic Life Support system
+-- These are based on NCORT (National Committee on Resuscitation Training) standards
+
+-- Insert sample questions
+INSERT INTO public.questions (
+    question_text,
+    question_text_en,
+    question_type,
+    difficulty_level,
+    category,
+    points,
+    time_limit_seconds,
+    correct_answer,
+    option_a,
+    option_a_en,
+    option_b,
+    option_b_en,
+    option_c,
+    option_c_en,
+    option_d,
+    option_d_en,
+    explanation,
+    test_type,
+    tags
+) VALUES 
+-- Question 1
+(
+    'Udara atmosfera mengandungi oksigen sebanyak :-',
+    'Atmospheric air contains oxygen at approximately :-',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'A',
+    '21%',
+    '21%',
+    '16%',
+    '16%',
+    '12%',
+    '12%',
+    '8%',
+    '8%',
+    'Udara atmosfera mengandungi 21% oksigen, 78% nitrogen dan 1% gas lain.',
+    'pre_test',
+    ARRAY['oxygen', 'atmosphere', 'basic']
+),
+
+-- Question 2
+(
+    'Udara yang dihembus dari paru-paru seseorang semasa melakukan CPR mengandungi oksigen sebanyak :-',
+    'Air exhaled from the lungs during CPR contains oxygen at approximately :-',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'B',
+    '21%',
+    '21%',
+    '16%',
+    '16%',
+    '12%',
+    '12%',
+    '8%',
+    '8%',
+    'Udara yang dihembus masih mengandungi 16% oksigen, cukup untuk menyelamatkan nyawa.',
+    'pre_test',
+    ARRAY['cpr', 'oxygen', 'rescue_breathing']
+),
+
+-- Question 3
+(
+    'Apakah yang perlu dilakukan kepada seseorang yang baru lemas di air ?',
+    'What should be done to someone who has just drowned in water?',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'C',
+    'Mengurut perut',
+    'Massage the stomach',
+    'Menggantung terbalik',
+    'Hang upside down',
+    'Membuka saluran pernafasan dan memeriksa pernafasan',
+    'Open airway and check breathing',
+    'Memberi minum air',
+    'Give water to drink',
+    'Langkah pertama adalah membuka saluran pernafasan dan memeriksa pernafasan.',
+    'pre_test',
+    ARRAY['drowning', 'airway', 'emergency']
+),
+
+-- Question 4
+(
+    'Berikut adalah faktor- faktor risiko tercekik kecuali :',
+    'The following are risk factors for choking except:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'D',
+    'Makan terlalu cepat',
+    'Eating too fast',
+    'Minum alkohol',
+    'Drinking alcohol',
+    'Mengunyah tidak sempurna',
+    'Incomplete chewing',
+    'Minum air yang banyak',
+    'Drinking plenty of water',
+    'Minum air yang banyak bukan faktor risiko tercekik, sebaliknya membantu.',
+    'pre_test',
+    ARRAY['choking', 'risk_factors', 'prevention']
+),
+
+-- Question 5
+(
+    'Apakah kadar tekanan dada kepada hembusan pernafasan untuk mangsa dewasa ?',
+    'What is the ratio of chest compressions to rescue breaths for adult victims?',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'A',
+    '30:2',
+    '30:2',
+    '15:2',
+    '15:2',
+    '5:1',
+    '5:1',
+    '3:1',
+    '3:1',
+    'Untuk mangsa dewasa, nisbah yang betul adalah 30 tekanan dada kepada 2 hembusan pernafasan.',
+    'pre_test',
+    ARRAY['cpr', 'adult', 'ratio', 'compression']
+),
+
+-- Question 6
+(
+    'Bagi mangsa bayi di bawah umur 1 tahun, kadar tekanan dada kepada hembusan bagi 1 penyelamat adalah sebanyak :-',
+    'For infants under 1 year old, the ratio of chest compressions to rescue breaths for 1 rescuer is:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'A',
+    '30:2',
+    '30:2',
+    '15:2',
+    '15:2',
+    '5:1',
+    '5:1',
+    '3:1',
+    '3:1',
+    'Untuk bayi, nisbah yang betul adalah 30 tekanan dada kepada 2 hembusan pernafasan.',
+    'pre_test',
+    ARRAY['cpr', 'infant', 'ratio', 'compression']
+),
+
+-- Question 7
+(
+    'Setelah melakukan CPR terhadap mangsa di bawah 1 tahun, mangsa harus diberi bantuan pernafasan dengan kadar :-',
+    'After performing CPR on a victim under 1 year old, the victim should be given rescue breathing at a rate of:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'B',
+    '8-10 kali seminit',
+    '8-10 times per minute',
+    '12-20 kali seminit',
+    '12-20 times per minute',
+    '20-30 kali seminit',
+    '20-30 times per minute',
+    '30-40 kali seminit',
+    '30-40 times per minute',
+    'Untuk bayi, kadar pernafasan bantuan adalah 12-20 kali seminit.',
+    'pre_test',
+    ARRAY['cpr', 'infant', 'breathing_rate', 'rescue_breathing']
+),
+
+-- Question 8
+(
+    'Bagi mangsa dewasa yang hendak dibuat CPR, dada pesakit seharusnya ditekan pada kedalaman :-',
+    'For adult victims requiring CPR, the chest should be compressed to a depth of:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'C',
+    '1-2 cm',
+    '1-2 cm',
+    '3-4 cm',
+    '3-4 cm',
+    '5-6 cm',
+    '5-6 cm',
+    '7-8 cm',
+    '7-8 cm',
+    'Untuk mangsa dewasa, kedalaman tekanan dada yang betul adalah 5-6 cm.',
+    'pre_test',
+    ARRAY['cpr', 'adult', 'compression_depth']
+),
+
+-- Question 9
+(
+    'Semasa memberi bantuan CPR, kadar tekanan dada haruslah :-',
+    'During CPR, the rate of chest compressions should be:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'B',
+    '60-80 kali seminit',
+    '60-80 times per minute',
+    '100-120 kali seminit',
+    '100-120 times per minute',
+    '120-140 kali seminit',
+    '120-140 times per minute',
+    '140-160 kali seminit',
+    '140-160 times per minute',
+    'Kadar tekanan dada yang betul adalah 100-120 kali seminit.',
+    'pre_test',
+    ARRAY['cpr', 'compression_rate']
+),
+
+-- Question 10
+(
+    'Sel otak akan mula mati selepas :-',
+    'Brain cells will begin to die after:',
+    'multiple_choice',
+    'easy',
+    'basic_life_support',
+    10,
+    30,
+    'A',
+    '4-6 minit',
+    '4-6 minutes',
+    '2-3 minit',
+    '2-3 minutes',
+    '8-10 minit',
+    '8-10 minutes',
+    '10-12 minit',
+    '10-12 minutes',
+    'Sel otak mula mati selepas 4-6 minit tanpa oksigen, oleh itu CPR perlu dimulakan dengan segera.',
+    'pre_test',
+    ARRAY['brain_damage', 'oxygen_deprivation', 'time_critical']
+);
+
+-- Update the sequence for better performance
+SELECT setval('questions_id_seq', (SELECT MAX(EXTRACT(EPOCH FROM created_at)) FROM public.questions));

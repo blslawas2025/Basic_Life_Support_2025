@@ -1,0 +1,46 @@
+{
+  "name": "basic-life-support-2025",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
+    "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-community/datetimepicker": "^8.4.5",
+    "@supabase/supabase-js": "^2.39.0",
+    "expo": "~53.0.22",
+    "expo-asset": "~11.1.7",
+    "expo-barcode-scanner": "^13.0.1",
+    "expo-document-picker": "~13.1.6",
+    "expo-file-system": "~18.1.11",
+    "expo-font": "~13.3.2",
+    "expo-haptics": "~14.1.4",
+    "expo-linear-gradient": "~14.1.5",
+    "expo-status-bar": "~2.2.3",
+    "metro-minify-terser": "^0.83.1",
+    "papaparse": "^5.5.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-fs": "^2.20.0",
+    "react-native-paper": "4.9.2",
+    "react-native-qrcode-svg": "^6.3.15",
+    "react-native-web": "^0.20.0",
+    "typescript": "~5.8.3",
+    "uuid": "^13.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/papaparse": "^5.3.16",
+    "@types/react": "~19.0.10",
+    "typescript": "~5.9.2"
+  },
+  "private": true
+}
