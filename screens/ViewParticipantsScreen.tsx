@@ -590,125 +590,88 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
           </View>
         ) : (
           <Animated.View style={[
-            styles.tableContainer,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }]
-            }
+            styles.staffList,
+            { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }
           ]}>
-            {/* Table Header */}
-            <View style={styles.tableHeader}>
-              <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-              <Text style={[styles.tableHeaderText, styles.emailColumn]}>Email</Text>
-              <Text style={[styles.tableHeaderText, styles.phoneColumn]}>Phone</Text>
-              <Text style={[styles.tableHeaderText, styles.icColumn]}>IC Number</Text>
-              <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job Position</Text>
-              <Text style={[styles.tableHeaderText, styles.workplaceColumn]}>Workplace</Text>
-              <Text style={[styles.tableHeaderText, styles.blsColumn]}>Last BLS</Text>
-              <Text style={[styles.tableHeaderText, styles.allergiesColumn]}>Allergies</Text>
-              <Text style={[styles.tableHeaderText, styles.pregnantColumn]}>Pregnant</Text>
-              <Text style={[styles.tableHeaderText, styles.statusColumn]}>Status</Text>
-              <Text style={[styles.tableHeaderText, styles.actionsColumn]}>Actions</Text>
-            </View>
+            {getPaginatedParticipants().map((participant) => (
+              <View key={participant.id} style={styles.staffCard}>
+                <LinearGradient
+                  colors={['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.05)']}
+                  style={styles.staffCardGradient}
+                >
+                  <View style={styles.staffHeader}>
+                    <View style={styles.staffInfo}>
+                      <Text style={styles.staffName}>{participant.name}</Text>
+                      <Text style={styles.staffEmail}>{participant.email}</Text>
+                    </View>
+                    <View style={styles.staffBadges}>
+                      <View style={[styles.roleBadge, { backgroundColor: 'rgba(99,102,241,0.15)' }]}>
+                        <Text style={[styles.roleText, { color: '#6366f1' }]}>
+                          {(participant.roles?.toUpperCase?.()) || 'USER'}
+                        </Text>
+                      </View>
+                      <View style={[styles.statusBadge, { backgroundColor: getStatusColor(participant.status) + '20' }]}>
+                        <Text style={[styles.statusBadgeText, { color: getStatusColor(participant.status) }]}>
+                          {(participant.status?.toUpperCase?.()) || 'UNKNOWN'}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
 
-            {/* Table Body */}
-            <ScrollView 
-              horizontal 
-              showsHorizontalScrollIndicator={true}
-              contentContainerStyle={styles.scrollContent}
-            >
-              <View style={styles.tableBody}>
-                {getPaginatedParticipants().map((participant, index) => {
-                  // Debug logging for first participant
-                  if (index === 0) {
-                    }
-                  
-                  return (
-                    <View key={participant.id} style={[
-                      styles.tableRow,
-                      index % 2 === 0 && styles.tableRowEven
-                    ]}>
-                      <Text style={[styles.tableCell, styles.nameColumn]} numberOfLines={2}>
-                        {participant.name}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.emailColumn]} numberOfLines={2}>
-                        {participant.email}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.phoneColumn]}>
-                        {participant.phone_number || '-'}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.icColumn]}>
-                        {participant.ic_number || '-'}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.jobColumn]} numberOfLines={2}>
-                        {participant.job_position_name || '-'}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.workplaceColumn]} numberOfLines={2}>
-                        {participant.tempat_bertugas || '-'}
-                      </Text>
-                      <Text style={[styles.tableCell, styles.blsColumn]}>
-                        {participant.last_bls_attempt || '-'}
-                      </Text>
-                    <View style={[styles.tableCell, styles.allergiesColumn]}>
-                      <View style={[
-                        styles.statusBadge,
-                        participant.has_allergies ? styles.statusBadgeYes : styles.statusBadgeNo
-                      ]}>
-                        <Text style={[
-                          styles.statusBadgeText,
-                          participant.has_allergies ? styles.statusBadgeTextYes : styles.statusBadgeTextNo
-                        ]}>
-                          {participant.has_allergies ? 'Yes' : 'No'}
+                  <View style={styles.staffDetails}>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="briefcase" size={16} color="#a0a0a0" />
+                      <Text style={styles.detailText}>{participant.job_position_name || '-'}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="location" size={16} color="#a0a0a0" />
+                      <Text style={styles.detailText}>{participant.tempat_bertugas || '-'}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="call" size={16} color="#a0a0a0" />
+                      <Text style={styles.detailText}>{participant.phone_number || '-'}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="card" size={16} color="#a0a0a0" />
+                      <Text style={styles.detailText}>{participant.ic_number || '-'}</Text>
+                    </View>
+                    <View style={styles.detailRow}>
+                      <Ionicons name="time" size={16} color="#a0a0a0" />
+                      <Text style={styles.detailText}>{participant.last_bls_attempt || '-'}</Text>
+                    </View>
+                    <View style={[styles.detailRow, { gap: 8 }]}>
+                      <View style={[styles.statusBadge, participant.has_allergies ? styles.statusBadgeYes : styles.statusBadgeNo]}>
+                        <Text style={[styles.statusBadgeText, participant.has_allergies ? styles.statusBadgeTextYes : styles.statusBadgeTextNo]}>
+                          Allergies: {participant.has_allergies ? 'Yes' : 'No'}
+                        </Text>
+                      </View>
+                      <View style={[styles.statusBadge, participant.is_pregnant ? styles.statusBadgeYes : styles.statusBadgeNo]}>
+                        <Text style={[styles.statusBadgeText, participant.is_pregnant ? styles.statusBadgeTextYes : styles.statusBadgeTextNo]}>
+                          Pregnant: {participant.is_pregnant ? 'Yes' : 'No'}
                         </Text>
                       </View>
                     </View>
-                    <View style={[styles.tableCell, styles.pregnantColumn]}>
-                      <View style={[
-                        styles.statusBadge,
-                        participant.is_pregnant ? styles.statusBadgeYes : styles.statusBadgeNo
-                      ]}>
-                        <Text style={[
-                          styles.statusBadgeText,
-                          participant.is_pregnant ? styles.statusBadgeTextYes : styles.statusBadgeTextNo
-                        ]}>
-                          {participant.is_pregnant ? 'Yes' : 'No'}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={[styles.tableCell, styles.statusColumn]}>
-                      <View style={[
-                        styles.statusBadge,
-                        { backgroundColor: getStatusColor(participant.status) + '20' }
-                      ]}>
-                        <Text style={[
-                          styles.statusBadgeText,
-                          { color: getStatusColor(participant.status) }
-                        ]}>
-                          {participant.status.toUpperCase()}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={[styles.tableCell, styles.actionsColumn]}>
-                      <View style={styles.actionButtons}>
-                        <TouchableOpacity
-                          style={[styles.actionButton, styles.editButton]}
-                          onPress={() => handleEditParticipant(participant)}
-                        >
-                          <Ionicons name="create" size={16} color="#f59e0b" />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={[styles.actionButton, styles.deleteButton]}
-                          onPress={() => handleDeleteParticipant(participant)}
-                        >
-                          <Ionicons name="trash" size={16} color="#ef4444" />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                    </View>
-                  );
-                })}
+                  </View>
+
+                  <View style={styles.staffActions}>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.editButton]}
+                      onPress={() => handleEditParticipant(participant)}
+                    >
+                      <Ionicons name="create" size={16} color="#f59e0b" />
+                      <Text style={styles.actionButtonText}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.deleteButton]}
+                      onPress={() => handleDeleteParticipant(participant)}
+                    >
+                      <Ionicons name="trash" size={16} color="#ef4444" />
+                      <Text style={styles.actionButtonText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                </LinearGradient>
               </View>
-            </ScrollView>
+            ))}
           </Animated.View>
         )}
 
