@@ -10,11 +10,8 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0a0a0a;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         #root {
             display: flex;
@@ -22,80 +19,21 @@
             flex: 1;
         }
         .loading {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            max-width: 600px;
-            padding: 40px;
+            font-size: 18px;
         }
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        .status {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-        .status-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        .status-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .success { background: #4CAF50; }
-        .error { background: #f44336; }
-        .info { background: #2196F3; }
     </style>
 </head>
 <body>
     <div id="root">
-        <div class="loading">
-            <div class="logo">BLS</div>
-            <h1>Basic Life Support 2025</h1>
-            <div class="status">
-                <div class="status-item">
-                    <div class="status-icon success"></div>
-                    <span>✅ Repository: Successfully deployed to GitHub</span>
-                </div>
-                <div class="status-item">
-                    <div class="status-icon error"></div>
-                    <span>❌ Web App: JavaScript loading issue detected</span>
-                </div>
-                <div class="status-item">
-                    <div class="status-icon info"></div>
-                    <span>ℹ️ Mobile App: Available via EAS Updates</span>
-                </div>
-            </div>
-            <p>We're working on fixing the web app loading issue. The mobile app is fully functional via EAS updates.</p>
-            <p><strong>Current Issue:</strong> JavaScript file path resolution on GitHub Pages</p>
-            <p><strong>Solution:</strong> The app is being rebuilt with a corrected file structure</p>
-        </div>
+        <div class="loading">Loading Basic Life Support 2025...</div>
     </div>
     
-    <script>
-        console.log('Basic Life Support 2025 - Status Page');
-        console.log('Current location:', window.location.href);
-        console.log('Web app is being rebuilt to fix JavaScript loading issues...');
-    </script>
+    <script src="./app.js" defer></script>
 </body>
 </html>
