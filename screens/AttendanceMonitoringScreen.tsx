@@ -12,6 +12,7 @@ import {
   Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContainerMaxWidth } from "../utils/uiHooks";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,6 +32,7 @@ interface AttendanceMonitoringScreenProps {
 }
 
 export default function AttendanceMonitoringScreen({ onBack }: AttendanceMonitoringScreenProps) {
+  const containerMaxWidth = useContainerMaxWidth();
   const [courses, setCourses] = useState<CourseSession[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<CourseSession | null>(null);
   const [participants, setParticipants] = useState<Profile[]>([]);
@@ -334,7 +336,7 @@ export default function AttendanceMonitoringScreen({ onBack }: AttendanceMonitor
       <ScrollView 
         style={styles.content}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainer}
+        contentContainerStyle={[styles.contentContainer, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

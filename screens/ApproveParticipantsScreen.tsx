@@ -390,59 +390,56 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
                   </View>
                 </View>
 
-                {/* Detailed Information */}
+                {/* Detailed Information - Labeled Pattern */}
                 <View style={styles.detailsSection}>
-                  <View style={styles.detailRow}>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="card-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>IC Number</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.ic_number || 'Not provided'}
-                      </Text>
-                    </View>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="call-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>Phone</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.phone_number || 'Not provided'}
-                      </Text>
-                    </View>
+                  <View style={styles.detailField}>
+                    <Ionicons name="card-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>IC Number</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.ic_number || 'Not provided'}
+                    </Text>
                   </View>
                   
-                  <View style={styles.detailRow}>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="business-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>Workplace</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.tempat_bertugas || 'Not specified'}
-                      </Text>
-                    </View>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="school-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>Grade</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.grade || 'Not specified'}
-                      </Text>
-                    </View>
+                  <View style={styles.detailField}>
+                    <Ionicons name="call-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>Phone</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.phone_number || 'Not provided'}
+                    </Text>
+                  </View>
+                  
+                  <View style={styles.detailField}>
+                    <Ionicons name="business-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>Workplace</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.tempat_bertugas || 'Not specified'}
+                    </Text>
+                  </View>
+                  
+                  <View style={styles.detailField}>
+                    <Ionicons name="school-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>Grade</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.grade || 'Not specified'}
+                    </Text>
                   </View>
 
-                  <View style={styles.detailRow}>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="medical-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>Last BLS</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.last_bls_attempt || 'Not specified'}
-                      </Text>
-                    </View>
-                    <View style={styles.detailItem}>
-                      <Ionicons name="heart-outline" size={16} color="#3498DB" />
-                      <Text style={styles.detailLabel}>Medical</Text>
-                      <Text style={styles.detailValue}>
-                        {participant.has_asthma || participant.has_allergies || participant.is_pregnant 
-                          ? 'Conditions noted' 
-                          : 'No conditions'}
-                      </Text>
-                    </View>
+                  <View style={styles.detailField}>
+                    <Ionicons name="medical-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>Last BLS</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.last_bls_attempt || 'Not specified'}
+                    </Text>
+                  </View>
+                  
+                  <View style={styles.detailField}>
+                    <Ionicons name="heart-outline" size={16} color="#3498DB" />
+                    <Text style={styles.detailLabel}>Medical</Text>
+                    <Text style={styles.detailValue}>
+                      {participant.has_asthma || participant.has_allergies || participant.is_pregnant 
+                        ? 'Conditions noted' 
+                        : 'No conditions'}
+                    </Text>
                   </View>
 
                   {/* Medical Details */}
@@ -823,18 +820,13 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 0,
   },
-  detailRow: {
-    flexDirection: 'row',
-    marginBottom: 16,
-    gap: 16,
-  },
-  detailItem: {
-    flex: 1,
+  detailField: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F8F9FA',
     padding: 12,
     borderRadius: 8,
+    marginBottom: 12,
     gap: 8,
   },
   detailLabel: {

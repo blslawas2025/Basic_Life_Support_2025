@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useResponsive } from "../utils/responsiveHelpers";
 import { colors, gradients } from "../styles/theme";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
@@ -57,6 +58,8 @@ export default function StaffDashboard({
   onNavigateToRegisterStaff, 
   onNavigateToViewStaff
 }: StaffDashboardProps) {
+  const { width: rw, isTablet } = useResponsive();
+  const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const [staffStats, setStaffStats] = useState<StaffStats>({
     totalStaff: 0,
     activeStaff: 0,
@@ -313,7 +316,7 @@ export default function StaffDashboard({
       <ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
       >
         {/* Statistics Overview */}
         <Animated.View style={[

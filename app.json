@@ -34,6 +34,12 @@
         "projectId": "e7e39ee0-4662-4503-9240-a4f6139d79f3"
       }
     },
-    "owner": "blslawas"
+    "owner": "blslawas",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e7e39ee0-4662-4503-9240-a4f6139d79f3"
+    }
   }
 }

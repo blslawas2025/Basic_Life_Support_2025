@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useResponsive } from "../utils/responsiveHelpers";
 import { colors, gradients } from "../styles/theme";
+import { useReducedMotion } from "../utils/uiHooks";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,6 +49,8 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring }: AdminDashboardProps) {
+  const { width: rw, isTablet } = useResponsive();
+  const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const windowDims = useWindowDimensions();
   const [pendingCount, setPendingCount] = useState<number>(0);
   const [isLoadingCount, setIsLoadingCount] = useState<boolean>(true);
@@ -58,6 +62,7 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const glowAnim = useRef(new Animated.Value(0)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
+  const reduceMotion = useReducedMotion();
 
   // Particle animations
   const particle1 = useRef(new Animated.Value(0)).current;
@@ -87,44 +92,46 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
     Animated.stagger(200, [
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1500,
+        duration: reduceMotion ? 400 : 1500,
         useNativeDriver: true,
       }),
       Animated.timing(slideAnim, {
         toValue: 0,
-        duration: 1200,
+        duration: reduceMotion ? 300 : 1200,
         useNativeDriver: true,
       }),
       Animated.timing(scaleAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: reduceMotion ? 250 : 1000,
         useNativeDriver: true,
       }),
     ]).start();
 
     // Continuous animations
-    Animated.loop(
-      Animated.timing(shimmerAnim, {
-        toValue: 1,
-        duration: 5000,
-        useNativeDriver: true,
-      })
-    ).start();
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.2,
-          duration: 3000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
+    if (!reduceMotion) {
+      Animated.loop(
+        Animated.timing(shimmerAnim, {
           toValue: 1,
-          duration: 3000,
+          duration: 5000,
           useNativeDriver: true,
-        }),
-      ])
-    ).start();
+        })
+      ).start();
+
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.2,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }
 
     // Particle animations
     const createParticle = (animValue: Animated.Value, delay: number) => {
@@ -324,7 +331,8 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.dashboardContent,
-          { paddingHorizontal: windowDims.width < 375 ? 16 : windowDims.width < 768 ? 20 : windowDims.width >= 1024 ? 32 : 24 }
+          { paddingHorizontal: windowDims.width < 375 ? 16 : windowDims.width < 768 ? 20 : windowDims.width >= 1024 ? 32 : 24 },
+          containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null
         ]}
       >
         {/* Statistics Overview */}

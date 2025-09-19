@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors, gradients } from "../styles/theme";
+import { useResponsive } from "../utils/responsiveHelpers";
+import { useReducedMotion } from "../utils/uiHooks";
 import SectionHeader from "../components/SectionHeader";
 import ActionTile from "../components/ActionTile";
 import { StatusBar } from "expo-status-bar";
@@ -52,6 +54,9 @@ interface SuperAdminDashboardProps {
 }
 
 export default function SuperAdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToManageChecklist, onNavigateToComprehensiveResults, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring }: SuperAdminDashboardProps) {
+  const { width: rw, isTablet } = useResponsive();
+  const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
+  const reduceMotion = useReducedMotion();
   const [pendingCount, setPendingCount] = useState<number>(0);
   const [totalStaff, setTotalStaff] = useState<number>(0);
   const [totalParticipants, setTotalParticipants] = useState<number>(0);
@@ -113,44 +118,46 @@ export default function SuperAdminDashboard({ userName, onLogout, onNavigateToMa
     Animated.stagger(200, [
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1500,
+        duration: reduceMotion ? 400 : 1500,
         useNativeDriver: true,
       }),
       Animated.timing(slideAnim, {
         toValue: 0,
-        duration: 1200,
+        duration: reduceMotion ? 300 : 1200,
         useNativeDriver: true,
       }),
       Animated.timing(scaleAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: reduceMotion ? 250 : 1000,
         useNativeDriver: true,
       }),
     ]).start();
 
     // Continuous animations
-    Animated.loop(
-      Animated.timing(shimmerAnim, {
-        toValue: 1,
-        duration: 5000,
-        useNativeDriver: true,
-      })
-    ).start();
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.2,
-          duration: 3000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
+    if (!reduceMotion) {
+      Animated.loop(
+        Animated.timing(shimmerAnim, {
           toValue: 1,
-          duration: 3000,
+          duration: 5000,
           useNativeDriver: true,
-        }),
-      ])
-    ).start();
+        })
+      ).start();
+
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.2,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }
 
     // Particle animations
     const createParticle = (animValue: Animated.Value, delay: number) => {
@@ -171,9 +178,11 @@ export default function SuperAdminDashboard({ userName, onLogout, onNavigateToMa
       );
     };
 
-    createParticle(particle1, 0).start();
-    createParticle(particle2, 500).start();
-    createParticle(particle3, 1000).start();
+    if (!reduceMotion) {
+      createParticle(particle1, 0).start();
+      createParticle(particle2, 500).start();
+      createParticle(particle3, 1000).start();
+    }
   };
 
   return (
@@ -348,7 +357,7 @@ export default function SuperAdminDashboard({ userName, onLogout, onNavigateToMa
       <Animated.ScrollView 
         style={styles.dashboardScrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.dashboardContent}
+        contentContainerStyle={[styles.dashboardContent, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
       >
         {/* Statistics Overview */}
         <Animated.View style={[

@@ -13,6 +13,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContainerMaxWidth } from "../utils/uiHooks";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
@@ -50,6 +51,7 @@ interface ViewCoursesScreenProps {
 }
 
 export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesScreenProps) {
+  const containerMaxWidth = useContainerMaxWidth();
   const windowDims = useWindowDimensions();
   const [courses, setCourses] = useState<CourseSession[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -367,7 +369,7 @@ export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesS
       <ScrollView 
         style={styles.content}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.contentContainer, { paddingHorizontal: windowDims.width < 375 ? 16 : windowDims.width < 768 ? 20 : 24 }]}
+        contentContainerStyle={[styles.contentContainer, { paddingHorizontal: windowDims.width < 375 ? 16 : windowDims.width < 768 ? 20 : 24 }, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

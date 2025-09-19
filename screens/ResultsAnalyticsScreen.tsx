@@ -17,6 +17,8 @@ import {
   Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useReducedMotion } from '../utils/uiHooks';
+import { useContainerMaxWidth } from '../utils/uiHooks';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { SubmissionService } from '../services/SubmissionService';
@@ -185,6 +187,7 @@ export default function ResultsAnalyticsScreen({
   onNavigateToResultSettings, 
   onNavigateToCertificateManagement 
 }: ResultsAnalyticsScreenProps) {
+  const containerMaxWidth = useContainerMaxWidth();
   const [submissions, setSubmissions] = useState<TestSubmission[]>([]);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -219,6 +222,7 @@ export default function ResultsAnalyticsScreen({
   // Animation refs
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     loadData();
@@ -229,12 +233,12 @@ export default function ResultsAnalyticsScreen({
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 800,
+        duration: reduceMotion ? 250 : 800,
         useNativeDriver: true,
       }),
       Animated.timing(slideAnim, {
         toValue: 0,
-        duration: 800,
+        duration: reduceMotion ? 250 : 800,
         useNativeDriver: true,
       }),
     ]).start();
@@ -601,7 +605,7 @@ export default function ResultsAnalyticsScreen({
         </View>
 
         {/* Main Content */}
-      <View style={styles.mainContent}>
+      <View style={[styles.mainContent, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}>
         <ScrollView
           style={styles.scrollContent}
           showsVerticalScrollIndicator={false}

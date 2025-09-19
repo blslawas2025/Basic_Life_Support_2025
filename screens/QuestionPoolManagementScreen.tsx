@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert, TextInput, Modal } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContainerMaxWidth } from "../utils/uiHooks";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,6 +32,7 @@ const getResponsiveFontSize = (small: number, medium: number, large: number) => 
 };
 
 export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolManagementScreenProps) {
+  const containerMaxWidth = useContainerMaxWidth();
   const [questionPools, setQuestionPools] = useState<QuestionPool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -703,7 +705,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       </View>
 
       {/* Content */}
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : undefined}>
         {filteredPools.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="library-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />

@@ -34,7 +34,8 @@
     "react-native-web": "^0.20.0",
     "typescript": "~5.8.3",
     "uuid": "^13.0.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "expo-updates": "~0.28.17"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

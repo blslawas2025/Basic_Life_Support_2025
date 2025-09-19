@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert, Modal } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContainerMaxWidth } from "../utils/uiHooks";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,6 +49,7 @@ export default function ManageChecklistScreen({
   onNavigateToChecklistView,
   onNavigateToChecklistResults 
 }: ManageChecklistScreenProps) {
+  const containerMaxWidth = useContainerMaxWidth();
   const [testState, setTestState] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -362,7 +364,7 @@ export default function ManageChecklistScreen({
       <Animated.ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
       >
 
         {/* Action Cards */}

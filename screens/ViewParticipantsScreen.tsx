@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, TextInput, Alert, Modal, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContainerMaxWidth } from "../utils/uiHooks";
+import { colors, gradients } from "../styles/theme";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
+import SectionHeader from "../components/SectionHeader";
 import { ProfileService, Profile, UpdateProfile } from "../services/ProfileService";
 import { CourseSessionService } from "../services/CourseSessionService";
 import { CourseSession } from "../types/CourseSession";
@@ -16,6 +19,7 @@ interface ViewParticipantsScreenProps {
 export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScreenProps) {
   const { width, height, isSmallScreen, isMediumScreen, isTablet, getResponsiveSize, getResponsiveFontSize, getResponsivePadding } = useResponsive();
   const windowDims = useWindowDimensions();
+  const containerMaxWidth = useContainerMaxWidth();
   
   const [participants, setParticipants] = useState<Profile[]>([]);
   const [filteredParticipants, setFilteredParticipants] = useState<Profile[]>([]);
@@ -353,7 +357,7 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
       {/* Background */}
       <Animated.View style={styles.backgroundContainer}>
         <LinearGradient 
-          colors={["#0f0f23", "#1a1a2e", "#16213e", "#0f3460"]} 
+          colors={gradients.appBackground} 
           style={styles.backgroundGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -370,26 +374,16 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
       ]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <LinearGradient
-            colors={['rgba(99, 102, 241, 0.2)', 'rgba(139, 92, 246, 0.2)']}
+            colors={[`${colors.indigo}33`, `${colors.violet}33`]}
             style={styles.backButtonGradient}
           >
             <Ionicons name="arrow-back" size={20} color="#ffffff" />
           </LinearGradient>
         </TouchableOpacity>
 
-        <View style={styles.headerContent}>
-          <View style={styles.headerIcon}>
-            <LinearGradient
-              colors={['#6366f1', '#8b5cf6']}
-              style={styles.headerIconGradient}
-            >
-              <Ionicons name="eye" size={24} color="#ffffff" />
-            </LinearGradient>
-          </View>
-          <View style={styles.headerText}>
-            <Text style={styles.headerTitle}>View Participants</Text>
-            <Text style={styles.headerSubtitle}>View all participants with roles</Text>
-          </View>
+        <View style={{ flex: 1 }}>
+          <SectionHeader title="View Participants" iconName="eye" gradientColors={[colors.indigo, colors.violet]} />
+          <Text style={styles.headerSubtitle}>View all participants with roles</Text>
         </View>
       </Animated.View>
 
@@ -574,7 +568,7 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
       <ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : null]}
       >
         {loading ? (
           <View style={styles.loadingContainer}>
@@ -621,23 +615,38 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
                   <View style={styles.staffDetails}>
                     <View style={styles.detailRow}>
                       <Ionicons name="briefcase" size={16} color="#a0a0a0" />
-                      <Text style={styles.detailText}>{participant.job_position_name || '-'}</Text>
+                      <View style={styles.detailColumn}>
+                        <Text style={styles.detailLabel}>Job Position</Text>
+                        <Text style={styles.detailValue}>{participant.job_position_name || '-'}</Text>
+                      </View>
                     </View>
                     <View style={styles.detailRow}>
                       <Ionicons name="location" size={16} color="#a0a0a0" />
-                      <Text style={styles.detailText}>{participant.tempat_bertugas || '-'}</Text>
+                      <View style={styles.detailColumn}>
+                        <Text style={styles.detailLabel}>Workplace</Text>
+                        <Text style={styles.detailValue}>{participant.tempat_bertugas || '-'}</Text>
+                      </View>
                     </View>
                     <View style={styles.detailRow}>
                       <Ionicons name="call" size={16} color="#a0a0a0" />
-                      <Text style={styles.detailText}>{participant.phone_number || '-'}</Text>
+                      <View style={styles.detailColumn}>
+                        <Text style={styles.detailLabel}>Phone</Text>
+                        <Text style={styles.detailValue}>{participant.phone_number || '-'}</Text>
+                      </View>
                     </View>
                     <View style={styles.detailRow}>
                       <Ionicons name="card" size={16} color="#a0a0a0" />
-                      <Text style={styles.detailText}>{participant.ic_number || '-'}</Text>
+                      <View style={styles.detailColumn}>
+                        <Text style={styles.detailLabel}>IC Number</Text>
+                        <Text style={styles.detailValue}>{participant.ic_number || '-'}</Text>
+                      </View>
                     </View>
                     <View style={styles.detailRow}>
                       <Ionicons name="time" size={16} color="#a0a0a0" />
-                      <Text style={styles.detailText}>{participant.last_bls_attempt || '-'}</Text>
+                      <View style={styles.detailColumn}>
+                        <Text style={styles.detailLabel}>Last BLS Attempt</Text>
+                        <Text style={styles.detailValue}>{participant.last_bls_attempt || '-'}</Text>
+                      </View>
                     </View>
                     <View style={[styles.detailRow, { gap: 8 }]}>
                       <View style={[styles.statusBadge, participant.has_allergies ? styles.statusBadgeYes : styles.statusBadgeNo]}>
@@ -1511,11 +1520,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: getResponsiveSize(4, 6, 8),
   },
+  detailColumn: {
+    marginLeft: getResponsiveSize(8, 10, 12),
+    flex: 1,
+  },
   detailText: {
     fontSize: getResponsiveFontSize(12, 14, 16),
     color: '#a0a0a0',
     marginLeft: getResponsiveSize(8, 10, 12),
     flex: 1,
+  },
+  detailLabel: {
+    fontSize: getResponsiveFontSize(10, 12, 14),
+    color: '#a0a0a0',
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  detailValue: {
+    fontSize: getResponsiveFontSize(12, 14, 16),
+    color: '#e5e7eb',
+    fontWeight: '600',
   },
   cardActions: {
     flexDirection: 'row',
