@@ -1,62 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Life Support 2025</title>
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
-    <style id="expo-reset">
-      /* These styles make the body full-height */
-      html,
-      body {
-        height: 100%;
-      }
-      /* These styles disable body scrolling if you are using <ScrollView> */
-      body {
-        overflow: hidden;
-      }
-      /* These styles make the root element full-height */
-      #root {
-        display: flex;
-        height: 100%;
-        flex: 1;
-      }
+    <link rel="icon" href="./favicon.ico">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #root {
+            display: flex;
+            height: 100vh;
+            flex: 1;
+        }
+        .loading {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 40px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .success { background: #4CAF50; }
+        .error { background: #f44336; }
+        .info { background: #2196F3; }
     </style>
-    <link rel="icon" href="./favicon.ico" />
-  </head>
-
-  <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <!-- The root element for your Expo app. -->
-    <div id="root"></div>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">
+            <div class="logo">BLS</div>
+            <h1>Basic Life Support 2025</h1>
+            <div class="status">
+                <div class="status-item">
+                    <div class="status-icon success"></div>
+                    <span>✅ Repository: Successfully deployed to GitHub</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon error"></div>
+                    <span>❌ Web App: JavaScript loading issue detected</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon info"></div>
+                    <span>ℹ️ Mobile App: Available via EAS Updates</span>
+                </div>
+            </div>
+            <p>We're working on fixing the web app loading issue. The mobile app is fully functional via EAS updates.</p>
+            <p><strong>Current Issue:</strong> JavaScript file path resolution on GitHub Pages</p>
+            <p><strong>Solution:</strong> The app is being rebuilt with a corrected file structure</p>
+        </div>
+    </div>
+    
     <script>
-      // Debug script loading
-      console.log('Loading Basic Life Support 2025 app...');
-      console.log('Current location:', window.location.href);
-      
-      // Try to load the script with error handling
-      const script = document.createElement('script');
-      script.src = './app.js';
-      script.defer = true;
-      
-      script.onload = function() {
-        console.log('App script loaded successfully!');
-      };
-      
-      script.onerror = function() {
-        console.error('Failed to load app script. Trying alternative path...');
-        // Try alternative path
-        const altScript = document.createElement('script');
-        altScript.src = 'app.js';
-        altScript.defer = true;
-        document.head.appendChild(altScript);
-      };
-      
-      document.head.appendChild(script);
+        console.log('Basic Life Support 2025 - Status Page');
+        console.log('Current location:', window.location.href);
+        console.log('Web app is being rebuilt to fix JavaScript loading issues...');
     </script>
-  </body>
+</body>
 </html>
