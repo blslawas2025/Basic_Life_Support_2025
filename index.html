@@ -40,7 +40,7 @@
       
       // Try to load the script with error handling
       const script = document.createElement('script');
-      script.src = './_expo/static/js/web/index-29d53fc1a2c49d95f336af802c321790.js';
+      script.src = './app.js';
       script.defer = true;
       
       script.onload = function() {
@@ -51,7 +51,7 @@
         console.error('Failed to load app script. Trying alternative path...');
         // Try alternative path
         const altScript = document.createElement('script');
-        altScript.src = '_expo/static/js/web/index-29d53fc1a2c49d95f336af802c321790.js';
+        altScript.src = 'app.js';
         altScript.defer = true;
         document.head.appendChild(altScript);
       };
