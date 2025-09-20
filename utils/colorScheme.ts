@@ -60,13 +60,13 @@ export const COLORS = {
   
   // Stunning gradients
   gradient: {
-    primary: ['#00f5ff', '#a855f7'],
-    secondary: ['#a855f7', '#f472b6'],
-    accent: ['#06b6d4', '#22c55e'],
-    glass: ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.08)'],
-    card: ['rgba(0, 245, 255, 0.15)', 'rgba(168, 85, 247, 0.15)'],
-    background: ['#0a0a0f', '#111827', '#1f2937'],
-    hero: ['#0a0a0f', '#1e1b4b', '#312e81'],
+    primary: ['#00f5ff', '#a855f7'] as const,
+    secondary: ['#a855f7', '#f472b6'] as const,
+    accent: ['#06b6d4', '#22c55e'] as const,
+    glass: ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.08)'] as const,
+    card: ['rgba(0, 245, 255, 0.15)', 'rgba(168, 85, 247, 0.15)'] as const,
+    background: ['#0a0a0f', '#111827', '#1f2937'] as const,
+    hero: ['#0a0a0f', '#1e1b4b', '#312e81'] as const,
   },
   
   // Glowing shadows
@@ -106,6 +106,32 @@ export const TYPOGRAPHY = {
     tight: 1.25,
     normal: 1.5,
     relaxed: 1.75,
+  },
+  // Common typography combinations
+  body: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 1.5,
+  },
+  bodySmall: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 1.5,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 1.4,
+  },
+  h3: {
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 1.25,
+  },
+  h4: {
+    fontSize: 20,
+    fontWeight: '600',
+    lineHeight: 1.25,
   },
 };
 

@@ -16,12 +16,12 @@ export const colors = {
 };
 
 export const spacing = {
-	xs: 8,
-	sm: 12,
-	md: 16,
-	lg: 20,
-	xl: 24,
-	xxl: 32,
+	xs: 6,
+	sm: 10,
+	md: 14,
+	lg: 18,
+	xl: 22,
+	xxl: 28,
 };
 
 export const radius = {
@@ -32,9 +32,10 @@ export const radius = {
 };
 
 export const typography = {
-	title: { min: 22, base: 26, max: 30 },
-	subtitle: { min: 14, base: 16, max: 18 },
-	body: { min: 12, base: 14, max: 16 },
+	title: { min: 20, base: 22, max: 24 },
+	subtitle: { min: 14, base: 15, max: 16 },
+	body: { min: 12, base: 13, max: 14 },
+	header: { min: 18, base: 20, max: 22 },
 };
 
 export const gradients = {

@@ -53,20 +53,23 @@ export const screenHeight = height;
 export const useResponsive = () => {
   const { width: w, height: h } = useWindowDimensions();
 
-  const isSmallScreenCurrent = w < 375;
-  const isMediumScreenCurrent = w >= 375 && w < 768;
+  const isSmallScreenCurrent = w < 480;
+  const isMediumScreenCurrent = w >= 480 && w < 768;
   const isLargeScreenCurrent = w >= 768;
   const isTabletCurrent = w >= 768 && h >= 1024;
+  const isDesktopCurrent = w >= 1024;
 
   const getResponsiveSizeCurrent = (small: number, medium: number, large: number): number => {
     if (isSmallScreenCurrent) return small;
     if (isMediumScreenCurrent) return medium;
+    if (isDesktopCurrent) return Math.min(large, large * 0.9); // Slightly smaller for desktop
     return large;
   };
 
   const getResponsiveFontSizeCurrent = (small: number, medium: number, large: number): number => {
     if (isSmallScreenCurrent) return small;
     if (isMediumScreenCurrent) return medium;
+    if (isDesktopCurrent) return Math.min(large, large * 0.9); // Slightly smaller for desktop
     return large;
   };
 
@@ -102,6 +105,7 @@ export const useResponsive = () => {
     isMediumScreen: isMediumScreenCurrent,
     isLargeScreen: isLargeScreenCurrent,
     isTablet: isTabletCurrent,
+    isDesktop: isDesktopCurrent,
     getResponsiveSize: getResponsiveSizeCurrent,
     getResponsiveFontSize: getResponsiveFontSizeCurrent,
     getResponsivePadding: getResponsivePaddingCurrent,

@@ -96,7 +96,7 @@ const ModernStatCard = ({ icon, title, value, subtitle, color, gradient }: {
   value: string | number;
   subtitle?: string;
   color: string;
-  gradient: string[];
+  gradient: readonly string[];
 }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   
@@ -111,7 +111,7 @@ const ModernStatCard = ({ icon, title, value, subtitle, color, gradient }: {
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
       <Animated.View style={[styles.modernStatCard, { transform: [{ scale: scaleAnim }] }]}>
-        <LinearGradient colors={gradient} style={styles.modernCardGradient}>
+        <LinearGradient colors={gradient as any} style={styles.modernCardGradient}>
           <View style={styles.modernCardContent}>
             <View style={[styles.modernIconContainer, { backgroundColor: color + '20' }]}>
               <Ionicons name={icon as any} size={28} color={color} />
@@ -449,7 +449,7 @@ export default function ManageParticipantScreen({ onBack, onNavigateToRegisterPa
               value={isLoadingData ? "..." : totalParticipants.toLocaleString()}
               subtitle="All Course Sessions"
               color="#00ff88"
-              gradient={['rgba(0, 255, 136, 0.2)', 'rgba(0, 255, 136, 0.1)']}
+              gradient={['rgba(0, 255, 136, 0.2)', 'rgba(0, 255, 136, 0.1)'] as const}
             />
             
             <ModernStatCard
@@ -458,7 +458,7 @@ export default function ManageParticipantScreen({ onBack, onNavigateToRegisterPa
               value={isLoadingData ? "..." : pendingCount}
               subtitle="Awaiting Review"
               color="#ffaa00"
-              gradient={['rgba(255, 170, 0, 0.2)', 'rgba(255, 170, 0, 0.1)']}
+              gradient={['rgba(255, 170, 0, 0.2)', 'rgba(255, 170, 0, 0.1)'] as const}
             />
           </View>
 
@@ -823,7 +823,8 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   statCard: {
-    width: isSmallScreen ? (width - 48) / 2 : isMediumScreen ? (width - 60) / 2 : (width - 72) / 4,
+    width: '100%',
+    maxWidth: 300,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 24,
     padding: 24,
@@ -836,7 +837,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   statCardLarge: {
-    width: isSmallScreen ? width - 32 : isMediumScreen ? (width - 40) / 2 : (width - 48) / 2,
+    width: '100%',
+    maxWidth: 400,
   },
   statDivider: {
     height: 1,
@@ -1100,7 +1102,6 @@ const styles = StyleSheet.create({
   jobBreakdownSection: {
     marginBottom: 24,
   },
-  },
   jobScrollContainer: {
     paddingHorizontal: 24,
   },
@@ -1173,7 +1174,8 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.7)',
   },
   actionCard: {
-    width: isSmallScreen ? width - 32 : isMediumScreen ? (width - 60) / 2 : (width - 72) / 2,
+    width: '100%',
+    maxWidth: 400,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 24,
     borderWidth: 1,

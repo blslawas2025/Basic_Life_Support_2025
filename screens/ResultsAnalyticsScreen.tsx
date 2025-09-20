@@ -1925,8 +1925,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heroTitle: {
-    fontSize: 32,
-    fontWeight: '800' as const,
+    fontSize: 24,
+    fontWeight: '700' as const,
     color: COLORS.text.primary,
     marginBottom: 8,
     textShadowColor: COLORS.neon.electric,

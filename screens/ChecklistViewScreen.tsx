@@ -873,10 +873,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modernHeaderTitle: {
-    fontSize: 32,
-    fontWeight: '800',
+    fontSize: 24,
+    fontWeight: '700',
     color: '#ffffff',
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   modernHeaderSubtitle: {
     fontSize: 16,
@@ -1137,10 +1137,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: 32,
-    fontWeight: '800',
+    fontSize: 24,
+    fontWeight: '700',
     color: '#1a1a1a',
-    lineHeight: 36,
+    lineHeight: 28,
   },
   statLabel: {
     fontSize: 14,

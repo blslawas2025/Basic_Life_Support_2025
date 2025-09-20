@@ -13,7 +13,7 @@ interface SectionHeaderProps {
 export default function SectionHeader({ title, iconName, gradientColors }: SectionHeaderProps) {
 	return (
 		<View style={styles.container}>
-			<LinearGradient colors={gradientColors} style={styles.iconWrap}>
+			<LinearGradient colors={gradientColors as any} style={styles.iconWrap}>
 				<Ionicons name={iconName as any} size={20} color="#ffffff" />
 			</LinearGradient>
 			<Text style={styles.title}>{title}</Text>
@@ -25,21 +25,23 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: spacing.md,
+		marginBottom: spacing.sm,
+		paddingVertical: spacing.xs,
 	},
 	iconWrap: {
-		width: 40,
-		height: 40,
-		borderRadius: 20,
+		width: 32,
+		height: 32,
+		borderRadius: 16,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: spacing.sm,
 	},
 	title: {
-		fontSize: typography.subtitle.base + 2,
-		fontWeight: '700',
+		fontSize: typography.subtitle.base,
+		fontWeight: '600',
 		color: '#ffffff',
-		letterSpacing: 0.5,
+		letterSpacing: 0.3,
+		flex: 1,
 	},
 });
 

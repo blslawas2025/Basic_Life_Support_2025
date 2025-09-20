@@ -122,7 +122,7 @@ const ModernStatCard = ({ icon, title, value, subtitle, color, gradient }: {
   value: string | number;
   subtitle?: string;
   color: string;
-  gradient: string[];
+  gradient: readonly string[];
 }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   
@@ -137,7 +137,7 @@ const ModernStatCard = ({ icon, title, value, subtitle, color, gradient }: {
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
       <Animated.View style={[styles.modernStatCard, { transform: [{ scale: scaleAnim }] }]}>
-        <LinearGradient colors={gradient} style={styles.modernCardGradient}>
+        <LinearGradient colors={gradient as any} style={styles.modernCardGradient}>
           <View style={styles.modernCardContent}>
             <View style={[styles.modernIconContainer, { backgroundColor: color + '20' }]}>
               <Ionicons name={icon as any} size={28} color={color} />
@@ -398,7 +398,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
               value={isLoadingData ? "..." : totalStaff.toLocaleString()}
               subtitle="All Staff Members"
               color="#00ff88"
-              gradient={['rgba(0, 255, 136, 0.2)', 'rgba(0, 255, 136, 0.1)']}
+              gradient={['rgba(0, 255, 136, 0.2)', 'rgba(0, 255, 136, 0.1)'] as const}
             />
             
             <ModernStatCard
@@ -407,7 +407,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
               value={isLoadingData ? "..." : activeStaff}
               subtitle="Currently Active"
               color="#06b6d4"
-              gradient={['rgba(6, 182, 212, 0.2)', 'rgba(6, 182, 212, 0.1)']}
+              gradient={['rgba(6, 182, 212, 0.2)', 'rgba(6, 182, 212, 0.1)'] as const}
             />
           </View>
 
@@ -1040,10 +1040,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     gap: 24,
-  },
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 24,
   },
   actionCardContent: {
     flex: 1,
