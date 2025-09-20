@@ -54,9 +54,15 @@ interface UserData {
 type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [currentScreen, setCurrentScreen] = useState<Screen>(ROUTES.login as Screen);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userData, setUserData] = useState<UserData | null>({
+    id: 'demo-user',
+    email: 'demo@example.com',
+    isSuperAdmin: true,
+    userName: 'Demo User',
+    roles: 'admin'
+  });
+  const [currentScreen, setCurrentScreen] = useState<Screen>('dashboard' as Screen);
   const [testResults, setTestResults] = useState<any>(null);
   const [currentTestType, setCurrentTestType] = useState<'pre' | 'post'>('pre');
   const [currentChecklistType, setCurrentChecklistType] = useState<string>('');

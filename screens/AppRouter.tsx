@@ -2,6 +2,7 @@ import React from "react";
 import LoginScreen from "./LoginScreen";
 import SuperAdminDashboard from "./SuperAdminDashboard";
 import AdminDashboard from "./AdminDashboard";
+import SimpleDashboard from "./SimpleDashboard";
 import ManageParticipantScreen from "./ManageParticipantScreen";
 import RegisterParticipantScreen from "./RegisterParticipantScreen";
 import BulkImportScreen from "./BulkImportScreen";
@@ -224,50 +225,21 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'dashboard' && isLoggedIn && userData) {
-		if (userData.roles === 'admin' || userData.isSuperAdmin) {
-			return (
-				<SuperAdminDashboard
-					userName={userData.userName}
-					onLogout={props.onLogout}
-					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
-					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
-					onNavigateToManageStaff={props.onNavigateToManageStaff}
-					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
-					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
-					onNavigateToManageChecklist={props.onNavigateToManageChecklist}
-					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
-					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
-					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
-				/>
-			);
-		} else if (userData.roles === 'staff') {
-			return (
-				<AdminDashboard 
-					userName={userData.userName}
-					onLogout={props.onLogout}
-					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
-					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
-					onNavigateToManageStaff={props.onNavigateToManageStaff}
-					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
-					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
-					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
-					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
-				/>
-			);
-		} else {
-			return (
-				<AdminDashboard 
-					userName={userData.userName}
-					onLogout={props.onLogout}
-					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
-					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
-					onNavigateToManageStaff={props.onNavigateToManageStaff}
-					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
-					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
-					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
-				/>
-			);
-		}
+		return (
+			<SimpleDashboard
+				userName={userData.userName}
+				onLogout={props.onLogout}
+				onNavigateToManageParticipant={props.onNavigateToManageParticipant}
+				onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
+				onNavigateToManageStaff={props.onNavigateToManageStaff}
+				onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
+				onNavigateToManageQuestions={props.onNavigateToManageQuestions}
+				onNavigateToManageChecklist={props.onNavigateToManageChecklist}
+				onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+				onNavigateToCreateCourse={props.onNavigateToCreateCourse}
+				onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+			/>
+		);
 	}
 
 	if (currentScreen === 'testSettings' && isLoggedIn && userData) {
