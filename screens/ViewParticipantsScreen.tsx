@@ -13,7 +13,6 @@ import { CourseSession } from "../types/CourseSession";
 import { useResponsive } from "../utils/responsiveHelpers";
 
 // Utility functions for responsive design
-const isSmallScreen = (width: number) => width < 768;
 const getResponsiveColumnWidth = (small: number, medium: number, large: number) => {
   const { width } = Dimensions.get('window');
   return width < 768 ? small : width < 1024 ? medium : large;
@@ -24,7 +23,7 @@ interface ViewParticipantsScreenProps {
 }
 
 export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScreenProps) {
-  const { width, height } = useResponsive();
+  const { width, height, isSmallScreen } = useResponsive();
   const windowDims = useWindowDimensions();
   const containerMaxWidth = useContainerMaxWidth();
   
