@@ -838,9 +838,9 @@ const styles = StyleSheet.create({
   modernHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop: isSmallScreen ? 40 : 50,
+    paddingHorizontal: isSmallScreen ? 16 : 20,
+    paddingBottom: isSmallScreen ? 12 : 20,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   modernBackButton: {
@@ -873,16 +873,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modernHeaderTitle: {
-    fontSize: 24,
+    fontSize: isSmallScreen ? 18 : 20,
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: -0.5,
   },
   modernHeaderSubtitle: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 13 : 14,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: 4,
+    marginTop: 2,
   },
   compulsoryWarning: {
     fontSize: 12,
@@ -905,8 +905,8 @@ const styles = StyleSheet.create({
   },
   // Progress Bar
   progressContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingHorizontal: isSmallScreen ? 16 : 20,
+    paddingBottom: isSmallScreen ? 12 : 20,
   },
   progressTrack: {
     height: 8,
@@ -1197,26 +1197,26 @@ const styles = StyleSheet.create({
   },
   // Participant Selector Styles
   participantSection: {
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingHorizontal: isSmallScreen ? 16 : 20,
+    marginBottom: isSmallScreen ? 12 : 20,
   },
   participantCard: {
-    borderRadius: 16,
-    padding: 20,
+    borderRadius: 12,
+    padding: isSmallScreen ? 12 : 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 4,
+    elevation: 2,
   },
   participantHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: isSmallScreen ? 8 : 12,
   },
   participantTitle: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '700',
     color: '#1a1a1a',
   },
@@ -1228,9 +1228,9 @@ const styles = StyleSheet.create({
   selectedParticipant: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    padding: isSmallScreen ? 8 : 12,
     backgroundColor: 'rgba(102, 126, 234, 0.05)',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: 'rgba(102, 126, 234, 0.2)',
   },
@@ -1238,23 +1238,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   participantName: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '700',
     color: '#1a1a1a',
-    marginBottom: 12,
+    marginBottom: isSmallScreen ? 6 : 8,
   },
   participantDetailsGrid: {
-    gap: 8,
+    gap: isSmallScreen ? 4 : 6,
   },
   participantDetailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: isSmallScreen ? 3 : 4,
   },
   participantDetailText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 11 : 12,
     color: '#666',
-    marginLeft: 8,
+    marginLeft: 6,
     flex: 1,
   },
   pregnancyText: {
