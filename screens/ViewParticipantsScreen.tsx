@@ -1345,9 +1345,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 30,
-    paddingBottom: 25,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 16,
     backgroundColor: 'rgba(99, 102, 241, 0.15)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(99, 102, 241, 0.3)',
@@ -1397,8 +1397,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   searchContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
@@ -1448,8 +1448,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
     flexGrow: 1,
   },
   loadingContainer: {
