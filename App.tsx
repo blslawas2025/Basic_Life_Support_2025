@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useState, useEffect } from "react";
-import { Alert, View, Text } from "react-native";
+import { Alert } from "react-native";
 import { synchronizationService } from "./services/SynchronizationService";
 import LoginScreen from "./screens/LoginScreen";
 import SuperAdminDashboard from "./screens/SuperAdminDashboard";
@@ -71,22 +71,14 @@ export default function App() {
         console.log('✅ Synchronization service started successfully');
       } catch (error) {
         console.error('❌ Failed to initialize synchronization service:', error);
-        // Continue app initialization even if sync service fails
       }
     };
 
-    // Delay initialization to prevent blocking app startup
-    setTimeout(() => {
-      initializeSync();
-    }, 1000);
+    initializeSync();
 
     // Cleanup on unmount
     return () => {
-      try {
-        synchronizationService.stopListening();
-      } catch (error) {
-        console.error('Error stopping synchronization service:', error);
-      }
+      synchronizationService.stopListening();
     };
   }, []);
 
@@ -126,12 +118,12 @@ export default function App() {
     setCurrentScreen(ROUTES.bulkImport as Screen);
   };
 
-  const handleNavigateToApproveParticipants = () => {
-    setCurrentScreen(ROUTES.approveParticipants as Screen);
-  };
-
   const handleNavigateToViewParticipants = () => {
     setCurrentScreen(ROUTES.viewParticipants as Screen);
+  };
+
+  const handleNavigateToApproveParticipants = () => {
+    setCurrentScreen(ROUTES.approveParticipants as Screen);
   };
 
   const handleNavigateToManageStaff = () => {
@@ -146,16 +138,12 @@ export default function App() {
     setCurrentScreen(ROUTES.viewStaff as Screen);
   };
 
-  const handleBackToManageStaff = () => {
-    setCurrentScreen(ROUTES.manageStaff as Screen);
-  };
-
   const handleNavigateToStaffDashboard = () => {
     setCurrentScreen(ROUTES.staffDashboard as Screen);
   };
 
-  const handleBackToStaffDashboard = () => {
-    setCurrentScreen(ROUTES.staffDashboard as Screen);
+  const handleBackToManageStaff = () => {
+    setCurrentScreen(ROUTES.manageStaff as Screen);
   };
 
   const handleNavigateToManageQuestions = () => {
@@ -166,7 +154,73 @@ export default function App() {
     setCurrentScreen(ROUTES.uploadQuestions as Screen);
   };
 
+  const handleNavigateToPreTest = () => {
+    setCurrentScreen(ROUTES.preTest as Screen);
+  };
+
+  const handleNavigateToPostTest = () => {
+    setCurrentScreen(ROUTES.postTest as Screen);
+  };
+
+  const handleNavigateToTestSettings = () => {
+    setCurrentScreen(ROUTES.testSettings as Screen);
+  };
+
+  const handleShowTestResults = (results: any) => {
+    setTestResults(results);
+    setCurrentScreen(ROUTES.testResults as Screen);
+  };
+
+  const handleBackFromResults = () => {
+    setTestResults(null);
+    setCurrentScreen(ROUTES.manageQuestions as Screen);
+  };
+
+  const handleNavigateToQuestionPools = () => {
+    setCurrentScreen(ROUTES.questionPoolManagement as Screen);
+  };
+
+  const handleNavigateToAccessControl = () => {
+    setCurrentScreen(ROUTES.accessControlManagement as Screen);
+  };
+
+  const handleNavigateToResults = () => {
+    setCurrentScreen(ROUTES.resultsAnalytics as Screen);
+  };
+
+  const handleNavigateToImportResults = () => {
+    setCurrentScreen(ROUTES.importResults as Screen);
+  };
+
+  const handleNavigateToBulkImportResults = () => {
+    setCurrentScreen(ROUTES.bulkImportResults as Screen);
+  };
+
+  const handleNavigateToResultView = () => {
+    setCurrentScreen(ROUTES.resultView as Screen);
+  };
+
+  const handleNavigateToResultAnalysis = () => {
+    setCurrentScreen(ROUTES.resultAnalysis as Screen);
+  };
+
+  const handleNavigateToResultSettings = () => {
+    setCurrentScreen(ROUTES.resultSettings as Screen);
+  };
+
+  const handleNavigateToCertificateManagement = () => {
+    setCurrentScreen(ROUTES.certificateManagement as Screen);
+  };
+
+  const handleNavigateToComprehensiveResults = () => {
+    setCurrentScreen(ROUTES.comprehensiveResults as Screen);
+  };
+
   const handleNavigateToManageChecklist = () => {
+    setCurrentScreen(ROUTES.manageChecklist as Screen);
+  };
+
+  const handleBackToManageChecklist = () => {
     setCurrentScreen(ROUTES.manageChecklist as Screen);
   };
 
@@ -179,116 +233,27 @@ export default function App() {
   };
 
   const handleNavigateToChecklistView = (checklistType: string) => {
-    console.log('handleNavigateToChecklistView called with:', checklistType);
-    console.log('Current screen before:', currentScreen);
     setCurrentChecklistType(checklistType);
     setCurrentScreen(ROUTES.checklistView as Screen);
-    console.log('Current screen after:', 'checklistView');
   };
 
   const handleNavigateToChecklistResults = () => {
-    console.log('handleNavigateToChecklistResults called');
     setCurrentScreen(ROUTES.checklistResults as Screen);
   };
 
-  const handleNavigateToPreTest = () => {
-    console.log('handleNavigateToPreTest called');
-    console.log('Current screen before:', currentScreen);
-    setCurrentScreen(ROUTES.preTest as Screen);
-    console.log('Current screen after:', 'preTest');
-  };
-
-  const handleNavigateToPostTest = () => {
-    console.log('handleNavigateToPostTest called');
-    console.log('Current screen before:', currentScreen);
-    setCurrentScreen(ROUTES.postTest as Screen);
-    console.log('Current screen after:', 'postTest');
-  };
-
-  const handleNavigateToTestSettings = () => {
-    console.log('handleNavigateToTestSettings called');
-    console.log('Current screen before:', currentScreen);
-    setCurrentScreen(ROUTES.testSettings as Screen);
-    console.log('Current screen after:', 'testSettings');
-  };
-
-  const handleShowTestResults = (results: any) => {
-    setTestResults(results);
-    setCurrentScreen(ROUTES.testResults as Screen);
-  };
-
-  const handleBackFromResults = () => {
-    setTestResults(null);
-    setCurrentScreen('manageQuestions');
-  };
-
-  const handleNavigateToQuestionPools = () => {
-    console.log('handleNavigateToQuestionPools called');
-    setCurrentScreen(ROUTES.questionPoolManagement as Screen);
-  };
-
-  const handleNavigateToAccessControl = () => {
-    console.log('handleNavigateToAccessControl called');
-    setCurrentScreen(ROUTES.accessControlManagement as Screen);
-  };
-
-  const handleNavigateToResults = () => {
-    console.log('handleNavigateToResults called');
-    setCurrentScreen(ROUTES.resultsAnalytics as Screen);
-  };
-
-  const handleNavigateToImportResults = () => {
-    console.log('handleNavigateToImportResults called');
-    setCurrentScreen(ROUTES.importResults as Screen);
-  };
-
-  const handleNavigateToBulkImportResults = () => {
-    console.log('handleNavigateToBulkImportResults called');
-    setCurrentScreen(ROUTES.bulkImportResults as Screen);
-  };
-
-  const handleNavigateToResultView = () => {
-    console.log('handleNavigateToResultView called');
-    setCurrentScreen(ROUTES.resultView as Screen);
-  };
-
-  const handleNavigateToResultAnalysis = () => {
-    console.log('handleNavigateToResultAnalysis called');
-    setCurrentScreen(ROUTES.resultAnalysis as Screen);
-  };
-
-  const handleNavigateToResultSettings = () => {
-    console.log('handleNavigateToResultSettings called');
-    setCurrentScreen(ROUTES.resultSettings as Screen);
-  };
-
-  const handleNavigateToCertificateManagement = () => {
-    console.log('handleNavigateToCertificateManagement called');
-    setCurrentScreen(ROUTES.certificateManagement as Screen);
-  };
-
-  const handleNavigateToComprehensiveResults = () => {
-    console.log('handleNavigateToComprehensiveResults called');
-    setCurrentScreen(ROUTES.comprehensiveResults as Screen);
-  };
-
   const handleNavigateToCreateCourse = () => {
-    console.log('handleNavigateToCreateCourse called');
     setCurrentScreen(ROUTES.createCourse as Screen);
   };
 
   const handleNavigateToAttendanceMonitoring = () => {
-    console.log('handleNavigateToAttendanceMonitoring called');
     setCurrentScreen(ROUTES.attendanceMonitoring as Screen);
   };
 
   const handleNavigateToViewCourses = () => {
-    console.log('handleNavigateToViewCourses called');
     setCurrentScreen(ROUTES.viewCourses as Screen);
   };
 
   const handleEditCourse = (course: any) => {
-    console.log('handleEditCourse called with course:', course);
     setSelectedCourse(course);
     setCurrentScreen(ROUTES.editCourse as Screen);
   };
@@ -298,82 +263,58 @@ export default function App() {
     setCurrentScreen(ROUTES.viewCourses as Screen);
   };
 
-  const handleCourseUpdated = () => {
-    console.log('Course updated successfully');
-    // The ViewCoursesScreen will refresh automatically when we go back
-  };
-
-  const handleBackToManageChecklist = () => {
-    setCurrentScreen('manageChecklist');
-  };
-
-  // Render via AppRouter to keep file short and maintainable (logic unchanged)
-  try {
-    return (
-      <AppRouter
-        currentScreen={currentScreen}
-        isLoggedIn={isLoggedIn}
-        userData={userData}
-        testResults={testResults}
-        currentTestType={currentTestType}
-        currentChecklistType={currentChecklistType}
-        selectedCourse={selectedCourse}
-        onLogin={handleLogin}
-        onLogout={handleLogout}
-        onBackToDashboard={handleBackToDashboard}
-        onBackToDashboardFromChecklist={handleBackToDashboardFromChecklist}
-        onNavigateToManageParticipant={handleNavigateToManageParticipant}
-        onNavigateToRegisterParticipant={handleNavigateToRegisterParticipant}
-        onNavigateToBulkImport={handleNavigateToBulkImport}
-        onNavigateToViewParticipants={handleNavigateToViewParticipants}
-        onNavigateToApproveParticipants={handleNavigateToApproveParticipants}
-        onNavigateToManageStaff={handleNavigateToManageStaff}
-        onNavigateToRegisterStaff={handleNavigateToRegisterStaff}
-        onNavigateToViewStaff={handleNavigateToViewStaff}
-        onNavigateToStaffDashboard={handleNavigateToStaffDashboard}
-        onBackToManageParticipant={handleBackToManageParticipant}
-        onBackToManageStaff={handleBackToManageStaff}
-        onNavigateToManageQuestions={handleNavigateToManageQuestions}
-        onNavigateToUploadQuestions={handleNavigateToUploadQuestions}
-        onNavigateToPreTest={handleNavigateToPreTest}
-        onNavigateToPostTest={handleNavigateToPostTest}
-        onNavigateToTestSettings={handleNavigateToTestSettings}
-        onShowTestResults={handleShowTestResults}
-        onBackFromResults={handleBackFromResults}
-        onNavigateToQuestionPools={handleNavigateToQuestionPools}
-        onNavigateToAccessControl={handleNavigateToAccessControl}
-        onNavigateToResults={handleNavigateToResults}
-        onNavigateToImportResults={handleNavigateToImportResults}
-        onNavigateToBulkImportResults={handleNavigateToBulkImportResults}
-        onNavigateToResultView={handleNavigateToResultView}
-        onNavigateToResultAnalysis={handleNavigateToResultAnalysis}
-        onNavigateToResultSettings={handleNavigateToResultSettings}
-        onNavigateToCertificateManagement={handleNavigateToCertificateManagement}
-        onNavigateToComprehensiveResults={handleNavigateToComprehensiveResults}
-        onNavigateToManageChecklist={handleNavigateToManageChecklist}
-        onBackToManageChecklist={handleBackToManageChecklist}
-        onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
-        onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
-        onNavigateToChecklistView={handleNavigateToChecklistView}
-        onNavigateToChecklistResults={handleNavigateToChecklistResults}
-        onNavigateToCreateCourse={handleNavigateToCreateCourse}
-        onNavigateToAttendanceMonitoring={handleNavigateToAttendanceMonitoring}
-        onNavigateToViewCourses={handleNavigateToViewCourses}
-        onEditCourse={handleEditCourse}
-        onBackFromEditCourse={handleBackFromEditCourse}
-      />
-    );
-  } catch (error) {
-    console.error('App render error:', error);
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-        <Text style={{ color: '#fff', fontSize: 18, textAlign: 'center', margin: 20 }}>
-          Basic Life Support App
-        </Text>
-        <Text style={{ color: '#fff', fontSize: 14, textAlign: 'center', margin: 20 }}>
-          Loading...
-        </Text>
-      </View>
-    );
-  }
+  return (
+    <AppRouter
+      currentScreen={currentScreen}
+      isLoggedIn={isLoggedIn}
+      userData={userData}
+      testResults={testResults}
+      currentTestType={currentTestType}
+      currentChecklistType={currentChecklistType}
+      selectedCourse={selectedCourse}
+      onLogin={handleLogin}
+      onLogout={handleLogout}
+      onBackToDashboard={handleBackToDashboard}
+      onBackToDashboardFromChecklist={handleBackToDashboardFromChecklist}
+      onNavigateToManageParticipant={handleNavigateToManageParticipant}
+      onNavigateToRegisterParticipant={handleNavigateToRegisterParticipant}
+      onNavigateToBulkImport={handleNavigateToBulkImport}
+      onNavigateToViewParticipants={handleNavigateToViewParticipants}
+      onNavigateToApproveParticipants={handleNavigateToApproveParticipants}
+      onNavigateToManageStaff={handleNavigateToManageStaff}
+      onNavigateToRegisterStaff={handleNavigateToRegisterStaff}
+      onNavigateToViewStaff={handleNavigateToViewStaff}
+      onNavigateToStaffDashboard={handleNavigateToStaffDashboard}
+      onBackToManageParticipant={handleBackToManageParticipant}
+      onBackToManageStaff={handleBackToManageStaff}
+      onNavigateToManageQuestions={handleNavigateToManageQuestions}
+      onNavigateToUploadQuestions={handleNavigateToUploadQuestions}
+      onNavigateToPreTest={handleNavigateToPreTest}
+      onNavigateToPostTest={handleNavigateToPostTest}
+      onNavigateToTestSettings={handleNavigateToTestSettings}
+      onShowTestResults={handleShowTestResults}
+      onBackFromResults={handleBackFromResults}
+      onNavigateToQuestionPools={handleNavigateToQuestionPools}
+      onNavigateToAccessControl={handleNavigateToAccessControl}
+      onNavigateToResults={handleNavigateToResults}
+      onNavigateToImportResults={handleNavigateToImportResults}
+      onNavigateToBulkImportResults={handleNavigateToBulkImportResults}
+      onNavigateToResultView={handleNavigateToResultView}
+      onNavigateToResultAnalysis={handleNavigateToResultAnalysis}
+      onNavigateToResultSettings={handleNavigateToResultSettings}
+      onNavigateToCertificateManagement={handleNavigateToCertificateManagement}
+      onNavigateToComprehensiveResults={handleNavigateToComprehensiveResults}
+      onNavigateToManageChecklist={handleNavigateToManageChecklist}
+      onBackToManageChecklist={handleBackToManageChecklist}
+      onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
+      onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
+      onNavigateToChecklistView={handleNavigateToChecklistView}
+      onNavigateToChecklistResults={handleNavigateToChecklistResults}
+      onNavigateToCreateCourse={handleNavigateToCreateCourse}
+      onNavigateToAttendanceMonitoring={handleNavigateToAttendanceMonitoring}
+      onNavigateToViewCourses={handleNavigateToViewCourses}
+      onEditCourse={handleEditCourse}
+      onBackFromEditCourse={handleBackFromEditCourse}
+    />
+  );
 }
