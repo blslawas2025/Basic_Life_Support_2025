@@ -8,8 +8,6 @@
   "github": {
     "silent": true
   },
-  "functions": {},
-  "redirects": [],
   "rewrites": [
     {
       "source": "/(.*)",
