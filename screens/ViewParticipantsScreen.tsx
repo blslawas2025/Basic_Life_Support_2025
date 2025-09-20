@@ -1502,82 +1502,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#a0a0a0',
   },
-  roleBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderRadius: 20,
-  },
-  roleText: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 20,
-  },
   cardDetails: {
     marginBottom: 20,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  detailColumn: {
-    marginLeft: 20,
-    flex: 1,
-  },
-  detailText: {
-    fontSize: 16,
-    color: '#a0a0a0',
-    marginLeft: 20,
-    flex: 1,
-  },
-  detailLabel: {
-    fontSize: 16,
-    color: '#a0a0a0',
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-  detailValue: {
-    fontSize: 16,
-    color: '#e5e7eb',
-    fontWeight: '600',
   },
   cardActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  actionButton: {
-    width: 20,
-    height: 20,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 20,
-    borderWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  viewButton: {
-    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-  },
-  editButton: {
-    backgroundColor: 'rgba(245, 158, 11, 0.15)',
-    borderColor: 'rgba(245, 158, 11, 0.4)',
-  },
-  deleteButton: {
-    backgroundColor: 'rgba(239, 68, 68, 0.15)',
-    borderColor: 'rgba(239, 68, 68, 0.4)',
-  },
-  actionButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginLeft: 20,
   },
   // Filter styles
   filtersContainer: {
@@ -1767,36 +1697,6 @@ const styles = StyleSheet.create({
     width: getResponsiveColumnWidth(150, 180, 200),
     flex: 0,
     minWidth: getResponsiveColumnWidth(150, 180, 200),
-  },
-  // Status badge styles
-  statusBadge: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderRadius: 20,
-    alignSelf: 'center',
-    minWidth: 20,
-    maxWidth: 20,
-  },
-  statusBadgeYes: {
-    backgroundColor: 'rgba(239, 68, 68, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(239, 68, 68, 0.4)',
-  },
-  statusBadgeNo: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.4)',
-  },
-  statusBadgeText: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  statusBadgeTextYes: {
-    color: '#ef4444',
-  },
-  statusBadgeTextNo: {
-    color: '#10b981',
   },
   actionButtons: {
     flexDirection: 'row',
