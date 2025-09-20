@@ -343,7 +343,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
             colors={["rgba(255, 255, 255, 0.2)", "rgba(255, 255, 255, 0.1)"]}
             style={styles.backButtonGradient}
           >
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </LinearGradient>
         </TouchableOpacity>
         
@@ -360,7 +360,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
               colors={["#00ff88", "#5b73ff", "#00d4ff", "#ff0080"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="people" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="people" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -497,7 +497,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
               colors={["#00ff88", "#5b73ff"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="settings" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="settings" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Management Actions</Text>
           </View>
@@ -552,7 +552,7 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
                 >
                   <View style={styles.actionCardHeader}>
                     <View style={[styles.actionIcon, { backgroundColor: item.color + '20' }]}>
-                      <Ionicons name={item.icon as any} size={getResponsiveSize(24, 26, 28)} color={item.color} />
+                      <Ionicons name={item.icon as any} size={24} color={item.color} />
                     </View>
                     <View style={styles.actionCardContent}>
                       <Text style={styles.actionTitle}>{item.title}</Text>
@@ -587,19 +587,19 @@ export default function ManageStaffScreen({ onBack, onNavigateToRegisterStaff, o
           <Text style={styles.infoTitle}>📋 Staff Management Features</Text>
           <View style={styles.infoList}>
             <View style={styles.infoItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#10b981" />
+              <Ionicons name="checkmark-circle" size={24} color="#10b981" />
               <Text style={styles.infoText}>Register new staff with complete profile information</Text>
             </View>
             <View style={styles.infoItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#10b981" />
+              <Ionicons name="checkmark-circle" size={24} color="#10b981" />
               <Text style={styles.infoText}>View and manage existing staff members</Text>
             </View>
             <View style={styles.infoItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#10b981" />
+              <Ionicons name="checkmark-circle" size={24} color="#10b981" />
               <Text style={styles.infoText}>Edit staff information and permissions</Text>
             </View>
             <View style={styles.infoItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#10b981" />
+              <Ionicons name="checkmark-circle" size={24} color="#10b981" />
               <Text style={styles.infoText}>Track staff activity and status</Text>
             </View>
           </View>
@@ -638,19 +638,19 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(99, 102, 241, 0.15)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(99, 102, 241, 0.3)',
   },
   backButton: {
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   backButtonGradient: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -660,17 +660,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -678,13 +678,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -693,13 +693,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingBottom: 24,
   },
   statsCard: {
-    marginTop: getResponsiveSize(20, 25, 30),
-    marginBottom: getResponsiveSize(20, 25, 30),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    marginTop: 24,
+    marginBottom: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -708,34 +708,34 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   statsCardGradient: {
-    padding: getResponsiveSize(20, 25, 30),
+    padding: 24,
   },
   statsContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   statsIcon: {
-    marginRight: getResponsiveSize(16, 20, 24),
+    marginRight: 24,
   },
   statsText: {
     flex: 1,
   },
   statsNumber: {
-    fontSize: getResponsiveFontSize(32, 36, 40),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   statsLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
   },
   actionsContainer: {
-    gap: getResponsiveSize(16, 20, 24),
+    gap: 24,
   },
   actionCard: {
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -744,17 +744,17 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   actionCardGradient: {
-    padding: getResponsiveSize(20, 25, 30),
+    padding: 24,
     flexDirection: 'row',
     alignItems: 'center',
   },
   actionIcon: {
-    marginRight: getResponsiveSize(16, 20, 24),
+    marginRight: 24,
   },
   actionIconGradient: {
-    width: getResponsiveSize(60, 65, 70),
-    height: getResponsiveSize(60, 65, 70),
-    borderRadius: getResponsiveSize(30, 32, 35),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -762,59 +762,59 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   actionDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveSize(20, 22, 24),
+    lineHeight: 24,
   },
   actionArrow: {
-    marginLeft: getResponsiveSize(12, 16, 20),
+    marginLeft: 24,
   },
   infoSection: {
-    marginTop: getResponsiveSize(30, 35, 40),
-    padding: getResponsiveSize(20, 25, 30),
+    marginTop: 24,
+    padding: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(99, 102, 241, 0.2)',
   },
   infoTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   infoList: {
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   infoText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginLeft: getResponsiveSize(12, 14, 16),
+    marginLeft: 24,
     flex: 1,
   },
   // Modern Dashboard Styles
   modernStatsContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   modernStatsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: getResponsiveSize(20, 25, 30),
-    gap: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
+    gap: 24,
   },
   modernStatCard: {
     flex: 1,
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -823,8 +823,8 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   modernCardGradient: {
-    padding: getResponsiveSize(16, 20, 24),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    padding: 24,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
@@ -832,43 +832,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modernIconContainer: {
-    width: getResponsiveSize(56, 64, 72),
-    height: getResponsiveSize(56, 64, 72),
-    borderRadius: getResponsiveSize(28, 32, 36),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   modernValue: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '800',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
     textAlign: 'center',
   },
   modernTitle: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(2, 3, 4),
+    marginBottom: 24,
     textAlign: 'center',
   },
   modernSubtitle: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
   // Wheel Chart Styles
   wheelChartSection: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   wheelChartContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(16, 18, 20),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -877,98 +877,98 @@ const styles = StyleSheet.create({
   },
   totalDisplay: {
     alignItems: 'center',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   totalNumber: {
-    fontSize: getResponsiveFontSize(32, 36, 40),
+    fontSize: 16,
     fontWeight: '800',
     color: '#ffffff',
     textAlign: 'center',
   },
   totalLabel: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     marginTop: 4,
   },
   visualBars: {
-    gap: getResponsiveSize(12, 16, 20),
+    gap: 24,
   },
   barContainer: {
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   barLabel: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(6, 8, 10),
+    marginBottom: 24,
   },
   colorDot: {
-    width: getResponsiveSize(12, 14, 16),
-    height: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(6, 7, 8),
-    marginRight: getResponsiveSize(8, 10, 12),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
+    marginRight: 24,
   },
   barText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   barBackground: {
-    height: getResponsiveSize(8, 10, 12),
+    height: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
   },
   barValue: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'right',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   wheelLegend: {
     flex: 1,
-    marginLeft: getResponsiveSize(20, 24, 28),
+    marginLeft: 24,
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   legendDot: {
-    width: getResponsiveSize(12, 14, 16),
-    height: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(6, 7, 8),
-    marginRight: getResponsiveSize(8, 10, 12),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
+    marginRight: 24,
   },
   legendText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   // Job Breakdown Styles
   jobBreakdownSection: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(12, 15, 18),
+    marginBottom: 24,
     textAlign: 'center',
     letterSpacing: 0.5,
   },
   jobScrollContainer: {
-    paddingHorizontal: getResponsiveSize(8, 12, 16),
+    paddingHorizontal: 24,
   },
   modernJobCard: {
-    width: getResponsiveSize(140, 160, 180),
-    marginRight: getResponsiveSize(12, 16, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    width: 24,
+    marginRight: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -977,8 +977,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   modernJobCardGradient: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -986,49 +986,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   jobCardIcon: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   jobCardCount: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '800',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   jobCardTitle: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(2, 3, 4),
-    lineHeight: getResponsiveFontSize(14, 16, 18),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   jobCardSubtitle: {
-    fontSize: getResponsiveFontSize(8, 10, 12),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
   // Section Styles
   sectionContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 15, 18),
+    marginBottom: 24,
   },
   sectionIcon: {
-    width: getResponsiveSize(32, 36, 40),
-    height: getResponsiveSize(32, 36, 40),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(8, 10, 12),
+    marginRight: 24,
     shadowColor: '#00ff88',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -1039,12 +1039,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   actionCard: {
     width: isSmallScreen ? width - 32 : isMediumScreen ? (width - 60) / 2 : (width - 72) / 2,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
     shadowColor: '#000',
@@ -1052,39 +1052,39 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 6,
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   actionCardGradient: {
-    padding: getResponsiveSize(16, 18, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
   },
   actionCardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   actionIcon: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   actionCardContent: {
     flex: 1,
   },
   actionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   actionSubtitle: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    lineHeight: 16,
   },
   actionCardFooter: {
     flexDirection: 'row',
@@ -1092,27 +1092,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   actionButton: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#00ff88',
   },
   loadingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(20, 24, 28),
+    paddingVertical: 24,
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     fontStyle: 'italic',
   },
   noDataContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(20, 24, 28),
+    paddingVertical: 24,
   },
   noDataText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
     fontStyle: 'italic',
   },

@@ -809,9 +809,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(0, 212, 255, 0.4)',
@@ -829,13 +829,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
   },
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   viewCoursesButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   formContainer: {
@@ -871,7 +871,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00d4ff',
     marginBottom: 16,
@@ -880,7 +880,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 8,
@@ -889,7 +889,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -909,23 +909,23 @@ const styles = StyleSheet.create({
   },
   courseNameInput: {
     flex: 1,
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '600',
   },
   seriesText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#00ff88',
     fontWeight: '600',
     marginHorizontal: 8,
   },
   yearText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffaa00',
     fontWeight: '600',
   },
   helperText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     marginTop: 8,
     fontStyle: 'italic',
@@ -941,7 +941,7 @@ const styles = StyleSheet.create({
   },
   dateButtonText: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     marginLeft: 12,
   },
@@ -956,12 +956,12 @@ const styles = StyleSheet.create({
   },
   venueButtonText: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     marginLeft: 12,
   },
   footer: {
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     paddingVertical: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderTopWidth: 1,
@@ -983,7 +983,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   createButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -1008,7 +1008,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -1035,7 +1035,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 255, 136, 0.1)',
   },
   venueItemText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '500',
   },
@@ -1052,7 +1052,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   addCustomVenueText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#00d4ff',
     fontWeight: '600',
   },
@@ -1061,13 +1061,13 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptyVenueText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginTop: 12,
     fontWeight: '600',
   },
   emptyVenueSubtext: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
     marginTop: 4,
   },
@@ -1081,7 +1081,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   customVenueModalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 20,
@@ -1091,7 +1091,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1110,7 +1110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1127,7 +1127,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   confirmButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1152,7 +1152,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   datePickerTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -1191,7 +1191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   datePickerButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1239,7 +1239,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   calendarMonthText: {
-    fontSize: getResponsiveFontSize(6, 8, 10),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1250,7 +1250,7 @@ const styles = StyleSheet.create({
   calendarDayHeader: {
     flex: 1,
     textAlign: 'center',
-    fontSize: getResponsiveFontSize(4, 6, 7),
+    fontSize: 16,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.3)',
     paddingVertical: 0,
@@ -1280,7 +1280,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
   calendarDayText: {
-    fontSize: getResponsiveFontSize(4, 6, 8),
+    fontSize: 16,
     fontWeight: '500',
     color: '#ffffff',
   },
@@ -1303,18 +1303,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   selectedDateLabel: {
-    fontSize: getResponsiveFontSize(3, 4, 5),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.3)',
     marginBottom: 0,
   },
   selectedDateText: {
-    fontSize: getResponsiveFontSize(4, 6, 8),
+    fontSize: 16,
     fontWeight: '600',
     color: '#00d4ff',
     textAlign: 'center',
   },
   customDateModalTitle: {
-    fontSize: getResponsiveFontSize(8, 10, 12),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 1,
@@ -1324,7 +1324,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -1332,7 +1332,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   dateInputHelper: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
     marginBottom: 24,
@@ -1358,7 +1358,7 @@ const styles = StyleSheet.create({
     width: 280,
   },
   simpleDateModalTitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 12,
@@ -1371,7 +1371,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 8,
     padding: 12,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     textAlign: 'center',
   },
@@ -1390,7 +1390,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00d4ff',
   },
   simpleDateModalButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1419,7 +1419,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   compactMonthText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1443,7 +1443,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
   compactCalendarDayText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '500',
     color: '#ffffff',
   },
@@ -1455,7 +1455,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.3)',
   },
   debugText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#00ff88',
     textAlign: 'center',
     marginVertical: 4,

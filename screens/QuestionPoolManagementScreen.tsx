@@ -522,7 +522,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.actionButton}
               onPress={() => handleEditPool(pool)}
             >
-              <Ionicons name="pencil" size={getResponsiveSize(16, 18, 20)} color="#667eea" />
+              <Ionicons name="pencil" size={24} color="#667eea" />
             </TouchableOpacity>
             
             <TouchableOpacity
@@ -531,7 +531,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             >
               <Ionicons 
                 name={pool.isActive ? "pause" : "play"} 
-                size={getResponsiveSize(16, 18, 20)} 
+                size={24} 
                 color={pool.isActive ? "#ffaa00" : "#00ff88"} 
               />
             </TouchableOpacity>
@@ -540,14 +540,14 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.actionButton}
               onPress={() => handleViewQuestions(pool)}
             >
-              <Ionicons name="eye" size={getResponsiveSize(16, 18, 20)} color="#00d4ff" />
+              <Ionicons name="eye" size={24} color="#00d4ff" />
             </TouchableOpacity>
             
             <TouchableOpacity
               style={styles.actionButton}
               onPress={() => handleSelectQuestions(pool)}
             >
-              <Ionicons name="list" size={getResponsiveSize(16, 18, 20)} color="#8b5cf6" />
+              <Ionicons name="list" size={24} color="#8b5cf6" />
             </TouchableOpacity>
             
             <TouchableOpacity
@@ -555,7 +555,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               onPress={() => handleAssignPool(pool)}
               activeOpacity={0.8}
             >
-              <Ionicons name="link" size={getResponsiveSize(16, 18, 20)} color="#00ff88" />
+              <Ionicons name="link" size={24} color="#00ff88" />
             </TouchableOpacity>
             
             <TouchableOpacity
@@ -566,7 +566,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               activeOpacity={0.7}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Ionicons name="trash" size={getResponsiveSize(16, 18, 20)} color="#ff6b6b" />
+              <Ionicons name="trash" size={24} color="#ff6b6b" />
             </TouchableOpacity>
           </View>
         </View>
@@ -575,19 +575,19 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
         
         <View style={styles.poolDetails}>
           <View style={styles.detailItem}>
-            <Ionicons name="document-text" size={getResponsiveSize(14, 16, 18)} color="#667eea" />
+            <Ionicons name="document-text" size={24} color="#667eea" />
             <Text style={styles.detailText}>{pool.questionIds.length} questions</Text>
           </View>
           
           <View style={styles.detailItem}>
-            <Ionicons name="flag" size={getResponsiveSize(14, 16, 18)} color="#667eea" />
+            <Ionicons name="flag" size={24} color="#667eea" />
             <Text style={styles.detailText}>
               {pool.testType === 'both' ? 'Pre & Post' : pool.testType === 'pre_test' ? 'Pre Test' : 'Post Test'}
             </Text>
           </View>
           
           <View style={styles.detailItem}>
-            <Ionicons name="time" size={getResponsiveSize(14, 16, 18)} color="#667eea" />
+            <Ionicons name="time" size={24} color="#667eea" />
             <Text style={styles.detailText}>
               {new Date(pool.updatedAt).toLocaleDateString()}
             </Text>
@@ -610,7 +610,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       <View style={styles.loadingContainer}>
         <StatusBar style="light" />
         <View style={styles.loadingContent}>
-          <Ionicons name="library" size={getResponsiveSize(48, 56, 64)} color="#667eea" />
+          <Ionicons name="library" size={24} color="#667eea" />
           <Text style={styles.loadingText}>Loading Question Pools...</Text>
         </View>
       </View>
@@ -628,7 +628,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
           style={styles.headerGradient}
         >
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </TouchableOpacity>
           
           <View style={styles.headerContent}>
@@ -641,21 +641,21 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.syncButton}
               onPress={syncQuestionSetsWithPools}
             >
-              <Ionicons name="refresh" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+              <Ionicons name="refresh" size={24} color="#ffffff" />
             </TouchableOpacity>
             
             <TouchableOpacity
               style={styles.settingsButton}
               onPress={handlePoolSettings}
             >
-              <Ionicons name="settings" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+              <Ionicons name="settings" size={24} color="#ffffff" />
             </TouchableOpacity>
             
             <TouchableOpacity
               style={styles.createButton}
               onPress={handleCreatePool}
             >
-              <Ionicons name="add" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+              <Ionicons name="add" size={24} color="#ffffff" />
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -664,7 +664,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <Ionicons name="search" size={getResponsiveSize(20, 22, 24)} color="#666" />
+          <Ionicons name="search" size={24} color="#666" />
           <TextInput
             style={styles.searchInput}
             placeholder="Search question pools..."
@@ -708,7 +708,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : undefined}>
         {filteredPools.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Ionicons name="library-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />
+            <Ionicons name="library-outline" size={24} color="#666" />
             <Text style={styles.emptyTitle}>No Question Pools Found</Text>
             <Text style={styles.emptySubtitle}>
               {searchQuery ? 'Try adjusting your search terms' : 'Create your first question pool to get started'}
@@ -718,7 +718,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                 style={styles.createFirstButton}
                 onPress={handleCreatePool}
               >
-                <Ionicons name="add" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                <Ionicons name="add" size={24} color="#ffffff" />
                 <Text style={styles.createFirstButtonText}>Create Question Pool</Text>
               </TouchableOpacity>
             )}
@@ -740,7 +740,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowCreateModal(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>
               {editingPool ? 'Edit Question Pool' : 'Create Question Pool'}
@@ -783,7 +783,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               >
                 <Ionicons 
                   name={newPoolTestType === 'pre_test' ? "radio-button-on" : "radio-button-off"} 
-                  size={getResponsiveSize(20, 22, 24)} 
+                  size={24} 
                   color="#667eea" 
                 />
                 <Text style={styles.radioText}>Pre Test Only</Text>
@@ -795,7 +795,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               >
                 <Ionicons 
                   name={newPoolTestType === 'post_test' ? "radio-button-on" : "radio-button-off"} 
-                  size={getResponsiveSize(20, 22, 24)} 
+                  size={24} 
                   color="#667eea" 
                 />
                 <Text style={styles.radioText}>Post Test Only</Text>
@@ -807,7 +807,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               >
                 <Ionicons 
                   name={newPoolTestType === 'both' ? "radio-button-on" : "radio-button-off"} 
-                  size={getResponsiveSize(20, 22, 24)} 
+                  size={24} 
                   color="#667eea" 
                 />
                 <Text style={styles.radioText}>Both Pre & Post</Text>
@@ -848,7 +848,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowQuestionsModal(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Questions in {selectedPoolName}</Text>
             <View style={styles.modalPlaceholder} />
@@ -861,7 +861,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             
             {selectedPoolQuestions.length === 0 ? (
               <View style={styles.emptyQuestionsContainer}>
-                <Ionicons name="help-circle-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />
+                <Ionicons name="help-circle-outline" size={24} color="#666" />
                 <Text style={styles.emptyQuestionsTitle}>No Questions Found</Text>
                 <Text style={styles.emptyQuestionsSubtitle}>
                   This pool doesn't contain any questions yet.
@@ -935,7 +935,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowQuestionSelection(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Select Questions for {selectedPoolForQuestions?.name}</Text>
             <View style={styles.modalPlaceholder} />
@@ -948,7 +948,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             
             {availableQuestions.length === 0 ? (
               <View style={styles.emptyQuestionsContainer}>
-                <Ionicons name="help-circle-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />
+                <Ionicons name="help-circle-outline" size={24} color="#666" />
                 <Text style={styles.emptyQuestionsTitle}>No Questions Available</Text>
                 <Text style={styles.emptyQuestionsSubtitle}>
                   No questions found for this test type. Please upload questions first.
@@ -968,7 +968,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                     <View style={styles.questionSelectionCheckbox}>
                       <Ionicons 
                         name={selectedQuestionIds.includes(question.id) ? "checkbox" : "square-outline"} 
-                        size={getResponsiveSize(20, 22, 24)} 
+                        size={24} 
                         color={selectedQuestionIds.includes(question.id) ? "#00ff88" : "#666"} 
                       />
                     </View>
@@ -1023,7 +1023,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowPoolSettings(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Pool Settings</Text>
             <View style={styles.modalPlaceholder} />
@@ -1094,7 +1094,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowPreTestPoolSelector(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Select Pre Test Pool</Text>
             <View style={styles.modalPlaceholder} />
@@ -1107,7 +1107,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             
             {getAvailablePoolsForPreTest().length === 0 ? (
               <View style={styles.emptyQuestionsContainer}>
-                <Ionicons name="help-circle-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />
+                <Ionicons name="help-circle-outline" size={24} color="#666" />
                 <Text style={styles.emptyQuestionsTitle}>No Pools Available</Text>
                 <Text style={styles.emptyQuestionsSubtitle}>
                   No pre-test pools found. Create a pool first.
@@ -1127,7 +1127,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                     <View style={styles.poolSelectionCheckbox}>
                       <Ionicons 
                         name={preTestPoolId === pool.id ? "radio-button-on" : "radio-button-off"} 
-                        size={getResponsiveSize(20, 22, 24)} 
+                        size={24} 
                         color={preTestPoolId === pool.id ? "#00ff88" : "#666"} 
                       />
                     </View>
@@ -1154,7 +1154,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
               style={styles.modalCloseButton}
               onPress={() => setShowPostTestPoolSelector(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Select Post Test Pool</Text>
             <View style={styles.modalPlaceholder} />
@@ -1167,7 +1167,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             
             {getAvailablePoolsForPostTest().length === 0 ? (
               <View style={styles.emptyQuestionsContainer}>
-                <Ionicons name="help-circle-outline" size={getResponsiveSize(64, 72, 80)} color="#666" />
+                <Ionicons name="help-circle-outline" size={24} color="#666" />
                 <Text style={styles.emptyQuestionsTitle}>No Pools Available</Text>
                 <Text style={styles.emptyQuestionsSubtitle}>
                   No post-test pools found. Create a pool first.
@@ -1187,7 +1187,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                     <View style={styles.poolSelectionCheckbox}>
                       <Ionicons 
                         name={postTestPoolId === pool.id ? "radio-button-on" : "radio-button-off"} 
-                        size={getResponsiveSize(20, 22, 24)} 
+                        size={24} 
                         color={postTestPoolId === pool.id ? "#00ff88" : "#666"} 
                       />
                     </View>
@@ -1213,7 +1213,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
           <View style={styles.modalOverlay}>
             <View style={styles.deleteConfirmModal}>
               <View style={styles.deleteConfirmHeader}>
-                <Ionicons name="warning" size={getResponsiveSize(24, 28, 32)} color="#ff6b6b" />
+                <Ionicons name="warning" size={24} color="#ff6b6b" />
                 <Text style={styles.deleteConfirmTitle}>Delete Question Pool</Text>
               </View>
               
@@ -1264,80 +1264,80 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     color: '#ffffff',
-    marginTop: getResponsiveSize(16, 18, 20),
+    marginTop: 24,
   },
   header: {
-    paddingTop: getResponsiveSize(50, 60, 70),
-    paddingBottom: getResponsiveSize(20, 24, 28),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    paddingTop: 24,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
   },
   headerGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(16, 20, 24),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
   },
   backButton: {
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   headerContent: {
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   createButton: {
-    width: getResponsiveSize(44, 48, 52),
-    height: getResponsiveSize(44, 48, 52),
-    borderRadius: getResponsiveSize(22, 24, 26),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   searchContainer: {
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    marginBottom: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
+    marginBottom: 24,
   },
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    marginBottom: getResponsiveSize(16, 18, 20),
-    gap: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    marginBottom: 24,
+    gap: 24,
   },
   searchInput: {
     flex: 1,
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
   },
   filterContainer: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   filterButton: {
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    borderRadius: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   activeFilter: {
     backgroundColor: '#667eea',
   },
   filterText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
   },
@@ -1346,14 +1346,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
   },
   poolCard: {
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   poolCardGradient: {
-    borderRadius: getResponsiveSize(16, 20, 24),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -1361,39 +1361,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   poolTitleContainer: {
     flex: 1,
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   poolName: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   poolStatusContainer: {
     alignSelf: 'flex-start',
   },
   statusBadge: {
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   statusText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   poolActions: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   actionButton: {
-    width: getResponsiveSize(36, 40, 44),
-    height: getResponsiveSize(36, 40, 44),
-    borderRadius: getResponsiveSize(18, 20, 22),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -1412,38 +1412,38 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   poolDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
-    marginBottom: getResponsiveSize(16, 18, 20),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   poolDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(4, 6, 8),
+    gap: 24,
   },
   detailText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
   },
   poolTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: getResponsiveSize(6, 8, 10),
+    gap: 24,
   },
   tag: {
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   tagText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#667eea',
     fontWeight: '600',
   },
@@ -1451,32 +1451,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(60, 80, 100),
+    paddingVertical: 24,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginTop: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginTop: 24,
+    marginBottom: 24,
   },
   emptySubtitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
   },
   createFirstButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#667eea',
-    paddingHorizontal: getResponsiveSize(24, 28, 32),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(25, 30, 35),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
+    gap: 24,
   },
   createFirstButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1488,95 +1488,95 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: getResponsiveSize(50, 60, 70),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    paddingBottom: getResponsiveSize(20, 24, 28),
+    paddingTop: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   modalCloseButton: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   modalPlaceholder: {
-    width: getResponsiveSize(40, 44, 48),
+    width: 24,
   },
   modalContent: {
     flex: 1,
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
   },
   modalSubtitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
   },
   modalForm: {
-    gap: getResponsiveSize(20, 24, 28),
+    gap: 24,
   },
   formLabel: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   formInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    fontSize: 16,
     color: '#ffffff',
   },
   formTextArea: {
-    height: getResponsiveSize(80, 90, 100),
+    height: 24,
     textAlignVertical: 'top',
   },
   radioGroup: {
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   radioOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   radioText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
   },
   modalActions: {
     flexDirection: 'row',
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    paddingVertical: getResponsiveSize(20, 24, 28),
-    gap: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    gap: 24,
   },
   cancelButton: {
     flex: 1,
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   saveButton: {
     flex: 1,
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
+    borderRadius: 24,
     backgroundColor: '#667eea',
     alignItems: 'center',
   },
   saveButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1584,25 +1584,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(60, 80, 100),
+    paddingVertical: 24,
   },
   emptyQuestionsTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginTop: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginTop: 24,
+    marginBottom: 24,
   },
   emptyQuestionsSubtitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
   },
   questionCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -1610,77 +1610,77 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   questionNumber: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#667eea',
   },
   questionMeta: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   questionCategory: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#00ff88',
     backgroundColor: 'rgba(0, 255, 136, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   questionDifficulty: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#ffaa00',
     backgroundColor: 'rgba(255, 170, 0, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   questionText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
-    lineHeight: getResponsiveFontSize(22, 24, 26),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   questionOptions: {
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   optionText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginBottom: getResponsiveSize(4, 6, 8),
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   questionFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: getResponsiveSize(8, 10, 12),
+    paddingTop: 24,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.1)',
   },
   correctAnswer: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#00ff88',
     fontWeight: '600',
   },
   questionType: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#667eea',
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   headerActions: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   syncButton: {
-    width: getResponsiveSize(44, 48, 52),
-    height: getResponsiveSize(44, 48, 52),
-    borderRadius: getResponsiveSize(22, 24, 26),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.2)',
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.3)',
@@ -1688,18 +1688,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   settingsButton: {
-    width: getResponsiveSize(44, 48, 52),
-    height: getResponsiveSize(44, 48, 52),
-    borderRadius: getResponsiveSize(22, 24, 26),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   questionSelectionCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -1710,98 +1710,98 @@ const styles = StyleSheet.create({
   questionSelectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   questionSelectionCheckbox: {
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   questionSelectionNumber: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#667eea',
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   questionSelectionMeta: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   questionSelectionCategory: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#00ff88',
     backgroundColor: 'rgba(0, 255, 136, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   questionSelectionDifficulty: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#ffaa00',
     backgroundColor: 'rgba(255, 170, 0, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   questionSelectionText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
-    lineHeight: getResponsiveFontSize(22, 24, 26),
-    marginBottom: getResponsiveSize(8, 10, 12),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   questionSelectionType: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#667eea',
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
     alignSelf: 'flex-start',
   },
   settingsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(20, 24, 28),
-    marginBottom: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   settingsCardTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   settingsCardDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   poolAssignmentContainer: {
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   assignmentLabel: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   poolSelector: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
   },
   poolSelectorText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
   },
   poolSelectionCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -1812,35 +1812,35 @@ const styles = StyleSheet.create({
   poolSelectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   poolSelectionCheckbox: {
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   poolSelectionName: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     flex: 1,
   },
   poolSelectionCount: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#667eea',
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   poolSelectionDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    lineHeight: 16,
   },
   // Delete Confirmation Modal Styles
   deleteConfirmModal: {
     backgroundColor: '#1a1a2e',
-    borderRadius: getResponsiveSize(16, 20, 24),
-    padding: getResponsiveSize(24, 28, 32),
+    borderRadius: 24,
+    padding: 24,
     width: '90%',
     maxWidth: 400,
     borderWidth: 1,
@@ -1849,36 +1849,36 @@ const styles = StyleSheet.create({
   deleteConfirmHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(16, 20, 24),
-    gap: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
+    gap: 24,
   },
   deleteConfirmTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   deleteConfirmMessage: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
-    lineHeight: getResponsiveFontSize(22, 24, 26),
-    marginBottom: getResponsiveSize(8, 10, 12),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   deleteConfirmSubMessage: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
-    marginBottom: getResponsiveSize(24, 28, 32),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   deleteConfirmButtons: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
     justifyContent: 'flex-end',
   },
   deleteConfirmButton: {
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
-    minWidth: getResponsiveSize(80, 90, 100),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
+    minWidth: 24,
     alignItems: 'center',
   },
   cancelButton: {
@@ -1890,12 +1890,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6b6b',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   deleteButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },

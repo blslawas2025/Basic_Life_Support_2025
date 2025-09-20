@@ -17,7 +17,7 @@ interface ViewParticipantsScreenProps {
 }
 
 export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScreenProps) {
-  const { width, height, isSmallScreen, isMediumScreen, isTablet, getResponsiveSize, getResponsiveFontSize, getResponsivePadding } = useResponsive();
+  const { width, height } = useResponsive();
   const windowDims = useWindowDimensions();
   const containerMaxWidth = useContainerMaxWidth();
   

@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: "700",
     color: "#ffffff",
   },
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: "600",
     color: "#ffffff",
     marginBottom: 8,
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: "#ffffff",
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.2)",
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   dateButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     flex: 1,
   },
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     borderColor: '#00ff88',
   },
   statusButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   updateButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: "700",
     color: "#ffffff",
   },

@@ -504,7 +504,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
         }
       ]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         
         <View style={styles.headerContent}>
@@ -518,7 +518,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
               colors={["#00ff88", "#5b73ff", "#00d4ff"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="cloud-upload" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="cloud-upload" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -549,7 +549,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
             style={styles.uploadArea}
           >
             <View style={styles.uploadIcon}>
-              <Ionicons name="cloud-upload" size={getResponsiveSize(48, 52, 56)} color="#00ff88" />
+              <Ionicons name="cloud-upload" size={24} color="#00ff88" />
             </View>
             
             <Text style={styles.uploadTitle}>Select Checklist File</Text>
@@ -566,7 +566,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
                 colors={['#00ff88', '#00d4ff']}
                 style={styles.selectButtonGradient}
               >
-                <Ionicons name="document" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                <Ionicons name="document" size={24} color="#ffffff" />
                 <Text style={styles.selectButtonText}>Select File</Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -600,12 +600,12 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
             >
               {isUploading ? (
                 <>
-                  <Ionicons name="hourglass" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                  <Ionicons name="hourglass" size={24} color="#ffffff" />
                   <Text style={styles.uploadButtonText}>Uploading...</Text>
                 </>
               ) : (
                 <>
-                  <Ionicons name="cloud-upload" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                  <Ionicons name="cloud-upload" size={24} color="#ffffff" />
                   <Text style={styles.uploadButtonText}>Save to Database</Text>
                 </>
               )}
@@ -621,7 +621,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
               style={styles.previewCard}
             >
               <View style={styles.previewHeader}>
-                <Ionicons name="eye" size={getResponsiveSize(24, 26, 28)} color="#00d4ff" />
+                <Ionicons name="eye" size={24} color="#00d4ff" />
                 <Text style={styles.previewTitle}>File Preview</Text>
                 <View style={styles.previewHeaderButtons}>
                   <TouchableOpacity
@@ -744,7 +744,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
             style={styles.instructionsCard}
           >
             <View style={styles.instructionsHeader}>
-              <Ionicons name="information-circle" size={getResponsiveSize(24, 26, 28)} color="#00d4ff" />
+              <Ionicons name="information-circle" size={24} color="#00d4ff" />
               <Text style={styles.instructionsTitle}>File Format Requirements</Text>
             </View>
             
@@ -795,9 +795,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(0, 255, 136, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(0, 255, 136, 0.4)',
@@ -808,12 +808,12 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   backButton: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -826,12 +826,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#00ff88',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
@@ -839,9 +839,9 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -865,50 +865,50 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
   },
   uploadContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   uploadArea: {
-    borderRadius: getResponsiveSize(16, 18, 20),
-    padding: getResponsiveSize(30, 35, 40),
+    borderRadius: 24,
+    padding: 24,
     alignItems: 'center',
     borderWidth: 2,
     borderColor: 'rgba(0, 255, 136, 0.3)',
     borderStyle: 'dashed',
   },
   uploadIcon: {
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   uploadTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   uploadSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(20, 25, 30),
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   selectButton: {
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   selectButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    gap: 24,
   },
   selectButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -916,30 +916,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 255, 136, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(12, 16, 20),
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    gap: getResponsiveSize(8, 10, 12),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    gap: 24,
   },
   fileName: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#00ff88',
     fontWeight: '600',
   },
   uploadButton: {
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   uploadButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    gap: 24,
   },
   uploadButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -947,32 +947,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   instructionsCard: {
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.2)',
   },
   instructionsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   instructionsTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginLeft: 24,
   },
   instructionsList: {
-    gap: getResponsiveSize(8, 12, 16),
+    gap: 24,
   },
   instructionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(8, 12, 16),
+    gap: 24,
   },
   instructionText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     fontWeight: '500',
     flex: 1,
@@ -981,20 +981,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: getResponsiveSize(12, 16, 20),
-    gap: getResponsiveSize(8, 10, 12),
+    marginTop: 24,
+    gap: 24,
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#00ff88',
     fontWeight: '500',
   },
   previewContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   previewCard: {
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 20, 24),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.3)',
   },
@@ -1002,129 +1002,129 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   previewTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     flex: 1,
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginLeft: 24,
   },
   closePreviewButton: {
-    padding: getResponsiveSize(8, 10, 12),
-    borderRadius: getResponsiveSize(6, 8, 10),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   previewStats: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: getResponsiveSize(4, 6, 8),
-    paddingVertical: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
+    paddingVertical: 24,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: getResponsiveSize(4, 6, 8),
+    borderRadius: 24,
   },
   statItem: {
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '900',
     color: '#00d4ff',
-    marginBottom: getResponsiveSize(1, 2, 3),
+    marginBottom: 24,
   },
   statLabel: {
-    fontSize: getResponsiveFontSize(7, 8, 10),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     fontWeight: '500',
   },
   errorContainer: {
     backgroundColor: 'rgba(255, 59, 48, 0.1)',
-    borderRadius: getResponsiveSize(4, 6, 8),
-    padding: getResponsiveSize(4, 6, 8),
-    marginBottom: getResponsiveSize(3, 4, 6),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderLeftWidth: 2,
     borderLeftColor: '#ff3b30',
   },
   errorTitle: {
-    fontSize: getResponsiveFontSize(9, 10, 12),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ff3b30',
-    marginBottom: getResponsiveSize(2, 3, 4),
+    marginBottom: 24,
   },
   errorText: {
-    fontSize: getResponsiveFontSize(8, 9, 10),
+    fontSize: 16,
     color: '#ff3b30',
-    marginBottom: getResponsiveSize(1, 2, 3),
+    marginBottom: 24,
   },
   warningContainer: {
     backgroundColor: 'rgba(255, 149, 0, 0.1)',
-    borderRadius: getResponsiveSize(4, 6, 8),
-    padding: getResponsiveSize(4, 6, 8),
-    marginBottom: getResponsiveSize(3, 4, 6),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderLeftWidth: 2,
     borderLeftColor: '#ff9500',
   },
   warningTitle: {
-    fontSize: getResponsiveFontSize(9, 10, 12),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ff9500',
-    marginBottom: getResponsiveSize(2, 3, 4),
+    marginBottom: 24,
   },
   warningText: {
-    fontSize: getResponsiveFontSize(8, 9, 10),
+    fontSize: 16,
     color: '#ff9500',
-    marginBottom: getResponsiveSize(1, 2, 3),
+    marginBottom: 24,
   },
   previewDataContainer: {
-    maxHeight: getResponsiveSize(120, 150, 180),
+    maxHeight: 24,
   },
   previewDataTitle: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(3, 4, 6),
+    marginBottom: 24,
   },
   previewItem: {
     flexDirection: 'row',
-    marginBottom: getResponsiveSize(3, 4, 6),
-    padding: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
+    padding: 24,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: getResponsiveSize(4, 6, 8),
+    borderRadius: 24,
   },
   previewItemNumber: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00d4ff',
-    marginRight: getResponsiveSize(8, 12, 16),
-    minWidth: getResponsiveSize(20, 24, 28),
+    marginRight: 24,
+    minWidth: 24,
   },
   previewItemContent: {
     flex: 1,
   },
   previewItemText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '500',
-    marginBottom: getResponsiveSize(6, 8, 10),
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   previewItemOption: {
-    fontSize: getResponsiveFontSize(11, 13, 15),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    marginBottom: getResponsiveSize(2, 4, 6),
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginBottom: 24,
+    marginLeft: 24,
   },
   previewMoreText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
     fontStyle: 'italic',
     textAlign: 'center',
-    marginTop: getResponsiveSize(8, 12, 16),
+    marginTop: 24,
   },
   checklistContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: getResponsiveSize(8, 10, 12),
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.2)',
     overflow: 'hidden',
@@ -1132,110 +1132,110 @@ const styles = StyleSheet.create({
   checklistHeader: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 212, 255, 0.2)',
-    paddingVertical: getResponsiveSize(12, 16, 20),
-    paddingHorizontal: getResponsiveSize(16, 20, 24),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0, 212, 255, 0.3)',
   },
   checklistHeaderText: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'left',
   },
   checklistHeaderColumns: {
     flexDirection: 'row',
-    gap: getResponsiveSize(20, 30, 40),
+    gap: 24,
   },
   checklistColumnHeader: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00d4ff',
     textAlign: 'center',
-    minWidth: getResponsiveSize(30, 40, 50),
+    minWidth: 24,
   },
   checklistItem: {
     flexDirection: 'row',
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'flex-start',
   },
   checklistItemContent: {
     flex: 1,
-    marginRight: getResponsiveSize(12, 16, 20),
+    marginRight: 24,
   },
   checklistItemText: {
-    fontSize: getResponsiveFontSize(13, 15, 17),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '600',
-    marginBottom: getResponsiveSize(4, 6, 8),
-    lineHeight: getResponsiveFontSize(18, 20, 22),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   checklistSectionTitle: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: '#00d4ff',
     fontWeight: '800',
     textTransform: 'uppercase',
     letterSpacing: 0.3,
-    marginBottom: getResponsiveSize(2, 3, 4),
+    marginBottom: 24,
   },
   checklistItemTitle: {
-    fontSize: getResponsiveFontSize(9, 11, 13),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '700',
-    marginBottom: getResponsiveSize(2, 3, 4),
+    marginBottom: 24,
   },
   subItemsContainer: {
-    marginLeft: getResponsiveSize(8, 10, 12),
-    marginTop: getResponsiveSize(1, 2, 3),
+    marginLeft: 24,
+    marginTop: 24,
   },
   subItemRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: getResponsiveSize(1, 2, 3),
+    marginBottom: 24,
   },
   subItemNumber: {
-    fontSize: getResponsiveFontSize(8, 9, 10),
+    fontSize: 16,
     color: '#00d4ff',
     fontWeight: '600',
-    marginRight: getResponsiveSize(4, 6, 8),
-    minWidth: getResponsiveSize(8, 10, 12),
+    marginRight: 24,
+    minWidth: 24,
   },
   subItemText: {
-    fontSize: getResponsiveFontSize(8, 9, 10),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '500',
     flex: 1,
-    lineHeight: getResponsiveFontSize(10, 12, 14),
+    lineHeight: 16,
   },
   checklistDescription: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '500',
-    marginBottom: getResponsiveSize(6, 8, 10),
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    marginBottom: 24,
+    lineHeight: 16,
     fontStyle: 'italic',
   },
   checklistSubItem: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginBottom: getResponsiveSize(4, 6, 8),
-    marginLeft: getResponsiveSize(12, 16, 20),
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    marginBottom: 24,
+    marginLeft: 24,
+    lineHeight: 16,
   },
   checklistCheckboxes: {
     flexDirection: 'row',
-    gap: getResponsiveSize(20, 30, 40),
+    gap: 24,
     alignItems: 'center',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   checkbox: {
-    width: getResponsiveSize(14, 16, 18),
-    height: getResponsiveSize(14, 16, 18),
-    borderRadius: getResponsiveSize(2, 3, 4),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.5)',
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -1243,32 +1243,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   checkboxText: {
-    fontSize: getResponsiveFontSize(9, 10, 12),
+    fontSize: 16,
     color: '#00d4ff',
     fontWeight: '600',
   },
   previewHeaderButtons: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(8, 12, 16),
+    gap: 24,
   },
   toggleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsiveSize(8, 12, 16),
-    paddingVertical: getResponsiveSize(6, 8, 10),
-    borderRadius: getResponsiveSize(6, 8, 10),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.3)',
-    gap: getResponsiveSize(4, 6, 8),
+    gap: 24,
   },
   toggleButtonActive: {
     backgroundColor: '#00d4ff',
     borderColor: '#00d4ff',
   },
   toggleButtonText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '600',
   },
@@ -1277,15 +1277,15 @@ const styles = StyleSheet.create({
   },
   rawDataContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    padding: getResponsiveSize(12, 16, 20),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.2)',
   },
   rawDataText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: '#ffffff',
     fontFamily: 'monospace',
-    lineHeight: getResponsiveFontSize(14, 16, 18),
+    lineHeight: 16,
   },
 });

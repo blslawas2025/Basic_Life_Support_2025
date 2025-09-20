@@ -596,9 +596,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.15)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0, 212, 255, 0.2)',
@@ -611,13 +611,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
   },
   refreshButton: {
@@ -630,11 +630,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   section: {
-    marginHorizontal: getResponsivePadding(),
+    marginHorizontal: 20,
     marginTop: 20,
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 16,
@@ -659,18 +659,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   courseName: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 8,
   },
   courseDate: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 4,
   },
   courseVenue: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 12,
   },
@@ -687,14 +687,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statusText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   actionButtons: {
     flexDirection: 'row',
     gap: 12,
-    marginHorizontal: getResponsivePadding(),
+    marginHorizontal: 20,
     marginTop: 20,
   },
   actionButton: {
@@ -714,12 +714,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 212, 255, 0.15)',
   },
   actionButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   statsContainer: {
-    marginHorizontal: getResponsivePadding(),
+    marginHorizontal: 20,
     marginTop: 20,
   },
   statsGrid: {
@@ -736,13 +736,13 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   statNumber: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   statLabel: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
@@ -783,18 +783,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   participantName: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 4,
   },
   participantId: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 2,
   },
   checkInTime: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
   },
   attendanceStatus: {
@@ -813,14 +813,14 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.7)',
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
     textAlign: 'center',
   },
@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -868,11 +868,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   qrText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginTop: 16,
-    lineHeight: getResponsiveFontSize(18, 20, 22),
+    lineHeight: 16,
   },
   scannerContainer: {
     flex: 1,
@@ -885,7 +885,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   scannerText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginTop: 16,
@@ -896,12 +896,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   permissionText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginTop: 16,
     marginBottom: 24,
-    lineHeight: getResponsiveFontSize(18, 20, 22),
+    lineHeight: 16,
   },
   permissionButton: {
     backgroundColor: 'rgba(0, 212, 255, 0.15)',
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   permissionButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#00d4ff',
   },

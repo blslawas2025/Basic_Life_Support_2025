@@ -250,7 +250,7 @@ export default function RegisterStaffScreen({ onBack }: RegisterStaffScreenProps
             colors={["rgba(255, 255, 255, 0.2)", "rgba(255, 255, 255, 0.1)"]}
             style={styles.backButtonGradient}
           >
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </LinearGradient>
         </TouchableOpacity>
         
@@ -260,7 +260,7 @@ export default function RegisterStaffScreen({ onBack }: RegisterStaffScreenProps
               colors={["#00ff88", "#5b73ff", "#00d4ff", "#ff0080"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="person-add" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="person-add" size={24} color="#ffffff" />
             </LinearGradient>
           </View>
           
@@ -720,19 +720,19 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(99, 102, 241, 0.15)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(99, 102, 241, 0.3)',
   },
   backButton: {
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   backButtonGradient: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -742,17 +742,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -760,13 +760,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -775,31 +775,31 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingBottom: 24,
   },
   formContainer: {
-    marginTop: getResponsiveSize(20, 25, 30),
+    marginTop: 24,
   },
   sectionContainer: {
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(16, 20, 24),
-    paddingLeft: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
+    paddingLeft: 24,
   },
   inputContainer: {
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   inputLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
-    paddingLeft: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
+    paddingLeft: 24,
   },
   requiredAsterisk: {
     color: '#ef4444',
@@ -807,10 +807,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(14, 16, 18),
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 2,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -820,14 +820,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
   },
   textArea: {
-    height: getResponsiveSize(100, 110, 120),
+    height: 24,
     textAlignVertical: 'top',
   },
   dropdownButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(14, 16, 18),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -835,19 +835,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   dropdownText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     flex: 1,
   },
   errorText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#ef4444',
-    marginTop: getResponsiveSize(4, 6, 8),
-    paddingLeft: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
+    paddingLeft: 24,
   },
   submitButton: {
-    marginTop: getResponsiveSize(24, 28, 32),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    marginTop: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#6366f1',
     shadowOffset: { width: 0, height: 8 },
@@ -860,13 +860,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   submitButtonGradient: {
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    paddingHorizontal: getResponsiveSize(24, 28, 32),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
   submitButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: 1,
@@ -880,8 +880,8 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#1a1a2e',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    margin: getResponsiveSize(20, 25, 30),
+    borderRadius: 24,
+    margin: 24,
     maxHeight: '70%',
     width: '90%',
     borderWidth: 1,
@@ -889,13 +889,13 @@ const styles = StyleSheet.create({
   },
   modalGradient: {
     flex: 1,
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(99, 102, 241, 0.2)',
   },
@@ -903,62 +903,62 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   modalCloseButton: {
-    width: getResponsiveSize(32, 36, 40),
-    height: getResponsiveSize(32, 36, 40),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalBody: {
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
   },
   modalFooter: {
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
     borderTopWidth: 1,
     borderTopColor: 'rgba(99, 102, 241, 0.2)',
   },
   modalMessage: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#e5e7eb',
     textAlign: 'center',
-    lineHeight: getResponsiveSize(20, 22, 24),
+    lineHeight: 24,
   },
   modalButton: {
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
     alignItems: 'center',
   },
   modalButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
   },
   modalOptions: {
-    maxHeight: getResponsiveSize(200, 250, 300),
+    maxHeight: 24,
   },
   modalOption: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: getResponsiveSize(12, 14, 16),
+    padding: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   modalOptionText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     flex: 1,
   },
   confirmButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: getResponsiveSize(12, 16, 20),
+    gap: 24,
   },
   noButton: {
     flex: 1,
@@ -966,9 +966,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(14, 16, 18),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
   },
   yesButton: {
     flex: 1,
@@ -976,8 +976,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(14, 16, 18),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
   },
 });

@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 50 : 30,
     paddingBottom: 20,
     zIndex: 10,
@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'center',
@@ -883,14 +883,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#4ecdc4',
   },
   controlsContainer: {
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     marginBottom: 20,
   },
   selectorContainer: {
     marginBottom: 16,
   },
   selectorLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 8,
@@ -909,7 +909,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4ecdc4',
   },
   typeButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -942,7 +942,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
   },
   bulkActionsContainer: {
@@ -952,7 +952,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   bulkActionsTitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 12,
@@ -973,14 +973,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6b6b',
   },
   bulkActionText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginLeft: 8,
   },
   contentContainer: {
     flex: 1,
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   listContainer: {
     paddingBottom: 20,
@@ -1000,13 +1000,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     flex: 1,
   },
   sectionCount: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
   },
@@ -1026,7 +1026,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   itemText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
@@ -1037,12 +1037,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sectionText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '500',
     color: '#667eea',
   },
   orderText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '500',
     color: '#999',
   },
@@ -1092,7 +1092,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#999',
   },
   statusText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -1120,14 +1120,14 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginTop: 16,
     marginBottom: 8,
   },
   emptyMessage: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#999',
     textAlign: 'center',
     lineHeight: 22,
@@ -1141,7 +1141,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
   },
   errorContainer: {
@@ -1151,14 +1151,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   errorTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginTop: 16,
     marginBottom: 8,
   },
   errorMessage: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#999',
     textAlign: 'center',
     lineHeight: 22,
@@ -1171,7 +1171,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4ecdc4',
   },
   retryButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1197,7 +1197,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -1212,7 +1212,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
@@ -1223,7 +1223,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#333',
     backgroundColor: '#f9f9f9',
   },
@@ -1234,7 +1234,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   switchLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
   },
@@ -1253,7 +1253,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#666',
   },
@@ -1266,7 +1266,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   saveButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },

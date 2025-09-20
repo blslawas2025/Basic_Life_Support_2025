@@ -259,7 +259,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
             <View style={styles.statusContainer}>
               <Ionicons 
                 name={getStatusIcon(request.status)} 
-                size={getResponsiveSize(16, 18, 20)} 
+                size={24} 
                 color={getStatusColor(request.status)} 
               />
               <Text style={[styles.statusText, { color: getStatusColor(request.status) }]}>
@@ -274,7 +274,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
               setShowRequestDetails(true);
             }}
           >
-            <Ionicons name="eye" size={getResponsiveSize(16, 18, 20)} color="#00d4ff" />
+            <Ionicons name="eye" size={24} color="#00d4ff" />
           </TouchableOpacity>
         </View>
         
@@ -309,7 +309,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
       <View style={styles.loadingContainer}>
         <StatusBar style="light" />
         <View style={styles.loadingContent}>
-          <Ionicons name="shield-checkmark" size={getResponsiveSize(48, 56, 64)} color="#667eea" />
+          <Ionicons name="shield-checkmark" size={24} color="#667eea" />
           <Text style={styles.loadingText}>Loading Access Control...</Text>
         </View>
       </View>
@@ -327,7 +327,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
           style={styles.headerGradient}
         >
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </TouchableOpacity>
           <View style={styles.headerContent}>
             <Text style={styles.headerTitle}>Access Control</Text>
@@ -338,7 +338,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
               style={styles.settingsButton}
               onPress={() => setShowSettings(true)}
             >
-              <Ionicons name="settings" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="settings" size={24} color="#ffffff" />
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -347,7 +347,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <Ionicons name="search" size={getResponsiveSize(20, 22, 24)} color="#667eea" />
+          <Ionicons name="search" size={24} color="#667eea" />
           <TextInput
             style={styles.searchInput}
             placeholder="Search requests..."
@@ -382,7 +382,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {filteredRequests.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Ionicons name="document-outline" size={getResponsiveSize(64, 72, 80)} color="#667eea" />
+            <Ionicons name="document-outline" size={24} color="#667eea" />
             <Text style={styles.emptyTitle}>No Access Requests</Text>
             <Text style={styles.emptyText}>
               {searchQuery ? 'No requests match your search' : 'No access requests found'}
@@ -405,7 +405,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
               style={styles.modalCloseButton}
               onPress={() => setShowRequestDetails(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Request Details</Text>
             <View style={styles.modalPlaceholder} />
@@ -488,7 +488,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
                       style={[styles.actionButton, styles.approveButton]}
                       onPress={() => handleApproveRequest(selectedRequest)}
                     >
-                      <Ionicons name="checkmark" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                      <Ionicons name="checkmark" size={24} color="#ffffff" />
                       <Text style={styles.actionButtonText}>Approve</Text>
                     </TouchableOpacity>
                     
@@ -496,7 +496,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
                       style={[styles.actionButton, styles.rejectButton]}
                       onPress={() => handleRejectRequest(selectedRequest)}
                     >
-                      <Ionicons name="close" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                      <Ionicons name="close" size={24} color="#ffffff" />
                       <Text style={styles.actionButtonText}>Reject</Text>
                     </TouchableOpacity>
                   </View>
@@ -511,7 +511,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
                     style={[styles.actionButton, styles.extendButton]}
                     onPress={() => setShowExtendModal(true)}
                   >
-                    <Ionicons name="time" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                    <Ionicons name="time" size={24} color="#ffffff" />
                     <Text style={styles.actionButtonText}>Extend Access</Text>
                   </TouchableOpacity>
                 </View>
@@ -574,7 +574,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
               style={styles.modalCloseButton}
               onPress={() => setShowSettings(false)}
             >
-              <Ionicons name="close" size={getResponsiveSize(24, 26, 28)} color="#666" />
+              <Ionicons name="close" size={24} color="#666" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Access Control Settings</Text>
             <View style={styles.modalPlaceholder} />
@@ -589,7 +589,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
                     style={styles.editButton}
                     onPress={handleEditSettings}
                   >
-                    <Ionicons name="create-outline" size={getResponsiveSize(16, 18, 20)} color="#667eea" />
+                    <Ionicons name="create-outline" size={24} color="#667eea" />
                     <Text style={styles.editButtonText}>Edit</Text>
                   </TouchableOpacity>
                 )}
@@ -740,7 +740,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
                   style={[styles.actionButton, styles.saveEditButton]}
                   onPress={handleSaveSettings}
                 >
-                  <Ionicons name="checkmark" size={getResponsiveSize(16, 18, 20)} color="#ffffff" />
+                  <Ionicons name="checkmark" size={24} color="#ffffff" />
                   <Text style={styles.saveEditButtonText}>Save Changes</Text>
                 </TouchableOpacity>
               </View>
@@ -748,7 +748,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
             
             {!isSuperAdmin && (
               <View style={styles.settingsNote}>
-                <Ionicons name="information-circle" size={getResponsiveSize(20, 22, 24)} color="#667eea" />
+                <Ionicons name="information-circle" size={24} color="#667eea" />
                 <Text style={styles.settingsNoteText}>
                   Settings are read-only. Contact your system administrator to modify access control settings.
                 </Text>
@@ -776,81 +776,81 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     color: '#ffffff',
-    marginTop: getResponsiveSize(16, 18, 20),
+    marginTop: 24,
   },
   header: {
-    paddingTop: getResponsiveSize(40, 44, 48),
+    paddingTop: 24,
   },
   headerGradient: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(16, 18, 20),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     flexDirection: 'row',
     alignItems: 'center',
   },
   backButton: {
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   headerContent: {
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   headerActions: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   settingsButton: {
-    width: getResponsiveSize(44, 48, 52),
-    height: getResponsiveSize(44, 48, 52),
-    borderRadius: getResponsiveSize(22, 24, 26),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   searchContainer: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    gap: getResponsiveSize(12, 14, 16),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    gap: 24,
   },
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    gap: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    gap: 24,
   },
   searchInput: {
     flex: 1,
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
   },
   filterContainer: {
     flexDirection: 'row',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   filterButton: {
-    paddingHorizontal: getResponsiveSize(16, 18, 20),
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    borderRadius: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   activeFilter: {
     backgroundColor: '#667eea',
   },
   filterText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
   },
@@ -859,32 +859,32 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(60, 80, 100),
+    paddingVertical: 24,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginTop: getResponsiveSize(16, 18, 20),
+    marginTop: 24,
   },
   emptyText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
-    marginTop: getResponsiveSize(8, 10, 12),
+    marginTop: 24,
   },
   requestCard: {
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   requestCardGradient: {
-    borderRadius: getResponsiveSize(16, 20, 24),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -892,39 +892,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   requestInfo: {
     flex: 1,
   },
   requestId: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   statusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(6, 8, 10),
+    gap: 24,
   },
   statusText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
   },
   actionButton: {
-    width: getResponsiveSize(36, 40, 44),
-    height: getResponsiveSize(36, 40, 44),
-    borderRadius: getResponsiveSize(18, 20, 22),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   requestDetails: {
-    gap: getResponsiveSize(6, 8, 10),
+    gap: 24,
   },
   detailText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   detailLabel: {
@@ -939,45 +939,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(16, 18, 20),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   modalCloseButton: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   modalPlaceholder: {
-    width: getResponsiveSize(40, 44, 48),
+    width: 24,
   },
   modalContent: {
     flex: 1,
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   detailsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginVertical: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginVertical: 24,
   },
   detailsTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   detailsGrid: {
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   detailRow: {
     flexDirection: 'row',
@@ -985,41 +985,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   detailValue: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     flex: 1,
     textAlign: 'right',
   },
   actionsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
   },
   actionsTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   inputLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   textArea: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    padding: getResponsiveSize(12, 14, 16),
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    borderRadius: 24,
+    padding: 24,
+    fontSize: 16,
     color: '#ffffff',
     textAlignVertical: 'top',
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   actionButtons: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   approveButton: {
     backgroundColor: '#00ff88',
@@ -1027,9 +1027,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    gap: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   rejectButton: {
     backgroundColor: '#ff6b6b',
@@ -1037,21 +1037,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    gap: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   extendButton: {
     backgroundColor: '#667eea',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    gap: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
   },
   actionButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -1060,45 +1060,45 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   extendModal: {
     backgroundColor: '#1a1a2e',
-    borderRadius: getResponsiveSize(16, 20, 24),
-    padding: getResponsiveSize(24, 28, 32),
+    borderRadius: 24,
+    padding: 24,
     width: '100%',
     maxWidth: 400,
   },
   extendModalTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   extendModalText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   numberInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    padding: getResponsiveSize(12, 14, 16),
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    fontSize: 16,
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   extendModalButtons: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   modalButton: {
     flex: 1,
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    borderRadius: 24,
     alignItems: 'center',
   },
   cancelButton: {
@@ -1108,61 +1108,61 @@ const styles = StyleSheet.create({
     backgroundColor: '#667eea',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   confirmButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   // Settings Modal Styles
   settingsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginVertical: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginVertical: 24,
   },
   settingsCardTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   settingsCardDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   settingsContent: {
-    gap: getResponsiveSize(16, 18, 20),
+    gap: 24,
   },
   settingItem: {
-    paddingVertical: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   settingLabel: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   settingDescription: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   settingValue: {
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    borderRadius: getResponsiveSize(6, 8, 10),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(6, 8, 10),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
     alignSelf: 'flex-start',
   },
   settingValueText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#667eea',
   },
@@ -1170,42 +1170,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     backgroundColor: 'rgba(102, 126, 234, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    padding: getResponsiveSize(12, 14, 16),
-    marginVertical: getResponsiveSize(16, 18, 20),
-    gap: getResponsiveSize(8, 10, 12),
+    borderRadius: 24,
+    padding: 24,
+    marginVertical: 24,
+    gap: 24,
   },
   settingsNoteText: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveSize(20, 22, 24),
+    lineHeight: 24,
   },
   // Editable Settings Styles
   settingsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   editButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(102, 126, 234, 0.2)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(6, 8, 10),
-    gap: getResponsiveSize(4, 6, 8),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    gap: 24,
   },
   editButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#667eea',
   },
   toggleButton: {
-    borderRadius: getResponsiveSize(6, 8, 10),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(6, 8, 10),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
     alignSelf: 'flex-start',
   },
   toggleOn: {
@@ -1217,7 +1217,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   toggleText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
   },
   toggleTextOn: {
@@ -1228,29 +1228,29 @@ const styles = StyleSheet.create({
   },
   numberInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(6, 8, 10),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    minWidth: getResponsiveSize(80, 90, 100),
+    minWidth: 24,
     textAlign: 'center',
   },
   editActions: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 14, 16),
-    marginVertical: getResponsiveSize(16, 18, 20),
+    gap: 24,
+    marginVertical: 24,
   },
   actionButton: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
-    gap: getResponsiveSize(6, 8, 10),
+    paddingVertical: 24,
+    borderRadius: 24,
+    gap: 24,
   },
   cancelEditButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -1261,12 +1261,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#00ff88',
   },
   cancelEditButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   saveEditButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },

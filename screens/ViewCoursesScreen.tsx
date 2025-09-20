@@ -454,9 +454,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(0, 212, 255, 0.4)',
@@ -474,13 +474,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
   },
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   loadingContainer: {
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
   loadingText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginTop: 16,
   },
@@ -513,14 +513,14 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
@@ -547,15 +547,15 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   courseName: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   courseDescription: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    lineHeight: 16,
   },
   statusBadge: {
     flexDirection: 'row',
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statusText: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     fontWeight: '600',
   },
   courseDetails: {
@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     flex: 1,
   },
@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 71, 87, 0.1)',
   },
   actionButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#00d4ff',
   },
@@ -627,18 +627,18 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   confirmModalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 12,
     textAlign: 'center',
   },
   confirmModalText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     marginBottom: 24,
     textAlign: 'center',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    lineHeight: 16,
   },
   confirmModalButtons: {
     flexDirection: 'row',
@@ -658,12 +658,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff4757',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   confirmButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },

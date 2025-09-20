@@ -660,13 +660,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20),
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.9)',
   },
   headerRight: {
@@ -781,19 +781,19 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   participantName: {
-    fontSize: getResponsiveFontSize(16),
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#2C3E50',
     marginBottom: 4,
     lineHeight: 22,
   },
   participantEmail: {
-    fontSize: getResponsiveFontSize(14),
+    fontSize: 16,
     color: '#7F8C8D',
     marginBottom: 4,
   },
   participantJob: {
-    fontSize: getResponsiveFontSize(13),
+    fontSize: 16,
     color: '#3498DB',
     fontWeight: '600',
     lineHeight: 18,

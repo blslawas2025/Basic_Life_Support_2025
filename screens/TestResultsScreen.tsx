@@ -137,15 +137,15 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           
           <View style={styles.scoreStats}>
             <View style={styles.statItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(20, 22, 24)} color="#00ff88" />
+              <Ionicons name="checkmark-circle" size={24} color="#00ff88" />
               <Text style={styles.statText}>{testResults.correctAnswers} Correct</Text>
             </View>
             <View style={styles.statItem}>
-              <Ionicons name="close-circle" size={getResponsiveSize(20, 22, 24)} color="#ff6b6b" />
+              <Ionicons name="close-circle" size={24} color="#ff6b6b" />
               <Text style={styles.statText}>{testResults.totalQuestions - testResults.correctAnswers} Incorrect</Text>
             </View>
             <View style={styles.statItem}>
-              <Ionicons name="time" size={getResponsiveSize(20, 22, 24)} color="#00d4ff" />
+              <Ionicons name="time" size={24} color="#00d4ff" />
               <Text style={styles.statText}>{formatTime(testResults.timeTaken)}</Text>
             </View>
           </View>
@@ -158,7 +158,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           style={[styles.actionButton, styles.detailedButton]}
           onPress={() => setCurrentView('detailed')}
         >
-          <Ionicons name="list" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+          <Ionicons name="list" size={24} color="#ffffff" />
           <Text style={styles.actionButtonText}>Detailed Results</Text>
         </TouchableOpacity>
         
@@ -166,7 +166,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           style={[styles.actionButton, styles.analyticsButton]}
           onPress={() => setCurrentView('analytics')}
         >
-          <Ionicons name="analytics" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+          <Ionicons name="analytics" size={24} color="#ffffff" />
           <Text style={styles.actionButtonText}>Analytics</Text>
         </TouchableOpacity>
         
@@ -174,7 +174,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           style={[styles.actionButton, styles.certificateButton]}
           onPress={handleGenerateCertificate}
         >
-          <Ionicons name="ribbon" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+          <Ionicons name="ribbon" size={24} color="#ffffff" />
           <Text style={styles.actionButtonText}>Certificate</Text>
         </TouchableOpacity>
         
@@ -182,7 +182,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           style={[styles.actionButton, styles.shareButton]}
           onPress={handleShare}
         >
-          <Ionicons name="share" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+          <Ionicons name="share" size={24} color="#ffffff" />
           <Text style={styles.actionButtonText}>Share</Text>
         </TouchableOpacity>
       </View>
@@ -205,7 +205,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
                 <View style={[styles.statusBadge, { backgroundColor: isCorrect ? '#00ff88' : '#ff6b6b' }]}>
                   <Ionicons 
                     name={isCorrect ? "checkmark" : "close"} 
-                    size={getResponsiveSize(16, 18, 20)} 
+                    size={24} 
                     color="#ffffff" 
                   />
                 </View>
@@ -234,7 +234,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
                       {isUserAnswer && (
                         <Ionicons 
                           name={isCorrect ? "checkmark-circle" : "close-circle"} 
-                          size={getResponsiveSize(20, 22, 24)} 
+                          size={24} 
                           color={isCorrect ? "#00ff88" : "#ff6b6b"} 
                         />
                       )}
@@ -362,7 +362,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
           style={styles.headerGradient}
         >
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </TouchableOpacity>
           
           <View style={styles.headerContent}>
@@ -382,7 +382,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
         >
           <Ionicons 
             name="home" 
-            size={getResponsiveSize(16, 18, 20)} 
+            size={24} 
             color={currentView === 'overview' ? '#667eea' : '#666'} 
           />
           <Text style={[styles.tabText, currentView === 'overview' && styles.activeTabText]}>
@@ -396,7 +396,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
         >
           <Ionicons 
             name="list" 
-            size={getResponsiveSize(16, 18, 20)} 
+            size={24} 
             color={currentView === 'detailed' ? '#667eea' : '#666'} 
           />
           <Text style={[styles.tabText, currentView === 'detailed' && styles.activeTabText]}>
@@ -410,7 +410,7 @@ export default function TestResultsScreen({ onBack, testResults }: TestResultsSc
         >
           <Ionicons 
             name="analytics" 
-            size={getResponsiveSize(16, 18, 20)} 
+            size={24} 
             color={currentView === 'analytics' ? '#667eea' : '#666'} 
           />
           <Text style={[styles.tabText, currentView === 'analytics' && styles.activeTabText]}>
@@ -433,56 +433,56 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a0a0a',
   },
   header: {
-    paddingTop: getResponsiveSize(50, 60, 70),
-    paddingBottom: getResponsiveSize(20, 24, 28),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    paddingTop: 24,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
   },
   headerGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(16, 20, 24),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
   },
   backButton: {
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   headerContent: {
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    marginHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(4, 6, 8),
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginHorizontal: 24,
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
   },
   tab: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    borderRadius: getResponsiveSize(8, 10, 12),
-    gap: getResponsiveSize(6, 8, 10),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
+    gap: 24,
   },
   activeTab: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   tabText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#666',
   },
@@ -491,44 +491,44 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    paddingHorizontal: 24,
   },
   scoreCard: {
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
   },
   scoreCardGradient: {
-    padding: getResponsiveSize(24, 28, 32),
-    borderRadius: getResponsiveSize(16, 20, 24),
+    padding: 24,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   scoreHeader: {
     alignItems: 'center',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   scoreTitle: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   testTypeText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: getResponsiveSize(4, 6, 8),
+    marginTop: 24,
   },
   scoreContainer: {
     alignItems: 'center',
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
   },
   scoreText: {
-    fontSize: getResponsiveFontSize(48, 56, 64),
+    fontSize: 16,
     fontWeight: '800',
   },
   gradeText: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: getResponsiveSize(8, 10, 12),
+    marginTop: 24,
   },
   scoreStats: {
     flexDirection: 'row',
@@ -536,24 +536,24 @@ const styles = StyleSheet.create({
   },
   statItem: {
     alignItems: 'center',
-    gap: getResponsiveSize(4, 6, 8),
+    gap: 24,
   },
   statText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
     fontWeight: '600',
   },
   actionButtons: {
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(16, 18, 20),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
-    borderRadius: getResponsiveSize(12, 14, 16),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
+    gap: 24,
   },
   detailedButton: {
     backgroundColor: '#667eea',
@@ -568,21 +568,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#00d4ff',
   },
   actionButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   questionCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -590,39 +590,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   questionNumber: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00d4ff',
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
-    paddingVertical: getResponsiveSize(4, 6, 8),
-    borderRadius: getResponsiveSize(12, 14, 16),
-    gap: getResponsiveSize(4, 6, 8),
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 24,
+    gap: 24,
   },
   questionText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
-    lineHeight: getResponsiveFontSize(24, 26, 28),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   optionsContainer: {
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   optionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   userAnswer: {
     borderColor: '#00d4ff',
@@ -637,103 +637,103 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 107, 107, 0.1)',
   },
   optionLetter: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00d4ff',
-    width: getResponsiveSize(24, 28, 32),
+    width: 24,
   },
   optionText: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
   },
   analyticsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   analyticsTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
   },
   metricItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   metricLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   metricValue: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   categoryItem: {
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   categoryLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(6, 8, 10),
+    marginBottom: 24,
   },
   categoryProgress: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   progressBar: {
     flex: 1,
-    height: getResponsiveSize(8, 10, 12),
+    height: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
   },
   categoryScore: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    minWidth: getResponsiveSize(40, 45, 50),
+    minWidth: 24,
     textAlign: 'right',
   },
   difficultyItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   difficultyLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   difficultyStats: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(12, 14, 16),
+    gap: 24,
   },
   difficultyCount: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
   },
   difficultyScore: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
   },
 });

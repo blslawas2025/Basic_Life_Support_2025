@@ -292,7 +292,7 @@ export default function StaffDashboard({
               colors={[colors.accent, colors.indigo, colors.primary, colors.magenta]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="people" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="people" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -307,7 +307,7 @@ export default function StaffDashboard({
             colors={["rgba(239, 68, 68, 0.2)", "rgba(239, 68, 68, 0.1)"]}
             style={styles.logoutButtonGradient}
           >
-            <Ionicons name="log-out-outline" size={getResponsiveSize(20, 22, 24)} color="#ef4444" />
+            <Ionicons name="log-out-outline" size={24} color="#ef4444" />
           </LinearGradient>
         </TouchableOpacity>
       </Animated.View>
@@ -338,7 +338,7 @@ export default function StaffDashboard({
               colors={["#6366f1", "#8b5cf6"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="analytics" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="analytics" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Staff Overview</Text>
           </View>
@@ -364,7 +364,7 @@ export default function StaffDashboard({
                 style={styles.statCardGradient}
               >
                 <View style={styles.statIcon}>
-                  <Ionicons name="people" size={getResponsiveSize(24, 26, 28)} color="#10b981" />
+                  <Ionicons name="people" size={24} color="#10b981" />
                 </View>
                 <Text style={styles.statNumber}>
                   {isLoading ? '...' : staffStats.totalStaff}
@@ -393,7 +393,7 @@ export default function StaffDashboard({
                 style={styles.statCardGradient}
               >
                 <View style={styles.statIcon}>
-                  <Ionicons name="checkmark-circle" size={getResponsiveSize(24, 26, 28)} color="#3b82f6" />
+                  <Ionicons name="checkmark-circle" size={24} color="#3b82f6" />
                 </View>
                 <Text style={styles.statNumber}>
                   {isLoading ? '...' : staffStats.activeStaff}
@@ -422,7 +422,7 @@ export default function StaffDashboard({
                 style={styles.statCardGradient}
               >
                 <View style={styles.statIcon}>
-                  <Ionicons name="time" size={getResponsiveSize(24, 26, 28)} color="#f59e0b" />
+                  <Ionicons name="time" size={24} color="#f59e0b" />
                 </View>
                 <Text style={styles.statNumber}>
                   {isLoading ? '...' : staffStats.pendingStaff}
@@ -451,7 +451,7 @@ export default function StaffDashboard({
                 style={styles.statCardGradient}
               >
                 <View style={styles.statIcon}>
-                  <Ionicons name="person-add" size={getResponsiveSize(24, 26, 28)} color="#8b5cf6" />
+                  <Ionicons name="person-add" size={24} color="#8b5cf6" />
                 </View>
                 <Text style={styles.statNumber}>
                   {isLoading ? '...' : staffStats.recentRegistrations}
@@ -482,7 +482,7 @@ export default function StaffDashboard({
               colors={["#f59e0b", "#d97706"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="shield" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="shield" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Role Distribution</Text>
           </View>
@@ -507,7 +507,7 @@ export default function StaffDashboard({
                 style={styles.roleCardGradient}
               >
                 <View style={styles.roleIcon}>
-                  <Ionicons name="person" size={getResponsiveSize(32, 36, 40)} color="#3b82f6" />
+                  <Ionicons name="person" size={24} color="#3b82f6" />
                 </View>
                 <Text style={styles.roleNumber}>
                   {isLoading ? '...' : staffStats.staffCount}
@@ -538,7 +538,7 @@ export default function StaffDashboard({
                 style={styles.roleCardGradient}
               >
                 <View style={styles.roleIcon}>
-                  <Ionicons name="shield-checkmark" size={getResponsiveSize(32, 36, 40)} color="#ef4444" />
+                  <Ionicons name="shield-checkmark" size={24} color="#ef4444" />
                 </View>
                 <Text style={styles.roleNumber}>
                   {isLoading ? '...' : staffStats.adminCount}
@@ -573,7 +573,7 @@ export default function StaffDashboard({
                 colors={["#8b5cf6", "#7c3aed"]} 
                 style={styles.sectionIcon}
               >
-                <Ionicons name="business" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                <Ionicons name="business" size={24} color="#ffffff" />
               </LinearGradient>
               <Text style={styles.sectionTitle}>Top Departments</Text>
             </View>
@@ -643,7 +643,7 @@ export default function StaffDashboard({
               colors={["#00ff88", "#5b73ff"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="flash" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="flash" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Quick Actions</Text>
           </View>
@@ -690,7 +690,7 @@ export default function StaffDashboard({
                 >
                   <View style={styles.actionCardHeader}>
                     <View style={[styles.actionIcon, { backgroundColor: item.color + '20' }]}>
-                      <Ionicons name={item.icon as any} size={getResponsiveSize(20, 22, 24)} color={item.color} />
+                      <Ionicons name={item.icon as any} size={24} color={item.color} />
                     </View>
                   </View>
                   <Text style={styles.actionTitle}>{item.title}</Text>
@@ -735,9 +735,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(99, 102, 241, 0.15)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(99, 102, 241, 0.3)',
@@ -748,17 +748,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -766,23 +766,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
   },
   logoutButton: {
-    marginLeft: getResponsiveSize(15, 18, 20),
+    marginLeft: 24,
   },
   logoutButtonGradient: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -790,37 +790,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingBottom: 24,
   },
   statsSection: {
-    marginTop: getResponsiveSize(20, 25, 30),
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginTop: 24,
+    marginBottom: 24,
   },
   roleSection: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   departmentSection: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   actionsSection: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(16, 20, 24),
+    marginBottom: 24,
   },
   sectionIcon: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: 0.5,
@@ -828,11 +828,11 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: getResponsiveSize(12, 15, 18),
+    gap: 24,
   },
   statCard: {
     width: '48%',
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -841,31 +841,31 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   statCardGradient: {
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
     alignItems: 'center',
   },
   statIcon: {
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   statNumber: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   statLabel: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
   },
   roleCards: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 15, 18),
+    gap: 24,
   },
   roleCard: {
     flex: 1,
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -874,74 +874,74 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   roleCardGradient: {
-    padding: getResponsiveSize(20, 24, 28),
+    padding: 24,
     alignItems: 'center',
   },
   roleIcon: {
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   roleNumber: {
-    fontSize: getResponsiveFontSize(28, 32, 36),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   roleLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
     textAlign: 'center',
   },
   rolePercentage: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '700',
     color: 'rgba(255, 255, 255, 0.6)',
   },
   departmentList: {
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   departmentItem: {
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
   },
   departmentItemGradient: {
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
   },
   departmentInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   departmentName: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   departmentCount: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.6)',
   },
   departmentBar: {
-    height: getResponsiveSize(4, 6, 8),
+    height: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(2, 3, 4),
+    borderRadius: 24,
     overflow: 'hidden',
   },
   departmentBarFill: {
     height: '100%',
-    borderRadius: getResponsiveSize(2, 3, 4),
+    borderRadius: 24,
   },
   actionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: getResponsiveSize(12, 15, 18),
+    gap: 24,
   },
   actionCard: {
     width: '31%',
-    borderRadius: getResponsiveSize(16, 18, 20),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -950,31 +950,31 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   actionCardGradient: {
-    padding: getResponsiveSize(16, 18, 20),
+    padding: 24,
     alignItems: 'center',
-    minHeight: getResponsiveSize(120, 130, 140),
+    minHeight: 24,
   },
   actionCardHeader: {
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   actionIcon: {
-    width: getResponsiveSize(48, 52, 56),
-    height: getResponsiveSize(48, 52, 56),
-    borderRadius: getResponsiveSize(24, 26, 28),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
   actionTitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   actionSubtitle: {
-    fontSize: getResponsiveFontSize(10, 12, 14),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    lineHeight: getResponsiveSize(14, 16, 18),
+    lineHeight: 24,
   },
 });

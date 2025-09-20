@@ -582,9 +582,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(0, 255, 136, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(0, 255, 136, 0.4)',
@@ -602,13 +602,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
   },
@@ -624,24 +624,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   emptyContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   emptyTitle: {
-    fontSize: getResponsiveFontSize(20, 24, 28),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     marginBottom: 32,
@@ -659,7 +659,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   selectCourseButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   summaryTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#00ff88',
     marginBottom: 16,
@@ -692,13 +692,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   summaryNumber: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '800',
     color: '#ffffff',
     marginBottom: 4,
   },
   summaryLabel: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
@@ -717,7 +717,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     marginLeft: 12,
   },
@@ -725,7 +725,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   participantsTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 16,
@@ -746,13 +746,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   participantName: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 4,
   },
   participantIc: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 8,
   },
@@ -766,7 +766,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statusText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
   },
   participantActions: {
@@ -788,7 +788,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff4757',
   },
   actionButtonText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptyStateText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
     marginTop: 12,
   },
@@ -822,7 +822,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   modalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -848,18 +848,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   courseSessionName: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
     marginBottom: 4,
   },
   courseSessionDate: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 2,
   },
   courseSessionParticipants: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.5)',
   },
   // Check In Modal styles
@@ -872,13 +872,13 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   checkInModalTitle: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginBottom: 8,
   },
   checkInModalSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: 20,
   },
@@ -886,7 +886,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cancelButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
@@ -923,7 +923,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   confirmButtonText: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },

@@ -408,7 +408,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                   { translateY: slideAnim },
                   { scale: scaleAnim }
                 ],
-                paddingHorizontal: getResponsivePadding(),
+                paddingHorizontal: 20,
               }
             ]}
           >
@@ -486,7 +486,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                 ]}>
                   <Ionicons 
                     name="mail-outline" 
-                    size={getResponsiveSize(20, 22, 24)} 
+                    size={24} 
                     color={focusedInput === 'email' ? "#00d4ff" : "#8b9dc3"} 
                   />
                   <TextInput
@@ -516,7 +516,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                 ]}>
                   <Ionicons 
                     name="lock-closed-outline" 
-                    size={getResponsiveSize(20, 22, 24)} 
+                    size={24} 
                     color={focusedInput === 'password' ? "#00ff88" : "#8b9dc3"} 
                   />
                   <TextInput
@@ -535,7 +535,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                   >
                     <Ionicons 
                       name={secure ? "eye-off-outline" : "eye-outline"} 
-                      size={getResponsiveSize(20, 22, 24)} 
+                      size={24} 
                       color="#8b9dc3" 
                     />
                   </TouchableOpacity>
@@ -558,7 +558,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                       borderColor: remember ? '#5b73ff' : '#4a5568',
                     }
                   ]}>
-                    {remember && <Ionicons name="checkmark" size={getResponsiveSize(14, 16, 18)} color="#ffffff" />}
+                    {remember && <Ionicons name="checkmark" size={24} color="#ffffff" />}
                   </Animated.View>
                   <Text style={styles.rememberText}>Remember me</Text>
                 </TouchableOpacity>
@@ -571,7 +571,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               {/* Error Message */}
               {error && (
                 <Animated.View style={styles.errorContainer}>
-                  <Ionicons name="alert-circle" size={getResponsiveSize(18, 20, 22)} color="#ff0080" />
+                  <Ionicons name="alert-circle" size={24} color="#ff0080" />
                   <Text style={styles.errorText}>{error}</Text>
                 </Animated.View>
               )}
@@ -605,7 +605,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     </Animated.View>
                   ) : (
                     <>
-                      <Ionicons name="rocket-outline" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+                      <Ionicons name="rocket-outline" size={24} color="#ffffff" />
                       <Text style={styles.signInText}>Access Portal</Text>
                     </>
                   )}
@@ -719,22 +719,22 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: getResponsiveSize(45, 55, 65),
+    marginBottom: 24,
   },
   logoContainer: {
-    width: getResponsiveSize(90, 100, 110),
-    height: getResponsiveSize(90, 100, 110),
-    borderRadius: getResponsiveSize(45, 50, 55),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: getResponsiveSize(25, 30, 35),
+    marginBottom: 24,
     position: 'relative',
   },
   logoGlow: {
     position: 'absolute',
-    width: getResponsiveSize(115, 125, 135),
-    height: getResponsiveSize(115, 125, 135),
-    borderRadius: getResponsiveSize(57, 62, 67),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(0, 212, 255, 0.2)',
     ...Platform.select({
       ios: {
@@ -749,9 +749,9 @@ const styles = StyleSheet.create({
     elevation: 25,
   },
   logoGradient: {
-    width: getResponsiveSize(90, 100, 110),
-    height: getResponsiveSize(90, 100, 110),
-    borderRadius: getResponsiveSize(45, 50, 55),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
@@ -768,7 +768,7 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   blsInsideCircle: {
-    fontSize: getResponsiveFontSize(24, 28, 32),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 2,
@@ -787,7 +787,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   appName: {
-    fontSize: getResponsiveFontSize(28, 32, 36),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 3,
@@ -801,12 +801,12 @@ const styles = StyleSheet.create({
       },
     }),
     textAlign: 'center',
-    marginBottom: getResponsiveSize(12, 15, 18),
+    marginBottom: 24,
   },
   card: {
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderRadius: getResponsiveSize(28, 32, 36),
-    padding: getResponsiveSize(32, 40, 48),
+    borderRadius: 24,
+    padding: 24,
     ...Platform.select({
       ios: {
         shadowColor: '#00d4ff',
@@ -825,7 +825,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 212, 255, 0.2)',
   },
   welcomeTitle: {
-    fontSize: getResponsiveFontSize(30, 34, 38),
+    fontSize: 16,
     fontWeight: '800',
     color: '#ffffff',
     textAlign: 'center',
@@ -842,32 +842,32 @@ const styles = StyleSheet.create({
     }),
   },
   welcomeSubtitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    marginBottom: getResponsiveSize(32, 40, 48),
+    marginBottom: 24,
     fontWeight: '500',
   },
   inputContainer: {
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   inputLabel: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(10, 12, 14),
+    marginBottom: 24,
     letterSpacing: 0.5,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.02)',
-    borderRadius: getResponsiveSize(16, 18, 20),
-    paddingHorizontal: getResponsiveSize(18, 22, 26),
-    paddingVertical: getResponsiveSize(18, 22, 26),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
     borderWidth: 2,
     borderColor: '#2a2a3e',
-    minHeight: getResponsiveSize(56, 64, 72),
+    minHeight: 24,
     ...Platform.select({
       ios: {
         shadowColor: '#00d4ff',
@@ -882,19 +882,19 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1, 
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     color: '#ffffff',
-    marginLeft: getResponsiveSize(14, 18, 22),
+    marginLeft: 24,
     fontWeight: '600',
   },
   eyeButton: {
-    padding: getResponsiveSize(4, 6, 8),
+    padding: 24,
   },
   optionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(24, 28, 32),
+    marginBottom: 24,
     flexWrap: 'wrap',
   },
   rememberContainer: {
@@ -903,14 +903,14 @@ const styles = StyleSheet.create({
     marginBottom: isSmallScreen ? 12 : 0,
   },
   checkbox: {
-    width: getResponsiveSize(22, 24, 26),
-    height: getResponsiveSize(22, 24, 26),
-    borderRadius: getResponsiveSize(6, 8, 10),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     borderWidth: 2,
     borderColor: '#4a5568',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(10, 12, 14),
+    marginRight: 24,
     ...Platform.select({
       ios: {
         shadowColor: '#5b73ff',
@@ -925,12 +925,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   rememberText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '600',
   },
   forgotText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#00d4ff',
     fontWeight: '700',
   },
@@ -938,22 +938,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 0, 128, 0.1)',
-    padding: getResponsiveSize(14, 18, 22),
-    borderRadius: getResponsiveSize(10, 12, 14),
-    marginBottom: getResponsiveSize(16, 20, 24),
+    padding: 24,
+    borderRadius: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 0, 128, 0.3)',
   },
   errorText: { 
     color: '#ff0080',
-    fontSize: getResponsiveFontSize(14, 16, 18),
-    marginLeft: getResponsiveSize(10, 12, 14),
+    fontSize: 16,
+    marginLeft: 24,
     flex: 1, 
     fontWeight: '600',
   },
   signInButton: {
-    borderRadius: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(24, 28, 32),
+    borderRadius: 24,
+    marginBottom: 24,
     ...Platform.select({
       ios: {
         shadowColor: '#00d4ff',
@@ -980,25 +980,25 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   signInGradient: {
-    paddingVertical: getResponsiveSize(18, 22, 26),
+    paddingVertical: 24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: getResponsiveSize(16, 18, 20),
-    minHeight: getResponsiveSize(56, 64, 72),
+    borderRadius: 24,
+    minHeight: 24,
   },
   signInText: {
     color: '#ffffff',
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '800',
-    marginLeft: getResponsiveSize(10, 12, 14),
+    marginLeft: 24,
     letterSpacing: 1,
   },
   footerText: {
     textAlign: 'center',
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
-    lineHeight: getResponsiveFontSize(20, 24, 28),
+    lineHeight: 16,
     fontWeight: '500',
   },
   linkText: {

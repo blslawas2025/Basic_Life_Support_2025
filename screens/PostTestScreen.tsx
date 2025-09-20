@@ -132,7 +132,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
         }
       ]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         
         <View style={styles.headerContent}>
@@ -146,7 +146,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
               colors={["#5b73ff", "#00d4ff", "#00ff88"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="checkmark-circle" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -181,7 +181,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
             style={styles.infoCardGradient}
           >
             <View style={styles.infoHeader}>
-              <Ionicons name="information-circle" size={getResponsiveSize(24, 26, 28)} color="#5b73ff" />
+              <Ionicons name="information-circle" size={24} color="#5b73ff" />
               <Text style={styles.infoTitle}>Post Test Information</Text>
             </View>
             <Text style={styles.infoText}>
@@ -195,7 +195,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
         <View style={styles.detailsContainer}>
           <View style={styles.detailItem}>
             <View style={styles.detailIcon}>
-              <Ionicons name="time" size={getResponsiveSize(20, 22, 24)} color="#00d4ff" />
+              <Ionicons name="time" size={24} color="#00d4ff" />
             </View>
             <View style={styles.detailContent}>
               <Text style={styles.detailTitle}>Duration</Text>
@@ -205,7 +205,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
 
           <View style={styles.detailItem}>
             <View style={styles.detailIcon}>
-              <Ionicons name="help-circle" size={getResponsiveSize(20, 22, 24)} color="#5b73ff" />
+              <Ionicons name="help-circle" size={24} color="#5b73ff" />
             </View>
             <View style={styles.detailContent}>
               <Text style={styles.detailTitle}>Questions</Text>
@@ -215,7 +215,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
 
           <View style={styles.detailItem}>
             <View style={styles.detailIcon}>
-              <Ionicons name="trophy" size={getResponsiveSize(20, 22, 24)} color="#ffaa00" />
+              <Ionicons name="trophy" size={24} color="#ffaa00" />
             </View>
             <View style={styles.detailContent}>
               <Text style={styles.detailTitle}>Passing Score</Text>
@@ -234,7 +234,7 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
             colors={['#5b73ff', '#00d4ff', '#00ff88']}
             style={styles.startButtonGradient}
           >
-            <Ionicons name="play" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="play" size={24} color="#ffffff" />
             <Text style={styles.startButtonText}>Start Post Test</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -244,19 +244,19 @@ export default function PostTestScreen({ onBack, userName, onStartTest }: PostTe
           <Text style={styles.instructionsTitle}>Instructions</Text>
           <View style={styles.instructionsList}>
             <View style={styles.instructionItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#5b73ff" />
+              <Ionicons name="checkmark-circle" size={24} color="#5b73ff" />
               <Text style={styles.instructionText}>Read each question carefully</Text>
             </View>
             <View style={styles.instructionItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#5b73ff" />
+              <Ionicons name="checkmark-circle" size={24} color="#5b73ff" />
               <Text style={styles.instructionText}>Select the best answer for each question</Text>
             </View>
             <View style={styles.instructionItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#5b73ff" />
+              <Ionicons name="checkmark-circle" size={24} color="#5b73ff" />
               <Text style={styles.instructionText}>You can review and change answers before submitting</Text>
             </View>
             <View style={styles.instructionItem}>
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(16, 18, 20)} color="#5b73ff" />
+              <Ionicons name="checkmark-circle" size={24} color="#5b73ff" />
               <Text style={styles.instructionText}>The test will auto-submit when time runs out</Text>
             </View>
           </View>
@@ -288,9 +288,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(91, 115, 255, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(91, 115, 255, 0.4)',
@@ -301,12 +301,12 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   backButton: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -319,12 +319,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#5b73ff',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
@@ -332,9 +332,9 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -360,75 +360,75 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(20, 25, 30),
-    paddingBottom: getResponsiveSize(40, 50, 60),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingBottom: 24,
   },
   infoCard: {
-    marginBottom: getResponsiveSize(20, 25, 30),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(91, 115, 255, 0.3)',
   },
   infoCardGradient: {
-    padding: getResponsiveSize(20, 24, 28),
+    padding: 24,
   },
   infoHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
   },
   infoTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginLeft: 24,
   },
   infoText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    lineHeight: 16,
   },
   detailsContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 20, 24),
-    marginBottom: getResponsiveSize(12, 16, 20),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   detailIcon: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(91, 115, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(12, 16, 20),
+    marginRight: 24,
   },
   detailContent: {
     flex: 1,
   },
   detailTitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.7)',
-    marginBottom: getResponsiveSize(2, 4, 6),
+    marginBottom: 24,
   },
   detailValue: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
   },
   startButton: {
-    marginBottom: getResponsiveSize(20, 25, 30),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    marginBottom: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#5b73ff',
     shadowOffset: { width: 0, height: 8 },
@@ -440,41 +440,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(18, 20, 22),
-    paddingHorizontal: getResponsiveSize(24, 28, 32),
-    gap: getResponsiveSize(12, 14, 16),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    gap: 24,
   },
   startButtonText: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: 0.5,
   },
   instructionsContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   instructionsTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
   },
   instructionsList: {
-    gap: getResponsiveSize(8, 10, 12),
+    gap: 24,
   },
   instructionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(6, 8, 10),
+    marginBottom: 24,
   },
   instructionText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    marginLeft: getResponsiveSize(8, 10, 12),
+    marginLeft: 24,
     flex: 1,
   },
 });

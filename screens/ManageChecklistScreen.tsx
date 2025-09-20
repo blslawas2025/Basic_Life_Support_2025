@@ -334,7 +334,7 @@ export default function ManageChecklistScreen({
         }
       ]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         
         <View style={styles.headerContent}>
@@ -348,7 +348,7 @@ export default function ManageChecklistScreen({
               colors={["#ffaa00", "#ff0080", "#5b73ff"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="list" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="list" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -393,13 +393,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="list" size={getResponsiveSize(24, 26, 28)} color="#00d4ff" />
+                    <Ionicons name="list" size={24} color="#00d4ff" />
                   </View>
                   <Text style={styles.actionCardTitle}>View, Edit & Delete</Text>
                   <Text style={styles.actionCardSubtitle}>Manage existing checklists</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#00d4ff" />
+                  <Ionicons name="chevron-forward" size={24} color="#00d4ff" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -416,13 +416,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="heart" size={getResponsiveSize(24, 26, 28)} color="#ff0080" />
+                    <Ionicons name="heart" size={24} color="#ff0080" />
                   </View>
                   <Text style={styles.actionCardTitle}>One Man CPR</Text>
                   <Text style={styles.actionCardSubtitle}>View and manage CPR checklist</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#ff0080" />
+                  <Ionicons name="chevron-forward" size={24} color="#ff0080" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -439,13 +439,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="people" size={getResponsiveSize(24, 26, 28)} color="#00ff88" />
+                    <Ionicons name="people" size={24} color="#00ff88" />
                   </View>
                   <Text style={styles.actionCardTitle}>Two Man CPR</Text>
                   <Text style={styles.actionCardSubtitle}>View and manage two-person CPR checklist</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#00ff88" />
+                  <Ionicons name="chevron-forward" size={24} color="#00ff88" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -462,13 +462,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="heart" size={getResponsiveSize(24, 26, 28)} color="#ffa500" />
+                    <Ionicons name="heart" size={24} color="#ffa500" />
                   </View>
                   <Text style={styles.actionCardTitle}>Infant CPR</Text>
                   <Text style={styles.actionCardSubtitle}>View and manage infant CPR checklist</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#ffa500" />
+                  <Ionicons name="chevron-forward" size={24} color="#ffa500" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -485,13 +485,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="person" size={getResponsiveSize(24, 26, 28)} color="#ff6384" />
+                    <Ionicons name="person" size={24} color="#ff6384" />
                   </View>
                   <Text style={styles.actionCardTitle}>Adult Choking</Text>
                   <Text style={styles.actionCardSubtitle}>View and manage adult choking checklist</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#ff6384" />
+                  <Ionicons name="chevron-forward" size={24} color="#ff6384" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -508,13 +508,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="heart" size={getResponsiveSize(24, 26, 28)} color="#9c27b0" />
+                    <Ionicons name="heart" size={24} color="#9c27b0" />
                   </View>
                   <Text style={styles.actionCardTitle}>Infant Choking</Text>
                   <Text style={styles.actionCardSubtitle}>View and manage infant choking checklist</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#9c27b0" />
+                  <Ionicons name="chevron-forward" size={24} color="#9c27b0" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -531,13 +531,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="settings" size={getResponsiveSize(24, 26, 28)} color="#8b5cf6" />
+                    <Ionicons name="settings" size={24} color="#8b5cf6" />
                   </View>
                   <Text style={styles.actionCardTitle}>Checklist Settings</Text>
                   <Text style={styles.actionCardSubtitle}>Configure checklist options</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#8b5cf6" />
+                  <Ionicons name="chevron-forward" size={24} color="#8b5cf6" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -554,13 +554,13 @@ export default function ManageChecklistScreen({
               >
                 <View style={styles.actionCardContent}>
                   <View style={styles.actionCardIcon}>
-                    <Ionicons name="analytics" size={getResponsiveSize(24, 26, 28)} color="#22c55e" />
+                    <Ionicons name="analytics" size={24} color="#22c55e" />
                   </View>
                   <Text style={styles.actionCardTitle}>Checklist Results</Text>
                   <Text style={styles.actionCardSubtitle}>View results from all 5 stations</Text>
                 </View>
                 <View style={styles.actionCardArrow}>
-                  <Ionicons name="chevron-forward" size={getResponsiveSize(20, 22, 24)} color="#22c55e" />
+                  <Ionicons name="chevron-forward" size={24} color="#22c55e" />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -587,7 +587,7 @@ export default function ManageChecklistScreen({
               style={styles.infoCardGradient}
             >
               <View style={styles.infoHeader}>
-                <Ionicons name="information-circle" size={getResponsiveSize(24, 26, 28)} color="#00d4ff" />
+                <Ionicons name="information-circle" size={24} color="#00d4ff" />
                 <Text style={styles.infoTitle}>Checklist Management</Text>
               </View>
               <Text style={styles.infoText}>
@@ -702,9 +702,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(255, 170, 0, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(255, 170, 0, 0.4)',
@@ -715,12 +715,12 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   backButton: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -733,12 +733,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#ffaa00',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
@@ -746,9 +746,9 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -756,7 +756,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -774,19 +774,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(15, 18, 20),
-    paddingBottom: getResponsiveSize(30, 35, 40),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingBottom: 24,
   },
   actionCardsContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   actionCardsGrid: {
     flexDirection: 'column',
-    gap: getResponsiveSize(16, 20, 24),
+    gap: 24,
   },
   actionCard: {
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -795,7 +795,7 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   actionCardGradient: {
-    padding: getResponsiveSize(20, 24, 28),
+    padding: 24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -806,67 +806,67 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionCardIcon: {
-    width: getResponsiveSize(48, 52, 56),
-    height: getResponsiveSize(48, 52, 56),
-    borderRadius: getResponsiveSize(24, 26, 28),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(16, 20, 24),
+    marginRight: 24,
   },
   actionCardTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   actionCardSubtitle: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    lineHeight: 16,
   },
   actionCardArrow: {
-    marginLeft: getResponsiveSize(12, 16, 20),
+    marginLeft: 24,
   },
   infoContainer: {
-    marginTop: getResponsiveSize(20, 25, 30),
+    marginTop: 24,
   },
   infoCard: {
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.2)',
   },
   infoCardGradient: {
-    padding: getResponsiveSize(20, 24, 28),
+    padding: 24,
   },
   infoHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
   },
   infoTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginLeft: 24,
   },
   infoText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
-    marginBottom: getResponsiveSize(16, 20, 24),
+    lineHeight: 16,
+    marginBottom: 24,
   },
   infoFeatures: {
-    gap: getResponsiveSize(8, 12, 16),
+    gap: 24,
   },
   infoFeature: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: getResponsiveSize(8, 12, 16),
+    gap: 24,
   },
   infoFeatureText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
     fontWeight: '500',
   },

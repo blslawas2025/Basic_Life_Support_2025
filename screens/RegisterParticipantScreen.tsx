@@ -710,7 +710,7 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
             colors={["rgba(255, 255, 255, 0.2)", "rgba(255, 255, 255, 0.1)"]}
             style={styles.backButtonGradient}
           >
-            <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </LinearGradient>
         </TouchableOpacity>
         
@@ -733,7 +733,7 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
               colors={["#00ff88", "#5b73ff", "#00d4ff", "#ff0080"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="person-add" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="person-add" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           

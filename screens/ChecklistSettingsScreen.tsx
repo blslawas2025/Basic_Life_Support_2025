@@ -682,7 +682,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
       >
         <View style={styles.settingItemContent}>
           <View style={[styles.settingIcon, { backgroundColor: iconColor + '20' }]}>
-            <Ionicons name={icon as any} size={getResponsiveSize(20, 22, 24)} color={iconColor} />
+            <Ionicons name={icon as any} size={24} color={iconColor} />
           </View>
           
           <View style={styles.settingText}>
@@ -730,7 +730,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
       >
         <View style={styles.settingItemContent}>
           <View style={[styles.settingIcon, { backgroundColor: iconColor + '20' }]}>
-            <Ionicons name={icon as any} size={getResponsiveSize(20, 22, 24)} color={iconColor} />
+            <Ionicons name={icon as any} size={24} color={iconColor} />
           </View>
           
           <View style={styles.settingText}>
@@ -905,7 +905,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
         }
       ]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={getResponsiveSize(24, 26, 28)} color="#ffffff" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         
         <View style={styles.headerContent}>
@@ -919,7 +919,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#8b5cf6", "#ff0080", "#5b73ff"]} 
               style={styles.headerIconGradient}
             >
-              <Ionicons name="settings" size={getResponsiveSize(28, 32, 36)} color="#ffffff" />
+              <Ionicons name="settings" size={24} color="#ffffff" />
             </LinearGradient>
           </Animated.View>
           
@@ -1025,7 +1025,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#00ff88", "#00d4ff"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="timer" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="timer" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Timer Settings (Pre & Post Test)</Text>
           </View>
@@ -1080,7 +1080,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={['rgba(0, 255, 136, 0.2)', 'rgba(0, 212, 255, 0.2)']}
               style={styles.previewButtonGradient}
             >
-              <Ionicons name="play-circle" size={getResponsiveSize(20, 22, 24)} color="#00ff88" />
+              <Ionicons name="play-circle" size={24} color="#00ff88" />
               <Text style={styles.previewButtonText}>Preview Timer</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -1153,7 +1153,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#ff6b6b", "#ff8e8e"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="lock-closed" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="lock-closed" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>One-Time Submission Control</Text>
           </View>
@@ -1273,7 +1273,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#00d4ff", "#5b73ff"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="document-text" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="document-text" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Test Session Management</Text>
           </View>
@@ -1379,7 +1379,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#ff6b6b", "#ffaa00"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="language" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="language" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Language Settings</Text>
           </View>
@@ -1454,7 +1454,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#8b5cf6", "#06b6d4"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="cloud-offline" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="cloud-offline" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Offline Support</Text>
           </View>
@@ -1550,7 +1550,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#ff6b6b", "#ffaa00"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="checkmark-circle" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="checkmark-circle" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Submission Settings</Text>
           </View>
@@ -1636,7 +1636,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#8b5cf6", "#06b6d4"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="library" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="library" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Question Pool Settings</Text>
           </View>
@@ -1738,7 +1738,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#667eea", "#764ba2"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="list" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="list" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Comprehensive Checklist Management</Text>
           </View>
@@ -1821,7 +1821,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#ff6b6b", "#ff8e8e"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="heart" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="heart" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>Individual Checklist Type Management</Text>
           </View>
@@ -1879,7 +1879,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={["#ff6b6b", "#ff8e8e"]} 
               style={styles.sectionIcon}
             >
-              <Ionicons name="heart" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="heart" size={24} color="#ffffff" />
             </LinearGradient>
             <Text style={styles.sectionTitle}>One Man CPR Checklist Settings</Text>
           </View>
@@ -2069,7 +2069,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={['#00ff88', '#00d4ff']}
               style={styles.saveButtonGradient}
             >
-              <Ionicons name="checkmark" size={getResponsiveSize(20, 22, 24)} color="#ffffff" />
+              <Ionicons name="checkmark" size={24} color="#ffffff" />
               <Text style={styles.saveButtonText}>Save Settings</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -2082,7 +2082,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
               colors={['rgba(255, 107, 107, 0.2)', 'rgba(255, 107, 107, 0.1)']}
               style={styles.resetButtonGradient}
             >
-              <Ionicons name="refresh" size={getResponsiveSize(20, 22, 24)} color="#ff6b6b" />
+              <Ionicons name="refresh" size={24} color="#ff6b6b" />
               <Text style={styles.resetButtonText}>Reset to Default</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -2095,7 +2095,7 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
             style={styles.infoCard}
           >
             <View style={styles.infoHeader}>
-              <Ionicons name="information-circle" size={getResponsiveSize(24, 26, 28)} color="#00d4ff" />
+              <Ionicons name="information-circle" size={24} color="#00d4ff" />
               <Text style={styles.infoTitle}>Settings Information</Text>
             </View>
             <Text style={styles.infoText}>
@@ -2145,9 +2145,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
-    paddingTop: getResponsiveSize(25, 30, 35),
-    paddingBottom: getResponsiveSize(20, 25, 30),
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     backgroundColor: 'rgba(139, 92, 246, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(139, 92, 246, 0.4)',
@@ -2158,12 +2158,12 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   backButton: {
-    padding: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    padding: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -2176,12 +2176,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIcon: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(15, 18, 20),
+    marginRight: 24,
     shadowColor: '#8b5cf6',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
@@ -2189,9 +2189,9 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   headerIconGradient: {
-    width: getResponsiveSize(50, 55, 60),
-    height: getResponsiveSize(50, 55, 60),
-    borderRadius: getResponsiveSize(25, 27, 30),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -2199,7 +2199,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: getResponsiveFontSize(22, 26, 30),
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
     letterSpacing: 1,
@@ -2207,7 +2207,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   headerSubtitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
@@ -2217,39 +2217,39 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: getResponsivePadding(),
-    paddingVertical: getResponsiveSize(20, 25, 30),
-    paddingBottom: getResponsiveSize(40, 50, 60),
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingBottom: 24,
   },
   sectionContainer: {
-    marginBottom: getResponsiveSize(20, 25, 30),
+    marginBottom: 24,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
   },
   sectionIcon: {
-    width: getResponsiveSize(32, 36, 40),
-    height: getResponsiveSize(32, 36, 40),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(12, 16, 20),
+    marginRight: 24,
   },
   sectionTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: 0.5,
   },
   settingItem: {
-    marginBottom: getResponsiveSize(12, 16, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
+    borderRadius: 24,
     overflow: 'hidden',
   },
   settingItemGradient: {
-    padding: getResponsiveSize(16, 20, 24),
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -2258,52 +2258,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   settingIcon: {
-    width: getResponsiveSize(40, 44, 48),
-    height: getResponsiveSize(40, 44, 48),
-    borderRadius: getResponsiveSize(20, 22, 24),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: getResponsiveSize(12, 16, 20),
+    marginRight: 24,
   },
   settingText: {
     flex: 1,
   },
   settingTitle: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(2, 4, 6),
+    marginBottom: 24,
   },
   settingDescription: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    lineHeight: 16,
   },
   actionsContainer: {
     flexDirection: 'row',
-    gap: getResponsiveSize(12, 16, 20),
-    marginBottom: getResponsiveSize(20, 25, 30),
+    gap: 24,
+    marginBottom: 24,
   },
   saveButton: {
     flex: 1,
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
   },
   saveButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(14, 16, 18),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    gap: 24,
   },
   saveButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
   },
   resetButton: {
     flex: 1,
-    borderRadius: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 107, 107, 0.3)',
@@ -2312,69 +2312,69 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(14, 16, 18),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    gap: 24,
   },
   resetButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ff6b6b',
   },
   infoContainer: {
-    marginTop: getResponsiveSize(20, 25, 30),
+    marginTop: 24,
   },
   infoCard: {
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 212, 255, 0.2)',
   },
   infoHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(12, 16, 20),
+    marginBottom: 24,
   },
   infoTitle: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginLeft: getResponsiveSize(8, 12, 16),
+    marginLeft: 24,
   },
   infoText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: getResponsiveFontSize(20, 22, 24),
+    lineHeight: 16,
   },
   // Timer Settings Styles
   numberInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(8, 10, 12),
+    borderRadius: 24,
+    paddingHorizontal: 24,
   },
   numberButton: {
-    width: getResponsiveSize(32, 36, 40),
-    height: getResponsiveSize(32, 36, 40),
-    borderRadius: getResponsiveSize(16, 18, 20),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     backgroundColor: 'rgba(0, 255, 136, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   numberValue: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginHorizontal: getResponsiveSize(12, 16, 20),
-    minWidth: getResponsiveSize(40, 44, 48),
+    marginHorizontal: 24,
+    minWidth: 24,
     textAlign: 'center',
   },
   textInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    fontSize: 16,
     color: '#ffffff',
     minWidth: 120,
     textAlign: 'left',
@@ -2383,19 +2383,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(8, 10, 12),
+    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
     minWidth: 120,
   },
   selectText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     color: '#ffffff',
     flex: 1,
   },
   previewButton: {
-    marginTop: getResponsiveSize(12, 16, 20),
-    borderRadius: getResponsiveSize(12, 14, 16),
+    marginTop: 24,
+    borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(0, 255, 136, 0.3)',
@@ -2404,12 +2404,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(16, 20, 24),
-    gap: getResponsiveSize(8, 10, 12),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    gap: 24,
   },
   previewButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#00ff88',
   },
@@ -2419,14 +2419,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: getResponsivePadding(),
+    paddingHorizontal: 20,
   },
   modalContainer: {
     width: '100%',
     maxWidth: 400,
     backgroundColor: '#1a1a2e',
-    borderRadius: getResponsiveSize(16, 18, 20),
-    padding: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(0, 255, 136, 0.3)',
     shadowColor: '#00ff88',
@@ -2440,19 +2440,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerPreviewTitle: {
-    fontSize: getResponsiveFontSize(20, 22, 24),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
     textAlign: 'center',
   },
   circularTimerContainer: {
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   circularTimer: {
-    width: getResponsiveSize(120, 140, 160),
-    height: getResponsiveSize(120, 140, 160),
-    borderRadius: getResponsiveSize(60, 70, 80),
+    width: 24,
+    height: 24,
+    borderRadius: 24,
     borderWidth: 6,
     alignItems: 'center',
     justifyContent: 'center',
@@ -2464,25 +2464,25 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   circularTimerText: {
-    fontSize: getResponsiveFontSize(18, 20, 22),
+    fontSize: 16,
     fontWeight: '900',
     textAlign: 'center',
   },
   progressBarContainer: {
     width: '100%',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   progressBar: {
     width: '100%',
-    height: getResponsiveSize(8, 10, 12),
+    height: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: getResponsiveSize(8, 10, 12),
+    marginBottom: 24,
   },
   progressBarFill: {
     height: '100%',
-    borderRadius: getResponsiveSize(4, 5, 6),
+    borderRadius: 24,
     shadowColor: '#00ff88',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -2490,37 +2490,37 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   progressBarText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
   },
   warningsContainer: {
     width: '100%',
-    marginBottom: getResponsiveSize(20, 24, 28),
+    marginBottom: 24,
   },
   warningItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: getResponsiveSize(8, 10, 12),
-    paddingHorizontal: getResponsiveSize(12, 14, 16),
-    borderRadius: getResponsiveSize(8, 10, 12),
-    marginBottom: getResponsiveSize(6, 8, 10),
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+    borderRadius: 24,
+    marginBottom: 24,
   },
   warningText: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     fontWeight: '600',
-    marginLeft: getResponsiveSize(8, 10, 12),
+    marginLeft: 24,
   },
   closePreviewButton: {
     backgroundColor: 'rgba(255, 107, 107, 0.2)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    paddingVertical: getResponsiveSize(12, 14, 16),
-    paddingHorizontal: getResponsiveSize(20, 24, 28),
+    borderRadius: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 107, 107, 0.3)',
   },
   closePreviewButtonText: {
-    fontSize: getResponsiveFontSize(14, 16, 18),
+    fontSize: 16,
     fontWeight: '600',
     color: '#ff6b6b',
     textAlign: 'center',
@@ -2528,9 +2528,9 @@ const styles = StyleSheet.create({
   // Checklist Management Styles
   checklistTypeContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: getResponsiveSize(12, 14, 16),
-    padding: getResponsiveSize(16, 18, 20),
-    marginBottom: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -2538,47 +2538,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: getResponsiveSize(12, 14, 16),
+    marginBottom: 24,
   },
   checklistTypeInfo: {
     flex: 1,
-    marginRight: getResponsiveSize(12, 14, 16),
+    marginRight: 24,
   },
   checklistTypeName: {
-    fontSize: getResponsiveFontSize(16, 18, 20),
+    fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   checklistTypeDescription: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.7)',
-    marginBottom: getResponsiveSize(4, 6, 8),
-    lineHeight: getResponsiveFontSize(16, 18, 20),
+    marginBottom: 24,
+    lineHeight: 16,
   },
   checklistTypeCriteria: {
-    fontSize: getResponsiveFontSize(11, 12, 14),
+    fontSize: 16,
     color: 'rgba(0, 255, 136, 0.8)',
     fontWeight: '600',
   },
   checklistTypeDetails: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: getResponsiveSize(8, 10, 12),
-    padding: getResponsiveSize(12, 14, 16),
+    borderRadius: 24,
+    padding: 24,
   },
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: getResponsiveSize(4, 6, 8),
+    marginBottom: 24,
   },
   detailLabel: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     fontWeight: '500',
   },
   detailValue: {
-    fontSize: getResponsiveFontSize(12, 14, 16),
+    fontSize: 16,
     color: '#ffffff',
     fontWeight: '600',
   },
