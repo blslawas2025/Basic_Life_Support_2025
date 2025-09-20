@@ -1432,9 +1432,12 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   chartBarLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#6b7280',
-    width: 24,
+    textAlign: 'center',
+    marginBottom: 4,
+    minWidth: 60,
+    flex: 1,
   },
   chartBarContainer: {
     flex: 1,
