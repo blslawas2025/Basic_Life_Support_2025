@@ -1,0 +1,7 @@
+{
+  "buildCommand": "expo export --platform web",
+  "outputDirectory": "dist",
+  "framework": null,
+  "installCommand": "npm install",
+  "devCommand": "expo start --web"
+}
