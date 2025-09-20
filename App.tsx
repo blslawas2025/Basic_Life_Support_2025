@@ -1,170 +1,320 @@
-// App.tsx - Mobile Test Version
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+// App.tsx
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-native";
+import { synchronizationService } from "./services/SynchronizationService";
+import LoginScreen from "./screens/LoginScreen";
+import SuperAdminDashboard from "./screens/SuperAdminDashboard";
+import AdminDashboard from "./screens/AdminDashboard";
+import ManageParticipantScreen from "./screens/ManageParticipantScreen";
+import RegisterParticipantScreen from "./screens/RegisterParticipantScreen";
+import BulkImportScreen from "./screens/BulkImportScreen";
+import ApproveParticipantsScreen from "./screens/ApproveParticipantsScreen";
+import ViewParticipantsScreen from "./screens/ViewParticipantsScreen";
+import ManageStaffScreen from "./screens/ManageStaffScreen";
+import RegisterStaffScreen from "./screens/RegisterStaffScreen";
+import ViewStaffScreen from "./screens/ViewStaffScreen";
+import StaffDashboard from "./screens/StaffDashboard";
+import ManageQuestionScreen from "./screens/ManageQuestionScreen";
+import UploadQuestionsScreen from "./screens/UploadQuestionsScreen";
+import ManageChecklistScreen from "./screens/ManageChecklistScreen";
+import ChecklistViewScreen from "./screens/ChecklistViewScreen";
+import ChecklistResultsScreen from "./screens/ChecklistResultsScreen";
+import UploadChecklistScreen from "./screens/UploadChecklistScreen";
+import ViewEditDeleteChecklistScreen from "./screens/ViewEditDeleteChecklistScreen";
+import ChecklistSettingsScreen from "./screens/ChecklistSettingsScreen";
+import PreTestScreen from "./screens/PreTestScreen";
+import PostTestScreen from "./screens/PostTestScreen";
+import TestInterfaceScreen from "./screens/TestInterfaceScreen";
+import TestResultsScreen from "./screens/TestResultsScreen";
+import QuestionPoolManagementScreen from "./screens/QuestionPoolManagementScreen";
+import AccessControlManagementScreen from "./screens/AccessControlManagementScreen";
+import ResultsAnalyticsScreen from "./screens/ResultsAnalyticsScreen";
+import ImportResultsScreen from "./screens/ImportResultsScreen";
+import BulkImportResultsScreen from "./screens/BulkImportResultsScreen";
+import ResultViewScreen from "./screens/ResultViewScreen";
+import ResultAnalysisScreen from "./screens/ResultAnalysisScreen";
+import ResultSettingsScreen from "./screens/ResultSettingsScreen";
+import CertificateManagementScreen from "./screens/CertificateManagementScreen";
+import ComprehensiveResultsScreen from "./screens/ComprehensiveResultsScreen";
+import CreateCourseScreen from "./screens/CreateCourseScreen";
+import ViewCoursesScreen from "./screens/ViewCoursesScreen";
+import EditCourseScreen from "./screens/EditCourseScreen";
+import AttendanceMonitoringScreen from "./screens/AttendanceMonitoringScreen";
+import AppRouter from "./screens/AppRouter";
+import { ROUTES } from "./routes/routeMap";
 
-export default function SimpleMobileApp() {
-  const handleTestPress = () => {
-    alert('Mobile app is working!');
+interface UserData {
+  id: string; // UUID from profiles table
+  email: string;
+  isSuperAdmin: boolean;
+  userName: string;
+  roles: 'admin' | 'staff' | 'user';
+}
+
+type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<Screen>(ROUTES.login as Screen);
+  const [testResults, setTestResults] = useState<any>(null);
+  const [currentTestType, setCurrentTestType] = useState<'pre' | 'post'>('pre');
+  const [currentChecklistType, setCurrentChecklistType] = useState<string>('');
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+
+  // Initialize synchronization service
+  useEffect(() => {
+    const initializeSync = async () => {
+      try {
+        console.log('🚀 Initializing synchronization service...');
+        await synchronizationService.startListening();
+        console.log('✅ Synchronization service started successfully');
+      } catch (error) {
+        console.error('❌ Failed to initialize synchronization service:', error);
+      }
+    };
+
+    initializeSync();
+
+    // Cleanup on unmount
+    return () => {
+      synchronizationService.stopListening();
+    };
+  }, []);
+
+  const handleLogin = (loginData: UserData) => {
+    setUserData(loginData);
+    setIsLoggedIn(true);
+    setCurrentScreen(ROUTES.dashboard as Screen);
   };
 
-  const handleLoginPress = () => {
-    alert('Login functionality will be added here');
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserData(null);
+    setCurrentScreen(ROUTES.login as Screen);
+  };
+
+  const handleNavigateToManageParticipant = () => {
+    setCurrentScreen(ROUTES.manageParticipant as Screen);
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentScreen(ROUTES.dashboard as Screen);
+  };
+
+  const handleBackToDashboardFromChecklist = () => {
+    setCurrentScreen(ROUTES.dashboard as Screen);
+  };
+
+  const handleNavigateToRegisterParticipant = () => {
+    setCurrentScreen(ROUTES.registerParticipant as Screen);
+  };
+
+  const handleBackToManageParticipant = () => {
+    setCurrentScreen(ROUTES.manageParticipant as Screen);
+  };
+
+  const handleNavigateToBulkImport = () => {
+    setCurrentScreen(ROUTES.bulkImport as Screen);
+  };
+
+  const handleNavigateToViewParticipants = () => {
+    setCurrentScreen(ROUTES.viewParticipants as Screen);
+  };
+
+  const handleNavigateToApproveParticipants = () => {
+    setCurrentScreen(ROUTES.approveParticipants as Screen);
+  };
+
+  const handleNavigateToManageStaff = () => {
+    setCurrentScreen(ROUTES.manageStaff as Screen);
+  };
+
+  const handleNavigateToRegisterStaff = () => {
+    setCurrentScreen(ROUTES.registerStaff as Screen);
+  };
+
+  const handleNavigateToViewStaff = () => {
+    setCurrentScreen(ROUTES.viewStaff as Screen);
+  };
+
+  const handleNavigateToStaffDashboard = () => {
+    setCurrentScreen(ROUTES.staffDashboard as Screen);
+  };
+
+  const handleBackToManageStaff = () => {
+    setCurrentScreen(ROUTES.manageStaff as Screen);
+  };
+
+  const handleNavigateToManageQuestions = () => {
+    setCurrentScreen(ROUTES.manageQuestions as Screen);
+  };
+
+  const handleNavigateToUploadQuestions = () => {
+    setCurrentScreen(ROUTES.uploadQuestions as Screen);
+  };
+
+  const handleNavigateToPreTest = () => {
+    setCurrentScreen(ROUTES.preTest as Screen);
+  };
+
+  const handleNavigateToPostTest = () => {
+    setCurrentScreen(ROUTES.postTest as Screen);
+  };
+
+  const handleNavigateToTestSettings = () => {
+    setCurrentScreen(ROUTES.testSettings as Screen);
+  };
+
+  const handleShowTestResults = (results: any) => {
+    setTestResults(results);
+    setCurrentScreen(ROUTES.testResults as Screen);
+  };
+
+  const handleBackFromResults = () => {
+    setTestResults(null);
+    setCurrentScreen(ROUTES.manageQuestions as Screen);
+  };
+
+  const handleNavigateToQuestionPools = () => {
+    setCurrentScreen(ROUTES.questionPoolManagement as Screen);
+  };
+
+  const handleNavigateToAccessControl = () => {
+    setCurrentScreen(ROUTES.accessControlManagement as Screen);
+  };
+
+  const handleNavigateToResults = () => {
+    setCurrentScreen(ROUTES.resultsAnalytics as Screen);
+  };
+
+  const handleNavigateToImportResults = () => {
+    setCurrentScreen(ROUTES.importResults as Screen);
+  };
+
+  const handleNavigateToBulkImportResults = () => {
+    setCurrentScreen(ROUTES.bulkImportResults as Screen);
+  };
+
+  const handleNavigateToResultView = () => {
+    setCurrentScreen(ROUTES.resultView as Screen);
+  };
+
+  const handleNavigateToResultAnalysis = () => {
+    setCurrentScreen(ROUTES.resultAnalysis as Screen);
+  };
+
+  const handleNavigateToResultSettings = () => {
+    setCurrentScreen(ROUTES.resultSettings as Screen);
+  };
+
+  const handleNavigateToCertificateManagement = () => {
+    setCurrentScreen(ROUTES.certificateManagement as Screen);
+  };
+
+  const handleNavigateToComprehensiveResults = () => {
+    setCurrentScreen(ROUTES.comprehensiveResults as Screen);
+  };
+
+  const handleNavigateToManageChecklist = () => {
+    setCurrentScreen(ROUTES.manageChecklist as Screen);
+  };
+
+  const handleBackToManageChecklist = () => {
+    setCurrentScreen(ROUTES.manageChecklist as Screen);
+  };
+
+  const handleNavigateToViewEditDeleteChecklist = () => {
+    setCurrentScreen(ROUTES.viewEditDeleteChecklist as Screen);
+  };
+
+  const handleNavigateToChecklistSettings = () => {
+    setCurrentScreen(ROUTES.checklistSettings as Screen);
+  };
+
+  const handleNavigateToChecklistView = (checklistType: string) => {
+    setCurrentChecklistType(checklistType);
+    setCurrentScreen(ROUTES.checklistView as Screen);
+  };
+
+  const handleNavigateToChecklistResults = () => {
+    setCurrentScreen(ROUTES.checklistResults as Screen);
+  };
+
+  const handleNavigateToCreateCourse = () => {
+    setCurrentScreen(ROUTES.createCourse as Screen);
+  };
+
+  const handleNavigateToAttendanceMonitoring = () => {
+    setCurrentScreen(ROUTES.attendanceMonitoring as Screen);
+  };
+
+  const handleNavigateToViewCourses = () => {
+    setCurrentScreen(ROUTES.viewCourses as Screen);
+  };
+
+  const handleEditCourse = (course: any) => {
+    setSelectedCourse(course);
+    setCurrentScreen(ROUTES.editCourse as Screen);
+  };
+
+  const handleBackFromEditCourse = () => {
+    setSelectedCourse(null);
+    setCurrentScreen(ROUTES.viewCourses as Screen);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
-          <Text style={styles.title}>🏥 Basic Life Support</Text>
-          <Text style={styles.subtitle}>Mobile Training Platform</Text>
-        </View>
-        
-        <View style={styles.content}>
-          <Text style={styles.description}>
-            Welcome to the Basic Life Support Training Platform
-          </Text>
-          
-          <TouchableOpacity style={styles.button} onPress={handleTestPress}>
-            <Text style={styles.buttonText}>Test Mobile Function</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.loginButton} onPress={handleLoginPress}>
-            <Text style={styles.buttonText}>Login to Full App</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.infoSection}>
-            <Text style={styles.infoTitle}>Platform Features:</Text>
-            <Text style={styles.infoItem}>• Pre/Post Testing</Text>
-            <Text style={styles.infoItem}>• Participant Management</Text>
-            <Text style={styles.infoItem}>• Result Analytics</Text>
-            <Text style={styles.infoItem}>• Certificate Generation</Text>
-          </View>
-          
-          <View style={styles.statusSection}>
-            <Text style={styles.statusText}>✅ Mobile App Loaded Successfully</Text>
-            <Text style={styles.versionText}>Version: 1.0.0 - Mobile Test Build</Text>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <AppRouter
+      currentScreen={currentScreen}
+      isLoggedIn={isLoggedIn}
+      userData={userData}
+      testResults={testResults}
+      currentTestType={currentTestType}
+      currentChecklistType={currentChecklistType}
+      selectedCourse={selectedCourse}
+      onLogin={handleLogin}
+      onLogout={handleLogout}
+      onBackToDashboard={handleBackToDashboard}
+      onBackToDashboardFromChecklist={handleBackToDashboardFromChecklist}
+      onNavigateToManageParticipant={handleNavigateToManageParticipant}
+      onNavigateToRegisterParticipant={handleNavigateToRegisterParticipant}
+      onNavigateToBulkImport={handleNavigateToBulkImport}
+      onNavigateToViewParticipants={handleNavigateToViewParticipants}
+      onNavigateToApproveParticipants={handleNavigateToApproveParticipants}
+      onNavigateToManageStaff={handleNavigateToManageStaff}
+      onNavigateToRegisterStaff={handleNavigateToRegisterStaff}
+      onNavigateToViewStaff={handleNavigateToViewStaff}
+      onNavigateToStaffDashboard={handleNavigateToStaffDashboard}
+      onBackToManageParticipant={handleBackToManageParticipant}
+      onBackToManageStaff={handleBackToManageStaff}
+      onNavigateToManageQuestions={handleNavigateToManageQuestions}
+      onNavigateToUploadQuestions={handleNavigateToUploadQuestions}
+      onNavigateToPreTest={handleNavigateToPreTest}
+      onNavigateToPostTest={handleNavigateToPostTest}
+      onNavigateToTestSettings={handleNavigateToTestSettings}
+      onShowTestResults={handleShowTestResults}
+      onBackFromResults={handleBackFromResults}
+      onNavigateToQuestionPools={handleNavigateToQuestionPools}
+      onNavigateToAccessControl={handleNavigateToAccessControl}
+      onNavigateToResults={handleNavigateToResults}
+      onNavigateToImportResults={handleNavigateToImportResults}
+      onNavigateToBulkImportResults={handleNavigateToBulkImportResults}
+      onNavigateToResultView={handleNavigateToResultView}
+      onNavigateToResultAnalysis={handleNavigateToResultAnalysis}
+      onNavigateToResultSettings={handleNavigateToResultSettings}
+      onNavigateToCertificateManagement={handleNavigateToCertificateManagement}
+      onNavigateToComprehensiveResults={handleNavigateToComprehensiveResults}
+      onNavigateToManageChecklist={handleNavigateToManageChecklist}
+      onBackToManageChecklist={handleBackToManageChecklist}
+      onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
+      onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
+      onNavigateToChecklistView={handleNavigateToChecklistView}
+      onNavigateToChecklistResults={handleNavigateToChecklistResults}
+      onNavigateToCreateCourse={handleNavigateToCreateCourse}
+      onNavigateToAttendanceMonitoring={handleNavigateToAttendanceMonitoring}
+      onNavigateToViewCourses={handleNavigateToViewCourses}
+      onEditCourse={handleEditCourse}
+      onBackFromEditCourse={handleBackFromEditCourse}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#34495e',
-    textAlign: 'center',
-  },
-  content: {
-    flex: 1,
-  },
-  description: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginBottom: 30,
-    lineHeight: 24,
-  },
-  button: {
-    backgroundColor: '#3498db',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  loginButton: {
-    backgroundColor: '#27ae60',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  infoSection: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  infoTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 15,
-  },
-  infoItem: {
-    fontSize: 16,
-    color: '#555',
-    marginBottom: 8,
-    lineHeight: 22,
-  },
-  statusSection: {
-    backgroundColor: '#d4edda',
-    padding: 15,
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#28a745',
-    alignItems: 'center',
-  },
-  statusText: {
-    fontSize: 16,
-    color: '#155724',
-    fontWeight: '600',
-    marginBottom: 5,
-  },
-  versionText: {
-    fontSize: 14,
-    color: '#155724',
-  },
-});

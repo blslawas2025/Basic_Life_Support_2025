@@ -8,7 +8,21 @@ import { Job, JobDatabase, JobGradeOption, CreateJob, UpdateJob, JobGradeView, J
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://uiluvmelzycqplzqovdj.supabase.co';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbHV2bWVsenljcXBsenFvdmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2Nzg5MjksImV4cCI6MjA3MzI1NDkyOX0.SgI8tL2LS57KUWvnKCBUY-ijBdA4wa5aNlbGYVF2JJE';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create Supabase client with error handling
+let supabase;
+try {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} catch (error) {
+  console.error('Failed to create Supabase client:', error);
+  // Create a mock client to prevent app crashes
+  supabase = {
+    auth: { getUser: () => ({ data: { user: null }, error: null }) },
+    from: () => ({ select: () => ({ limit: () => ({ data: [], error: null }) }) }),
+    channel: () => ({ on: () => ({ subscribe: () => {} }) })
+  };
+}
+
+export { supabase };
 
 // Create a client with RLS bypass for debugging (if service role key is available)
 const supabaseServiceKey = process.env.EXPO_PUBLIC_SUPABASE_SERVICE_KEY;
