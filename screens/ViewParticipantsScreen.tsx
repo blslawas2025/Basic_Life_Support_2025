@@ -606,13 +606,13 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
                       <Text style={styles.staffEmail}>{participant.email}</Text>
                     </View>
                     <View style={styles.staffBadges}>
-                      <View style={[styles.roleBadge, { backgroundColor: 'rgba(99,102,241,0.15)' }]}>
-                        <Text style={[styles.roleText, { color: '#6366f1' }]}>
+                      <View style={[styles.roleBadge, { backgroundColor: '#ef4444' }]}>
+                        <Text style={styles.roleText}>
                           {(participant.roles?.toUpperCase?.()) || 'USER'}
                         </Text>
                       </View>
-                      <View style={[styles.statusBadge, { backgroundColor: getStatusColor(participant.status) + '20' }]}>
-                        <Text style={[styles.statusBadgeText, { color: getStatusColor(participant.status) }]}>
+                      <View style={[styles.statusBadge, { backgroundColor: '#22c55e' }]}>
+                        <Text style={styles.statusBadgeText}>
                           {(participant.status?.toUpperCase?.()) || 'UNKNOWN'}
                         </Text>
                       </View>
@@ -621,48 +621,38 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
 
                   <View style={styles.staffDetails}>
                     <View style={styles.detailRow}>
-                      <Ionicons name="briefcase" size={16} color="#a0a0a0" />
-                      <View style={styles.detailColumn}>
-                        <Text style={styles.detailLabel}>Job Position</Text>
-                        <Text style={styles.detailValue}>{participant.job_position_name || '-'}</Text>
-                      </View>
+                      <Ionicons name="briefcase" size={16} color="rgba(255, 255, 255, 0.6)" />
+                      <Text style={styles.detailLabel}>Job Position: </Text>
+                      <Text style={styles.detailValue}>{participant.job_position_name || '-'}</Text>
                     </View>
                     <View style={styles.detailRow}>
-                      <Ionicons name="location" size={16} color="#a0a0a0" />
-                      <View style={styles.detailColumn}>
-                        <Text style={styles.detailLabel}>Workplace</Text>
-                        <Text style={styles.detailValue}>{participant.tempat_bertugas || '-'}</Text>
-                      </View>
+                      <Ionicons name="location" size={16} color="rgba(255, 255, 255, 0.6)" />
+                      <Text style={styles.detailLabel}>Workplace: </Text>
+                      <Text style={styles.detailValue}>{participant.tempat_bertugas || '-'}</Text>
                     </View>
                     <View style={styles.detailRow}>
-                      <Ionicons name="call" size={16} color="#a0a0a0" />
-                      <View style={styles.detailColumn}>
-                        <Text style={styles.detailLabel}>Phone</Text>
-                        <Text style={styles.detailValue}>{participant.phone_number || '-'}</Text>
-                      </View>
+                      <Ionicons name="call" size={16} color="rgba(255, 255, 255, 0.6)" />
+                      <Text style={styles.detailLabel}>Phone: </Text>
+                      <Text style={styles.detailValue}>{participant.phone_number || '-'}</Text>
                     </View>
                     <View style={styles.detailRow}>
-                      <Ionicons name="card" size={16} color="#a0a0a0" />
-                      <View style={styles.detailColumn}>
-                        <Text style={styles.detailLabel}>IC Number</Text>
-                        <Text style={styles.detailValue}>{participant.ic_number || '-'}</Text>
-                      </View>
+                      <Ionicons name="card" size={16} color="rgba(255, 255, 255, 0.6)" />
+                      <Text style={styles.detailLabel}>IC Number: </Text>
+                      <Text style={styles.detailValue}>{participant.ic_number || '-'}</Text>
                     </View>
                     <View style={styles.detailRow}>
-                      <Ionicons name="time" size={16} color="#a0a0a0" />
-                      <View style={styles.detailColumn}>
-                        <Text style={styles.detailLabel}>Last BLS Attempt</Text>
-                        <Text style={styles.detailValue}>{participant.last_bls_attempt || '-'}</Text>
-                      </View>
+                      <Ionicons name="time" size={16} color="rgba(255, 255, 255, 0.6)" />
+                      <Text style={styles.detailLabel}>Last BLS Attempt: </Text>
+                      <Text style={styles.detailValue}>{participant.last_bls_attempt || '-'}</Text>
                     </View>
-                    <View style={[styles.detailRow, { gap: 8 }]}>
-                      <View style={[styles.statusBadge, participant.has_allergies ? styles.statusBadgeYes : styles.statusBadgeNo]}>
-                        <Text style={[styles.statusBadgeText, participant.has_allergies ? styles.statusBadgeTextYes : styles.statusBadgeTextNo]}>
+                    <View style={styles.badgeRow}>
+                      <View style={[styles.infoBadge, { backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: '#22c55e' }]}>
+                        <Text style={[styles.infoBadgeText, { color: '#22c55e' }]}>
                           Allergies: {participant.has_allergies ? 'Yes' : 'No'}
                         </Text>
                       </View>
-                      <View style={[styles.statusBadge, participant.is_pregnant ? styles.statusBadgeYes : styles.statusBadgeNo]}>
-                        <Text style={[styles.statusBadgeText, participant.is_pregnant ? styles.statusBadgeTextYes : styles.statusBadgeTextNo]}>
+                      <View style={[styles.infoBadge, { backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: '#22c55e' }]}>
+                        <Text style={[styles.infoBadgeText, { color: '#22c55e' }]}>
                           Pregnant: {participant.is_pregnant ? 'Yes' : 'No'}
                         </Text>
                       </View>
@@ -2309,11 +2299,89 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   staffDetails: {
-    marginBottom: 12,
+    marginBottom: 16,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 8,
+  },
+  detailLabel: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '500',
+  },
+  detailValue: {
+    fontSize: 14,
+    color: '#ffffff',
+    fontWeight: '400',
+    flex: 1,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8,
+    flexWrap: 'wrap',
+  },
+  infoBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  infoBadgeText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   staffActions: {
     flexDirection: 'row',
     gap: 12,
-    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    gap: 8,
+  },
+  editButton: {
+    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(245, 158, 11, 0.3)',
+  },
+  deleteButton: {
+    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.3)',
+  },
+  actionButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  roleBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  roleText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  statusBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#ffffff',
   },
 });
