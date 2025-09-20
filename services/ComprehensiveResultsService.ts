@@ -63,8 +63,6 @@ export interface ComprehensiveResult {
 export class ComprehensiveResultsService {
   // Real-time subscription for data changes
   static subscribeToChanges(callback: (results: ComprehensiveResult[]) => void) {
-    console.log('🔄 Setting up real-time subscription for comprehensive results...');
-    
     // Subscribe to test_submissions changes
     const testSubmissionsSubscription = supabase
       .channel('test_submissions_changes')
@@ -75,7 +73,6 @@ export class ComprehensiveResultsService {
           table: 'test_submissions' 
         }, 
         async () => {
-          console.log('📊 Test submissions changed - refreshing data');
           const results = await this.getAllComprehensiveResults();
           callback(results);
         }
@@ -92,7 +89,6 @@ export class ComprehensiveResultsService {
           table: 'checklist_result' 
         }, 
         async () => {
-          console.log('📊 Checklist results changed - refreshing data');
           const results = await this.getAllComprehensiveResults();
           callback(results);
         }
@@ -109,7 +105,6 @@ export class ComprehensiveResultsService {
           table: 'profiles' 
         }, 
         async () => {
-          console.log('📊 Profiles changed - refreshing data');
           const results = await this.getAllComprehensiveResults();
           callback(results);
         }
@@ -118,7 +113,6 @@ export class ComprehensiveResultsService {
 
     // Return unsubscribe function
     return () => {
-      console.log('🔄 Unsubscribing from real-time updates');
       testSubmissionsSubscription.unsubscribe();
       checklistResultSubscription.unsubscribe();
       profilesSubscription.unsubscribe();
@@ -128,8 +122,6 @@ export class ComprehensiveResultsService {
   // Get all comprehensive results directly from test_submissions and checklist_result tables
   static async getAllComprehensiveResults(): Promise<ComprehensiveResult[]> {
     try {
-      console.log('🔄 Fetching comprehensive results directly from source tables...');
-      
       // Fetch participants first
       const { data: participants, error: participantsError } = await supabase
         .from('profiles')
@@ -152,7 +144,6 @@ export class ComprehensiveResultsService {
       }
 
       if (!participants || participants.length === 0) {
-        console.log('No participants found');
         return [];
       }
 
@@ -179,10 +170,6 @@ export class ComprehensiveResultsService {
         console.error('Error fetching checklist results:', checklistError);
         throw checklistError;
       }
-
-      console.log(`📊 Found ${testSubmissions?.length || 0} test submissions`);
-      console.log(`📊 Found ${checklistResults?.length || 0} checklist results`);
-
       // Group data by participant
       const participantsMap = new Map<string, {
         profile: any;
@@ -251,14 +238,6 @@ export class ComprehensiveResultsService {
 
           // Debug logging for specific participants
           if (profile.name === 'AMANDA BULAN SIGAR' || profile.name === 'METHDIOUSE AK SILAN') {
-            console.log(`🔍 ${profile.name} - ${testType}:`, {
-              correct_answers: submission.correct_answers,
-              total_questions: submission.total_questions,
-              percentage: percentage,
-              job_category: jobCategory,
-              pass_threshold: passThreshold,
-              status: passed ? 'PASS' : 'FAIL'
-            });
           }
 
           return {
@@ -374,8 +353,6 @@ export class ComprehensiveResultsService {
 
       // Sort by participant name
       comprehensiveResults.sort((a, b) => a.participant_name.localeCompare(b.participant_name));
-
-      console.log(`✅ Created ${comprehensiveResults.length} comprehensive results`);
       return comprehensiveResults;
 
     } catch (error) {

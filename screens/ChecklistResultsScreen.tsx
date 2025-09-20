@@ -89,7 +89,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
   // Listen to synchronization service for checklist changes
   useEffect(() => {
     const unsubscribe = synchronizationService.subscribeToChecklistType('results', () => {
-      console.log('🔄 Results screen: Refreshing due to checklist changes');
+
       loadData();
     });
 
@@ -98,12 +98,11 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
 
   // Force refresh function
   const forceRefresh = async () => {
-    console.log('🔄 Force refreshing results screen...');
+
     setLoading(true);
     await loadData();
     setLoading(false);
   };
-
 
   const startAnimations = () => {
     Animated.parallel([
@@ -136,14 +135,14 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
       ]);
 
       if (resultsResponse.success && resultsResponse.data) {
-        console.log(`📊 Loaded ${resultsResponse.data.length} checklist results`);
+
         setResults(resultsResponse.data);
       } else {
         console.error('Failed to load results:', resultsResponse.error);
       }
 
       if (statsResponse.success && statsResponse.data) {
-        console.log(`📊 Loaded ${statsResponse.data.length} checklist statistics`);
+
         setStats(statsResponse.data);
       } else {
         console.error('Failed to load stats:', statsResponse.error);
@@ -215,22 +214,18 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
   // Function to completely rebuild assessment data using current checklist items
   const rebuildAssessmentWithCurrentData = async (assessment: any, checklistType: string) => {
     try {
-      console.log(`🔄 Rebuilding assessment data using current checklist items for ${checklistType}...`);
-      console.log('Original assessment data:', assessment);
-      console.log('Original section_results:', assessment.section_results);
-      
+
       // Get current checklist items from database
       const result = await ChecklistItemService.getChecklistItemsByType(checklistType);
       
       if (result.success && result.items && result.items.length > 0) {
-        console.log(`✅ Found ${result.items.length} current checklist items for ${checklistType}`);
+
         setCurrentChecklistItems(result.items);
         
         // Log current items compulsory status
         const compulsoryItems = result.items.filter(item => item.is_compulsory);
         const optionalItems = result.items.filter(item => !item.is_compulsory);
-        console.log(`Current items: ${compulsoryItems.length} compulsory, ${optionalItems.length} optional`);
-        
+
         // Group current items by section
         const sectionsMap = new Map();
         result.items.forEach(item => {
@@ -282,9 +277,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
                 }
               }
             }
-            
-            console.log(`Item ${item.item.substring(0, 30)}...: ${completed ? 'COMPLETED' : 'INCOMPLETE'} (${item.is_compulsory ? 'Compulsory' : 'Optional'})`);
-            
+
             return {
               id: item.id,
               item: item.item,
@@ -303,9 +296,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
             items: itemsWithCompletion
           };
         });
-        
-        console.log(`✅ Rebuilt ${newSectionResults.length} sections using current checklist items`);
-        
+
         // Calculate new totals based on current items
         const totalItems = result.items.length;
         const completedItems = newSectionResults.reduce((sum, section) => 
@@ -337,9 +328,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
             newStatus = 'FAIL';
           }
         }
-        
-        console.log(`New status: ${newStatus} (${completedItems}/${totalItems} items, ${completedCompulsoryItems.length}/${allCompulsoryItems.length} compulsory)`);
-        
+
         return {
           ...assessment,
           total_items: totalItems,
@@ -353,8 +342,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
         
         // If checklist type is invalid (like "all"), try to determine the correct type
         if (checklistType === 'all' || !['one man cpr', 'two man cpr', 'infant cpr', 'adult choking', 'infant choking'].includes(checklistType)) {
-          console.log(`🔄 Invalid checklist type "${checklistType}", trying to determine correct type from assessment data...`);
-          
+
           // Try to determine the correct checklist type based on the assessment data
           let correctType = null;
           if (assessment.participant_name && assessment.participant_name.includes('CPR')) {
@@ -365,13 +353,11 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
             // Default to one man cpr for unknown types
             correctType = 'one man cpr';
           }
-          
-          console.log(`🎯 Using fallback checklist type: ${correctType}`);
+
           const fallbackResult = await ChecklistItemService.getChecklistItemsByType(correctType);
           
           if (fallbackResult.success && fallbackResult.items && fallbackResult.items.length > 0) {
-            console.log(`✅ Found ${fallbackResult.items.length} fallback checklist items for ${correctType}`);
-            
+
             // Use the fallback items to rebuild the assessment
             const fallbackItems = fallbackResult.items;
             setCurrentChecklistItems(fallbackItems);
@@ -379,8 +365,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
             // Log current items compulsory status
             const compulsoryItems = fallbackItems.filter(item => item.is_compulsory);
             const optionalItems = fallbackItems.filter(item => !item.is_compulsory);
-            console.log(`Fallback items: ${compulsoryItems.length} compulsory, ${optionalItems.length} optional`);
-            
+
             // Group current items by section
             const sectionsMap = new Map();
             fallbackItems.forEach(item => {
@@ -432,9 +417,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
                     }
                   }
                 }
-                
-                console.log(`Item ${item.item.substring(0, 30)}...: ${completed ? 'COMPLETED' : 'INCOMPLETE'} (${item.is_compulsory ? 'Compulsory' : 'Optional'})`);
-                
+
                 return {
                   id: item.id,
                   item: item.item,
@@ -453,9 +436,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
                 items: itemsWithCompletion
               };
             });
-            
-            console.log(`✅ Rebuilt ${newSectionResults.length} sections using fallback checklist items`);
-            
+
             // Calculate new totals based on current items
             const totalItems = fallbackItems.length;
             const completedItems = newSectionResults.reduce((sum, section) => 
@@ -487,9 +468,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
                 newStatus = 'FAIL';
               }
             }
-            
-            console.log(`New status: ${newStatus} (${completedItems}/${totalItems} items, ${completedCompulsoryItems.length}/${allCompulsoryItems.length} compulsory)`);
-            
+
             return {
               ...assessment,
               total_items: totalItems,
@@ -499,7 +478,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
               section_results: newSectionResults
             };
           } else {
-            console.log(`⚠️ No fallback checklist items found for ${correctType}`);
+
           }
         }
       }
@@ -508,7 +487,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
     }
     
     // Return original assessment if rebuild fails
-    console.log(`⚠️ Using original assessment data for ${checklistType}`);
+
     return assessment;
   };
 

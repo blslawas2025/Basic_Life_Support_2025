@@ -205,11 +205,6 @@ export default function ResultAnalysisScreen({ onBack }: ResultAnalysisScreenPro
       // Calculate real statistics
       const preTestSubmissions = submissions?.filter(s => s.test_type === 'pre_test') || [];
       const postTestSubmissions = submissions?.filter(s => s.test_type === 'post_test') || [];
-      
-      console.log(`📊 Found ${submissions?.length || 0} total submissions`);
-      console.log(`📊 Pre-test: ${preTestSubmissions.length} submissions`);
-      console.log(`📊 Post-test: ${postTestSubmissions.length} submissions`);
-      
       // Calculate pre-test statistics
       const preTestStats = calculateTestStatistics(preTestSubmissions);
       
@@ -218,11 +213,6 @@ export default function ResultAnalysisScreen({ onBack }: ResultAnalysisScreenPro
       
       // Calculate comparison statistics
       const comparison = calculateComparisonStats(preTestStats, postTestStats);
-      
-      console.log('📈 Pre-test stats:', preTestStats);
-      console.log('📈 Post-test stats:', postTestStats);
-      console.log('📈 Comparison stats:', comparison);
-
       // Create analysis data structure with real Supabase data
       const analysisData: AnalysisData = {
         preTestStats: {

@@ -463,7 +463,6 @@ export default function UploadQuestionsScreen({ onBack }: UploadQuestionsScreenP
             );
           }
         } catch (poolError) {
-          console.warn('Failed to auto-create question pool:', poolError);
           // Don't fail the entire import if pool creation fails
         }
 
@@ -528,8 +527,6 @@ export default function UploadQuestionsScreen({ onBack }: UploadQuestionsScreenP
       }
     }
   };
-
-
 
   return (
     <View style={styles.container}>

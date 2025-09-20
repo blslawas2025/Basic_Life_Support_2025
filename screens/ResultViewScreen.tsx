@@ -1153,4 +1153,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6b7280',
   },
+  noDataText: {
+    fontSize: 16,
+    color: '#6b7280',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 });

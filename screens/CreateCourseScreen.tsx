@@ -131,8 +131,6 @@ export default function CreateCourseScreen({ onBack, onViewCourses }: CreateCour
   };
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
-    console.log('Date change event:', event, 'Selected date:', selectedDate);
-    
     if (Platform.OS === 'android') {
       setShowDatePicker(false);
       if (event.type === 'set' && selectedDate) {
@@ -160,8 +158,6 @@ export default function CreateCourseScreen({ onBack, onViewCourses }: CreateCour
   };
 
   const handleEndDateChange = (event: any, selectedDate?: Date) => {
-    console.log('End date change event:', event, 'Selected date:', selectedDate);
-    
     if (Platform.OS === 'android') {
       setShowEndDatePicker(false);
       if (event.type === 'set' && selectedDate) {
@@ -473,7 +469,6 @@ export default function CreateCourseScreen({ onBack, onViewCourses }: CreateCour
               <TouchableOpacity
                 style={styles.dateButton}
                 onPress={() => {
-                  console.log('Start date button pressed!');
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   openCustomDatePicker(true);
                 }}
@@ -489,7 +484,6 @@ export default function CreateCourseScreen({ onBack, onViewCourses }: CreateCour
               <TouchableOpacity
                 style={styles.dateButton}
                 onPress={() => {
-                  console.log('End date button pressed!');
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   openCustomDatePicker(false);
                 }}

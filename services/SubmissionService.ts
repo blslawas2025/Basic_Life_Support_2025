@@ -67,7 +67,7 @@ export class SubmissionService {
         
         // If table doesn't exist, assume user hasn't taken the test
         if (error.code === 'PGRST205' && error.message.includes('Could not find the table')) {
-          console.warn('test_submissions table not found, assuming user has not taken test');
+
           return false;
         }
         
@@ -81,7 +81,7 @@ export class SubmissionService {
       
       // If it's a table not found error, return false (user hasn't taken test)
       if (error instanceof Error && error.message.includes('Could not find the table')) {
-        console.warn('test_submissions table not found, assuming user has not taken test');
+
         return false;
       }
       
@@ -164,7 +164,7 @@ export class SubmissionService {
         
         // If table doesn't exist, create a mock submission
         if (error.code === 'PGRST205' && error.message.includes('Could not find the table')) {
-          console.warn('test_submissions table not found, creating mock submission');
+
           const mockSubmission: TestSubmission = {
             id: `mock_${Date.now()}`,
             user_id: userId,
@@ -194,7 +194,7 @@ export class SubmissionService {
       
       // If it's a table not found error, create a mock submission
       if (error instanceof Error && error.message.includes('Could not find the table')) {
-        console.warn('test_submissions table not found, creating mock submission');
+
         const mockSubmission: TestSubmission = {
           id: `mock_${Date.now()}`,
           user_id: userId,
@@ -364,7 +364,7 @@ export class SubmissionService {
         
         // If table doesn't exist, return empty array instead of mock data
         if (error.code === 'PGRST205' && error.message.includes('Could not find the table')) {
-          console.warn('test_submissions table not found, returning empty array');
+
           return [];
         }
         
@@ -403,7 +403,7 @@ export class SubmissionService {
       
       // If it's a table not found error, return empty array
       if (error instanceof Error && error.message.includes('Could not find the table')) {
-        console.warn('test_submissions table not found, returning empty array');
+
         return [];
       }
       

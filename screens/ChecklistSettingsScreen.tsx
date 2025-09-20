@@ -275,7 +275,6 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
     clearCacheOnSync: false,
   });
 
-
   const [questionPoolSettings, setQuestionPoolSettings] = useState<QuestionPoolSettings>({
     enableQuestionPools: true,
     defaultPoolId: null,

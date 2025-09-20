@@ -1100,13 +1100,6 @@ const styles = StyleSheet.create({
   jobBreakdownSection: {
     marginBottom: 24,
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#ffffff',
-    marginBottom: 24,
-    textAlign: 'center',
-    letterSpacing: 0.5,
   },
   jobScrollContainer: {
     paddingHorizontal: 24,

@@ -71,7 +71,6 @@ const EditItemModal: React.FC<EditItemModalProps> = ({ visible, item, onSave, on
   const [editedItem, setEditedItem] = useState<ChecklistItemData | null>(null);
 
   useEffect(() => {
-    console.log('🔄 EditItemModal useEffect - item:', item, 'editingItem:', editingItem);
     if (item) {
       setEditedItem({ ...item });
     }
@@ -84,9 +83,6 @@ const EditItemModal: React.FC<EditItemModalProps> = ({ visible, item, onSave, on
       Alert.alert('Error', 'Item text cannot be empty');
     }
   };
-
-  console.log('🎭 EditItemModal render - visible:', visible, 'editedItem:', editedItem, 'editingItem:', editingItem);
-  
   if (!visible || !editedItem) return null;
 
   return (
@@ -261,13 +257,10 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
 
   const loadChecklistItems = async (type: string) => {
     try {
-      console.log('🔍 Loading checklist items for type:', type);
-      
       // Use global state refresh
       const result = await refreshChecklistData(() => ChecklistItemService.getChecklistItemsByType(type));
       
       if (result.success && result.items) {
-        console.log('✅ Items loaded successfully:', result.items.length, 'items');
       } else {
         console.error('❌ Failed to load items:', result.error);
       }
@@ -308,14 +301,11 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
   };
 
   const handleEditItem = (item: ChecklistItemData) => {
-    console.log('✏️ Edit item clicked:', item);
     setEditingItem(item);
     setEditModalVisible(true);
-    console.log('📝 Modal should be visible now');
   };
 
   const handleSaveItem = async (updatedItem: ChecklistItemData) => {
-    console.log('💾 Save item called:', updatedItem);
     try {
       if (updatedItem.id) {
         // Update existing item using synchronization service
@@ -365,7 +355,6 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
 
   const handleDeleteItem = (itemId: string | undefined) => {
     if (!itemId) return;
-    console.log('🗑️ Delete item clicked:', itemId);
     Alert.alert(
       'Delete Item',
       'Are you sure you want to delete this checklist item?',
@@ -597,7 +586,6 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
     );
   }
 
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -623,10 +611,8 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
         <View style={styles.headerActions}>
           <TouchableOpacity 
             onPress={async () => {
-              console.log('🧪 Testing database connection...');
               try {
                 const result = await ChecklistItemService.getChecklistItemsByType(selectedType);
-                console.log('🧪 Test result:', result);
                 Alert.alert('Database Test', `Connection ${result.success ? 'SUCCESS' : 'FAILED'}\nItems: ${result.items?.length || 0}`);
               } catch (error) {
                 console.error('🧪 Test error:', error);
@@ -640,7 +626,6 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
 
           <TouchableOpacity 
             onPress={async () => {
-              console.log('🔧 Running database fixes...');
               Alert.alert(
                 'Database Fix',
                 'This will fix choking checklist sections and compulsory status. Continue?',
@@ -674,7 +659,6 @@ export default function ViewEditDeleteChecklistScreen({ onBack }: ViewEditDelete
           
           <TouchableOpacity 
             onPress={() => {
-              console.log('➕ Add new item clicked');
               setEditingItem({
                 checklist_type: selectedType as any,
                 section: 'danger' as any,

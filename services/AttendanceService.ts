@@ -140,8 +140,6 @@ export class AttendanceService {
     status: 'present' | 'absent' | 'late' = 'present'
   ): Promise<AttendanceRecord> {
     try {
-      console.log('Marking attendance:', { participantId, courseSessionId, status });
-      
       // Check if record already exists
       const existingRecord = await this.getAttendanceRecord(participantId, courseSessionId);
       
@@ -151,8 +149,6 @@ export class AttendanceService {
           status,
           check_in_time: status === 'present' || status === 'late' ? new Date().toISOString() : existingRecord.check_in_time,
         };
-        
-        console.log('Updating existing attendance record:', updates);
         return await this.updateAttendanceRecord(existingRecord.id, updates);
       } else {
         // Create new record
@@ -162,8 +158,6 @@ export class AttendanceService {
           status,
           check_in_time: status === 'present' || status === 'late' ? new Date().toISOString() : null,
         };
-        
-        console.log('Creating new attendance record:', newRecord);
         return await this.createAttendanceRecord(newRecord);
       }
     } catch (error) {
@@ -213,8 +207,6 @@ export class AttendanceService {
     participantIds: string[]
   ): Promise<void> {
     try {
-      console.log('Initializing attendance for course:', courseSessionId, 'with participants:', participantIds);
-      
       // Get existing records
       const existingRecords = await this.getAttendanceByCourse(courseSessionId);
       const existingParticipantIds = existingRecords.map(r => r.participant_id);
@@ -229,9 +221,6 @@ export class AttendanceService {
           course_session_id: courseSessionId,
           status: 'absent',
         }));
-        
-        console.log('Creating new attendance records:', newRecords);
-        
         const { error } = await supabase
           .from('attendance_records')
           .insert(newRecords);

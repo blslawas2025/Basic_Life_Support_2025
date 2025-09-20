@@ -173,9 +173,6 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
               for (let i = 0; i < results.data.length; i++) {
                 const row = results.data[i];
                 const keys = Object.keys(row);
-                console.log(`Row ${i + 1} keys:`, keys);
-                console.log(`Row ${i + 1} data:`, row);
-                
                 // Get the main content from the first column or any column with substantial content
                 let mainContent = '';
                 for (const key of keys) {
@@ -289,9 +286,6 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
         for (let i = 0; i < jsonData.length; i++) {
           const row = jsonData[i];
           const keys = Object.keys(row);
-          console.log(`Excel Row ${i + 1} keys:`, keys);
-          console.log(`Excel Row ${i + 1} data:`, row);
-          
           // Get the main content from the first column or any column with substantial content
           let mainContent = '';
           for (const key of keys) {
@@ -393,13 +387,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
   const handlePreviewFile = async (file: any) => {
     try {
       setIsLoadingPreview(true);
-      
-      console.log('Starting file preview for:', file.name);
-      console.log('File URI:', file.uri);
-      
       const result = await parseChecklistFile(file);
-      console.log('Parse result:', result);
-      
       setPreviewData(result);
       setShowPreview(true);
       
@@ -409,9 +397,7 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
           `Failed to parse file: ${result.errors.join(', ')}`
         );
       } else {
-        console.log(`Successfully parsed ${result.data.length} items`);
         if (result.data.length > 0) {
-          console.log('First item:', result.data[0]);
         }
       }
     } catch (error) {
@@ -445,9 +431,6 @@ export default function UploadChecklistScreen({ onBack }: UploadChecklistScreenP
           order_index: index
         }))
       };
-
-      console.log('Saving checklist to database:', checklist);
-      
       // Save to Supabase
       const result = await ChecklistService.saveChecklist(checklist);
       

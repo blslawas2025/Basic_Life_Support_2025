@@ -20,3 +20,4 @@ WHERE checklist_type IN ('adult choking', 'infant choking')
 ORDER BY checklist_type, section, order_index;
 
 
+

@@ -330,7 +330,6 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           await OfflineService.cacheQuestions(fetchedQuestions, testTypeForAPI, courseSessionId);
           
         } catch (serverError) {
-          console.warn('Server fetch failed, trying offline cache:', serverError);
           // Fall back to offline cache
           const cachedQuestions = await OfflineService.getCachedQuestions(testTypeForAPI, courseSessionId);
           if (cachedQuestions) {

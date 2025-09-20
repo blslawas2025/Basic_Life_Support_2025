@@ -87,8 +87,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
   const loadCertificates = async () => {
     try {
       setIsLoading(true);
-      console.log('🔍 Loading certificates from Supabase...');
-      
       // Fetch completed test submissions
       const { data: submissions, error: submissionsError } = await supabase
         .from('test_submissions')
@@ -116,9 +114,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         console.error('Error fetching submissions:', submissionsError);
         throw new Error('Failed to fetch test submissions');
       }
-
-      console.log(`📊 Found ${submissions?.length || 0} completed submissions`);
-
       // Convert submissions to certificate format
       const certificates: Certificate[] = (submissions || []).map(submission => {
         const percentage = (submission.score / submission.total_questions) * 100;
@@ -141,8 +136,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
           lastDownloaded: submission.results_released_at,
         };
       });
-
-      console.log(`📜 Generated ${certificates.length} certificates`);
       setCertificates(certificates);
     } catch (error) {
       console.error('Error loading certificates:', error);
@@ -170,8 +163,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
   // Issue certificate (release results to participant)
   const issueCertificate = async (certificateId: string) => {
     try {
-      console.log(`📜 Issuing certificate ${certificateId}...`);
-      
       const { error } = await supabase
         .from('test_submissions')
         .update({
@@ -185,9 +176,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         Alert.alert('Error', 'Failed to issue certificate');
         return;
       }
-
-      console.log('✅ Certificate issued successfully');
-      
       // Refresh the certificates list
       await loadCertificates();
       
@@ -201,8 +189,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
   // Revoke certificate (hide results from participant)
   const revokeCertificate = async (certificateId: string) => {
     try {
-      console.log(`📜 Revoking certificate ${certificateId}...`);
-      
       const { error } = await supabase
         .from('test_submissions')
         .update({
@@ -216,9 +202,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         Alert.alert('Error', 'Failed to revoke certificate');
         return;
       }
-
-      console.log('✅ Certificate revoked successfully');
-      
       // Refresh the certificates list
       await loadCertificates();
       
@@ -231,8 +214,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
 
   const approveCertificate = async (certificateId: string) => {
     try {
-      console.log(`✅ Approving certificate ${certificateId}...`);
-      
       // Add to approving set
       setApprovingCertificates(prev => new Set(prev).add(certificateId));
       
@@ -249,9 +230,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         Alert.alert('Error', 'Failed to approve certificate');
         return;
       }
-
-      console.log('✅ Certificate approved successfully');
-      
       // Refresh the certificates list
       await loadCertificates();
       
@@ -272,8 +250,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
   // Bulk issue certificates
   const bulkIssueCertificates = async (certificateIds: string[]) => {
     try {
-      console.log(`📜 Bulk issuing ${certificateIds.length} certificates...`);
-      
       const { error } = await supabase
         .from('test_submissions')
         .update({
@@ -287,9 +263,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         Alert.alert('Error', 'Failed to issue certificates');
         return;
       }
-
-      console.log('✅ Certificates issued successfully');
-      
       // Refresh the certificates list
       await loadCertificates();
       
@@ -303,8 +276,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
   // Bulk approve certificates
   const bulkApproveCertificates = async (certificateIds: string[]) => {
     try {
-      console.log(`✅ Bulk approving ${certificateIds.length} certificates...`);
-      
       const { error } = await supabase
         .from('test_submissions')
         .update({
@@ -318,9 +289,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
         Alert.alert('Error', 'Failed to approve certificates');
         return;
       }
-
-      console.log('✅ Certificates approved successfully');
-      
       // Refresh the certificates list
       await loadCertificates();
       
@@ -434,19 +402,13 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
 
   const handleDownloadCertificate = async (certificateId: string) => {
     try {
-      console.log('🔍 Download button clicked for certificate:', certificateId);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       
       const certificate = certificates.find(cert => cert.id === certificateId);
       if (!certificate) {
-        console.log('❌ Certificate not found');
         Alert.alert('Error', 'Certificate not found');
         return;
       }
-
-      console.log(`📄 Generating PDF certificate for ${certificate.participantName}...`);
-      console.log('🔍 Certificate data:', certificate);
-      
       // Show loading alert
       Alert.alert('Generating Certificate', 'Please wait while we generate your PDF certificate...');
       
@@ -534,9 +496,6 @@ export default function CertificateManagementScreen({ onBack }: CertificateManag
           ]
         );
       }
-      
-      console.log('✅ Certificate generated and downloaded successfully');
-      
     } catch (error) {
       console.error('Error generating certificate:', error);
       Alert.alert('Error', 'Failed to generate certificate. Please try again.');
@@ -1411,7 +1370,6 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     marginBottom: 24,
   },
-
 
   // Tab Styles
   tabContainer: {

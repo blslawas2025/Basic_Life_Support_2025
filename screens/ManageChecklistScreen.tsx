@@ -133,12 +133,10 @@ export default function ManageChecklistScreen({
   };
 
   const handleViewEditDelete = async () => {
-    console.log('View/Edit/Delete button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     // Navigate to the view/edit/delete management screen
     if (onNavigateToViewEditDelete) {
-      console.log('Navigating to view/edit/delete management screen...');
       onNavigateToViewEditDelete();
     } else {
       showModal('Navigation Error', 'Unable to navigate to management screen');
@@ -164,7 +162,6 @@ export default function ManageChecklistScreen({
   };
 
   const handleChecklistSettings = async () => {
-    console.log('Checklist Settings button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     // Show simplified checklist settings for the demo version
@@ -182,12 +179,10 @@ export default function ManageChecklistScreen({
   };
 
   const handleChecklistResults = async () => {
-    console.log('Checklist Results button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     // Navigate to the checklist results screen
     if (onNavigateToChecklistResults) {
-      console.log('Navigating to checklist results screen...');
       onNavigateToChecklistResults();
     } else {
       showModal('Navigation Error', 'Unable to navigate to checklist results screen');
@@ -230,67 +225,51 @@ export default function ManageChecklistScreen({
   };
 
   const handleOneManCPR = async () => {
-    console.log('One Man CPR button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     // Since we're using the simplified version with sample data, just navigate directly
     if (onNavigateToChecklistView) {
-      console.log('Navigating to checklist view...');
       onNavigateToChecklistView('one man cpr');
     } else {
-      console.log('onNavigateToChecklistView prop is missing');
     }
   };
 
   const handleTwoManCPR = async () => {
-    console.log('Two Man CPR button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     // Since we're using the simplified version with sample data, just navigate directly
     if (onNavigateToChecklistView) {
-      console.log('Navigating to checklist view...');
       onNavigateToChecklistView('two man cpr');
     } else {
-      console.log('onNavigateToChecklistView prop is missing');
     }
   };
 
   const handleInfantCPR = async () => {
-    console.log('Infant CPR button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     if (onNavigateToChecklistView) {
-      console.log('Navigating to checklist view...');
       onNavigateToChecklistView('infant cpr');
     } else {
-      console.log('onNavigateToChecklistView prop is missing');
     }
   };
 
   const handleAdultChoking = async () => {
-    console.log('Adult Choking button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     if (onNavigateToChecklistView) {
-      console.log('Navigating to checklist view...');
       onNavigateToChecklistView('adult choking');
     } else {
-      console.log('onNavigateToChecklistView prop is missing');
     }
   };
 
   const handleInfantChoking = async () => {
-    console.log('Infant Choking button clicked');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     
     if (onNavigateToChecklistView) {
-      console.log('Navigating to checklist view...');
       onNavigateToChecklistView('infant choking');
     } else {
-      console.log('onNavigateToChecklistView prop is missing');
     }
   };
-
 
   return (
     <View style={styles.container}>

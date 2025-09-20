@@ -28,7 +28,6 @@ export class ChecklistService {
       // Create checklists table
       const { error: checklistsError } = await supabase.rpc('create_checklists_table_if_not_exists');
       if (checklistsError) {
-        console.log('Creating checklists table...');
         const { error } = await supabase.from('checklists').select('*').limit(1);
         if (error) {
           // Table doesn't exist, create it
@@ -49,7 +48,6 @@ export class ChecklistService {
       // Create checklist_items table
       const { error: itemsError } = await supabase.rpc('create_checklist_items_table_if_not_exists');
       if (itemsError) {
-        console.log('Creating checklist_items table...');
         const { error } = await supabase.from('checklist_items').select('*').limit(1);
         if (error) {
           // Table doesn't exist, create it
@@ -69,8 +67,6 @@ export class ChecklistService {
           await supabase.rpc('exec_sql', { sql: createItemsTable });
         }
       }
-
-      console.log('Checklist tables initialized successfully');
     } catch (error) {
       console.error('Error initializing checklist tables:', error);
     }

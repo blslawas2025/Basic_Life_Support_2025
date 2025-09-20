@@ -97,7 +97,6 @@ export class ProfileService {
       // Handle job_position_id - if it's a string number, convert to null to avoid UUID error
       let jobPositionId = profileData.job_position_id;
       if (jobPositionId && !this.isValidUUID(jobPositionId)) {
-        console.warn('Invalid UUID for job_position_id:', jobPositionId, 'Setting to null');
         jobPositionId = null;
       }
       

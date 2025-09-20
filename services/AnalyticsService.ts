@@ -117,8 +117,7 @@ export class AnalyticsService {
   // Analyze problematic questions across all submissions
   static async getProblematicQuestionsAnalysis(): Promise<any> {
     try {
-      console.log('🔍 Starting problematic questions analysis...');
-      
+
       // Get all submissions with detailed data
       const { data: submissions, error: submissionsError } = await supabase
         .from('test_submissions')
@@ -131,8 +130,6 @@ export class AnalyticsService {
         return { preTest: [], postTest: [], error: submissionsError.message };
       }
 
-      console.log(`📊 Found ${submissions?.length || 0} completed submissions`);
-
       // Get all questions
       const { data: questions, error: questionsError } = await supabase
         .from('questions')
@@ -143,8 +140,6 @@ export class AnalyticsService {
         console.error('Error fetching questions for analysis:', questionsError);
         return { preTest: [], postTest: [], error: questionsError.message };
       }
-
-      console.log(`❓ Found ${questions?.length || 0} questions`);
 
       // Analyze pre-test and post-test separately
       const preTestAnalysis = await this.analyzeQuestionPerformance(submissions, questions, 'pre_test');
@@ -181,8 +176,7 @@ export class AnalyticsService {
     try {
       // Get all submission IDs for this test type
       const submissionIds = testSubmissions.map(s => s.id);
-      console.log(`🔍 Checking for question answers for ${testType}: ${submissionIds.length} submissions`);
-      
+
       // Fetch actual question answers from the database
       const { data: questionAnswers, error: answersError } = await supabase
         .from('question_answers')
@@ -191,15 +185,13 @@ export class AnalyticsService {
 
       if (answersError) {
         console.error('Error fetching question answers:', answersError);
-        console.log('🔄 Falling back to summary analysis...');
+
         // Fallback to summary analysis if question_answers table doesn't exist or has errors
         return this.analyzeQuestionPerformanceFromSummary(testSubmissions, questions, testType);
       }
 
-      console.log(`📝 Found ${questionAnswers?.length || 0} individual question answers`);
-
       if (!questionAnswers || questionAnswers.length === 0) {
-        console.log('🔄 No individual answers found, using summary analysis...');
+
         // Fallback to summary analysis if no individual answers exist
         return this.analyzeQuestionPerformanceFromSummary(testSubmissions, questions, testType);
       }
@@ -258,10 +250,7 @@ export class AnalyticsService {
         Object.keys(analysis.answerChoices).forEach(choice => {
           analysis.answerChoices[choice].percentage = Math.round((analysis.answerChoices[choice].count / analysis.totalAttempts) * 100);
         });
-        
-        console.log(`📊 Question ${questionId}: ${analysis.correctAttempts}/${analysis.totalAttempts} correct (${analysis.correctnessPercentage}%)`);
-        console.log(`   Answer choices: A:${analysis.answerChoices.A.percentage}% B:${analysis.answerChoices.B.percentage}% C:${analysis.answerChoices.C.percentage}% D:${analysis.answerChoices.D.percentage}%`);
-        
+
         results.push({
           questionId: questionId,
           questionNumber: questions.findIndex(q => q.id === questionId) + 1,
@@ -285,15 +274,11 @@ export class AnalyticsService {
       }
     });
 
-    console.log(`✅ Generated ${results.length} question results for ${testType}`);
-    
     // Sort by wrong attempts (most problematic first) and return top 10
     const sortedResults = results
       .sort((a, b) => b.wrongAttempts - a.wrongAttempts)
       .slice(0, 10);
-      
-    console.log(`🏆 Top problematic questions for ${testType}:`, sortedResults.map(r => `${r.questionNumber}: ${r.correctnessPercentage}%`));
-    
+
     return sortedResults;
 
     } catch (error) {
@@ -305,8 +290,7 @@ export class AnalyticsService {
 
   // Fallback method to analyze question performance from summary data
   private static analyzeQuestionPerformanceFromSummary(submissions: any[], questions: any[], testType: string): any[] {
-    console.log(`🔄 Using summary analysis for ${testType} with ${submissions.length} submissions`);
-    
+
     // Create question analysis map
     const questionAnalysis = new Map();
     
@@ -387,10 +371,7 @@ export class AnalyticsService {
         Object.keys(analysis.answerChoices).forEach(choice => {
           analysis.answerChoices[choice].percentage = Math.round((analysis.answerChoices[choice].count / analysis.totalAttempts) * 100);
         });
-        
-        console.log(`📊 Question ${questionId}: ${analysis.correctAttempts}/${analysis.totalAttempts} correct (${analysis.correctnessPercentage}%)`);
-        console.log(`   Answer choices: A:${analysis.answerChoices.A.percentage}% B:${analysis.answerChoices.B.percentage}% C:${analysis.answerChoices.C.percentage}% D:${analysis.answerChoices.D.percentage}%`);
-        
+
         results.push({
           questionId: questionId,
           questionNumber: questions.findIndex(q => q.id === questionId) + 1,

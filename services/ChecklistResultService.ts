@@ -116,8 +116,7 @@ export class ChecklistResultService {
    */
   static async submitChecklistResult(resultData: Omit<ChecklistResult, 'id' | 'created_at' | 'updated_at'>): Promise<{ success: boolean; data?: ChecklistResult; error?: string }> {
     try {
-      console.log('Submitting checklist result:', resultData);
-      
+
       const { data, error } = await supabase
         .from('checklist_result')
         .insert([resultData])
@@ -129,7 +128,6 @@ export class ChecklistResultService {
         return { success: false, error: error.message };
       }
 
-      console.log('Checklist result submitted successfully:', data);
       return { success: true, data };
     } catch (error) {
       console.error('Error submitting checklist result:', error);

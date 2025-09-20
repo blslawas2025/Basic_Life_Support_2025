@@ -159,7 +159,6 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   // Add focus listener to refresh data when screen comes into focus
   useEffect(() => {
     const unsubscribe = navigation?.addListener?.('focus', () => {
-      console.log('🔄 Screen focused - refreshing data');
       loadData();
     });
 
@@ -168,16 +167,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
 
   // Set up real-time subscription for data changes
   useEffect(() => {
-    console.log('🔄 Setting up real-time subscription...');
     const unsubscribe = ComprehensiveResultsService.subscribeToChanges((newResults) => {
-      console.log('📊 Real-time update received:', newResults.length, 'results');
       setResults(newResults);
       // Also refresh statistics
       ComprehensiveResultsService.getComprehensiveStatistics().then(setStatistics);
     });
 
     return () => {
-      console.log('🔄 Cleaning up real-time subscription');
       unsubscribe();
     };
   }, []);
@@ -205,8 +201,6 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const loadData = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Loading comprehensive results...');
-      
       // Clear existing data first
       setResults([]);
       setStatistics(null);
@@ -218,8 +212,6 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
 
       setResults(resultsData);
       setStatistics(statsData);
-      console.log(`📊 Loaded ${resultsData.length} comprehensive results`);
-      
       // Force filter refresh after data load
       setTimeout(() => {
         filterResults();

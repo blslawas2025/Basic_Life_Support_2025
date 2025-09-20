@@ -176,7 +176,6 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             createdPools++;
           }
         } catch (error) {
-          console.warn(`Failed to create pool for ${setName}:`, error);
         }
       }
       
@@ -190,7 +189,6 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
         Alert.alert('Sync Complete', 'All question sets already have pools!');
       }
     } catch (error) {
-      console.warn('Failed to sync question sets with pools:', error);
       Alert.alert('Sync Error', 'Failed to sync question sets with pools');
     }
   };
@@ -1881,22 +1879,18 @@ const styles = StyleSheet.create({
     minWidth: 24,
     alignItems: 'center',
   },
-  cancelButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-  },
   deleteButton: {
     backgroundColor: '#ff6b6b',
-  },
-  cancelButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
   },
   deleteButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

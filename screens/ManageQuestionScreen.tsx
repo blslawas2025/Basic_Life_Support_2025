@@ -81,7 +81,6 @@ export default function ManageQuestionScreen({ onBack, onNavigateToUploadQuestio
     fetchQuestions();
   }, []);
 
-
   useEffect(() => {
     filterQuestions();
   }, [questions, searchTerm, selectedCategory, selectedDifficulty, selectedType]);

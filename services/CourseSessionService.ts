@@ -176,8 +176,6 @@ export class CourseSessionService {
   // Update course session
   static async updateCourseSession(id: string, updates: UpdateCourseSession): Promise<CourseSession> {
     try {
-      console.log('CourseSessionService.updateCourseSession called with:', { id, updates });
-      
       // Generate full name if course_name, series_name, or year is being updated
       if (updates.course_name || updates.series_name || updates.year) {
         const existingSession = await this.getCourseSessionById(id);
@@ -188,9 +186,6 @@ export class CourseSessionService {
           updates.full_name = generateCourseFullName(courseName, seriesName, year);
         }
       }
-      
-      console.log('Final updates object:', updates);
-      
       const { data, error } = await supabase
         .from('course_sessions')
         .update(updates)
@@ -202,8 +197,6 @@ export class CourseSessionService {
         console.error('Supabase error updating course session:', error);
         throw error;
       }
-
-      console.log('Course session updated successfully:', data);
       return data;
     } catch (error) {
       console.error('Error updating course session:', error);

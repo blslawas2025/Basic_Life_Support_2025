@@ -12,6 +12,13 @@ import { CourseSessionService } from "../services/CourseSessionService";
 import { CourseSession } from "../types/CourseSession";
 import { useResponsive } from "../utils/responsiveHelpers";
 
+// Utility functions for responsive design
+const isSmallScreen = (width: number) => width < 768;
+const getResponsiveColumnWidth = (small: number, medium: number, large: number) => {
+  const { width } = Dimensions.get('window');
+  return width < 768 ? small : width < 1024 ? medium : large;
+};
+
 interface ViewParticipantsScreenProps {
   onBack: () => void;
 }
@@ -1326,6 +1333,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0f0f23',
+    minHeight: '100vh',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   backgroundContainer: {
     position: 'absolute',
@@ -1398,6 +1409,9 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 20,
     paddingVertical: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   searchInputContainer: {
     flexDirection: 'row',
@@ -1446,6 +1460,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
     paddingBottom: 20,
+    flexGrow: 1,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -1453,7 +1468,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#a0a0a0',
+    color: '#ffffff',
     fontWeight: '600',
   },
   emptyContainer: {
@@ -1468,7 +1483,7 @@ const styles = StyleSheet.create({
   },
   emptySubtitle: {
     fontSize: 16,
-    color: '#a0a0a0',
+    color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     marginTop: 20,
   },
@@ -1578,20 +1593,21 @@ const styles = StyleSheet.create({
   },
   // Filter styles
   filtersContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
   },
   filterRow: {
     flexDirection: 'row',
-    marginBottom: 20,
-    gap: 20,
+    marginBottom: 16,
+    gap: 16,
     flexWrap: 'wrap',
   },
   filterGroup: {
     flex: 1,
-    minWidth: isSmallScreen ? '100%' : '45%',
+    minWidth: 200,
+    maxWidth: 300,
   },
   filterLabel: {
     fontSize: 16,
@@ -2238,5 +2254,66 @@ const styles = StyleSheet.create({
   sessionStatusText: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  // Staff-related styles (aliases for participant styles)
+  staffList: {
+    paddingHorizontal: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+  },
+  staffCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
+    minHeight: 120,
+  },
+  staffCardGradient: {
+    padding: 16,
+    borderRadius: 12,
+  },
+  staffHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    gap: 12,
+  },
+  staffInfo: {
+    flex: 1,
+    minWidth: 0,
+  },
+  staffName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#ffffff',
+    marginBottom: 4,
+    lineHeight: 20,
+  },
+  staffEmail: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontWeight: '400',
+    lineHeight: 18,
+  },
+  staffBadges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+  },
+  staffDetails: {
+    marginBottom: 12,
+  },
+  staffActions: {
+    flexDirection: 'row',
+    gap: 12,
+    flexWrap: 'wrap',
   },
 });

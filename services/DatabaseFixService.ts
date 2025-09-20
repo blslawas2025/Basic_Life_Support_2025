@@ -10,10 +10,8 @@ export class DatabaseFixService {
    */
   static async fixChokingSections(): Promise<{ success: boolean; error?: string }> {
     try {
-      console.log('🔧 Fixing choking checklist sections...');
 
       // First, fix the database constraint to include choking sections
-      console.log('🔧 Updating database constraint...');
       const { error: constraintError } = await supabase.rpc('exec_sql', {
         sql: `
           ALTER TABLE checklist_item DROP CONSTRAINT IF EXISTS checklist_item_section_check;
@@ -37,10 +35,7 @@ export class DatabaseFixService {
       });
 
       if (constraintError) {
-        console.error('Error updating constraint:', constraintError);
         // Continue anyway, the constraint might already be correct
-      } else {
-        console.log('✅ Database constraint updated');
       }
 
       // Check what sections currently exist for choking
@@ -54,8 +49,6 @@ export class DatabaseFixService {
         return { success: false, error: checkError.message };
       }
 
-      console.log('Current choking sections:', currentData);
-
       // Delete existing choking data
       const { error: deleteError } = await supabase
         .from('checklist_item')
@@ -66,8 +59,6 @@ export class DatabaseFixService {
         console.error('Error deleting choking data:', deleteError);
         return { success: false, error: deleteError.message };
       }
-
-      console.log('✅ Deleted existing choking data');
 
       // Insert correct adult choking data
       const adultChokingData = [
@@ -104,8 +95,6 @@ export class DatabaseFixService {
         console.error('Error inserting adult choking data:', adultError);
         return { success: false, error: adultError.message };
       }
-
-      console.log('✅ Inserted adult choking data');
 
       // Insert correct infant choking data
       const infantChokingData = [
@@ -145,8 +134,6 @@ export class DatabaseFixService {
         return { success: false, error: infantError.message };
       }
 
-      console.log('✅ Inserted infant choking data');
-
       // Verify the fix
       const { data: verifyData, error: verifyError } = await supabase
         .from('checklist_item')
@@ -158,7 +145,6 @@ export class DatabaseFixService {
         return { success: false, error: verifyError.message };
       }
 
-      console.log('✅ Choking sections fixed successfully:', verifyData);
       return { success: true };
 
     } catch (error) {
@@ -172,7 +158,6 @@ export class DatabaseFixService {
    */
   static async fixCompulsoryStatus(): Promise<{ success: boolean; error?: string }> {
     try {
-      console.log('🔧 Fixing compulsory status for checklist items...');
 
       // Get all checklist items
       const { data: items, error: fetchError } = await supabase
@@ -185,7 +170,7 @@ export class DatabaseFixService {
       }
 
       if (!items || items.length === 0) {
-        console.log('No checklist items found');
+
         return { success: true };
       }
 
@@ -226,7 +211,6 @@ export class DatabaseFixService {
         }
       }
 
-      console.log('✅ Compulsory status fixed successfully');
       return { success: true };
 
     } catch (error) {
@@ -240,7 +224,7 @@ export class DatabaseFixService {
    */
   static async runAllFixes(): Promise<{ success: boolean; error?: string; results: any[] }> {
     try {
-      console.log('🚀 Running all database fixes...');
+
       const results = [];
 
       // Fix choking sections
@@ -254,7 +238,7 @@ export class DatabaseFixService {
       const allSuccess = results.every(result => result.success);
       
       if (allSuccess) {
-        console.log('🎉 All database fixes completed successfully!');
+
         return { success: true, results };
       } else {
         console.error('❌ Some fixes failed:', results);
@@ -272,16 +256,13 @@ export class DatabaseFixService {
    */
   static async quickFix(): Promise<{ success: boolean; error?: string }> {
     try {
-      console.log('🔧 Running quick fix...');
 
       // 1. Skip constraint update for now - focus on data fixes
-      console.log('1️⃣ Skipping constraint update, focusing on data fixes...');
 
       // 2. Delete and recreate choking data
-      console.log('2️⃣ Fixing choking data...');
-      
+
       // Delete existing choking data
-      console.log('Deleting existing choking data...');
+
       const { error: deleteError } = await supabase
         .from('checklist_item')
         .delete()
@@ -291,7 +272,6 @@ export class DatabaseFixService {
         console.error('Delete error:', deleteError);
         return { success: false, error: `Failed to delete choking data: ${deleteError.message}` };
       }
-      console.log('✅ Deleted existing choking data');
 
       // Insert correct adult choking data
       const adultChokingData = [
@@ -313,14 +293,12 @@ export class DatabaseFixService {
         { checklist_type: 'adult choking', section: 'victim unconscious', item: '-During airway opening, check for foreign body, do not perform a blind finger sweep.', is_compulsory: false, order_index: 16 }
       ];
 
-      console.log('Inserting adult choking data...');
       const { error: adultError } = await supabase.from('checklist_item').insert(adultChokingData);
       
       if (adultError) {
         console.error('Adult choking insert error:', adultError);
         return { success: false, error: `Failed to insert adult choking data: ${adultError.message}` };
       }
-      console.log('✅ Adult choking data inserted');
 
       // Insert correct infant choking data
       const infantChokingData = [
@@ -344,19 +322,15 @@ export class DatabaseFixService {
         { checklist_type: 'infant choking', section: 'victim unconscious', item: '-During airway opening, check for foreign body, do not perform a blind finger sweep.', is_compulsory: false, order_index: 18 }
       ];
 
-      console.log('Inserting infant choking data...');
       const { error: infantError } = await supabase.from('checklist_item').insert(infantChokingData);
       
       if (infantError) {
         console.error('Infant choking insert error:', infantError);
         return { success: false, error: `Failed to insert infant choking data: ${infantError.message}` };
       }
-      console.log('✅ Infant choking data inserted');
-      console.log('✅ Choking data fixed');
 
       // 3. Fix compulsory status for CPR checklists
-      console.log('3️⃣ Fixing CPR compulsory status...');
-      
+
       const { data: cprItems, error: cprFetchError } = await supabase
         .from('checklist_item')
         .select('id, section, is_compulsory')
@@ -368,7 +342,7 @@ export class DatabaseFixService {
       }
 
       if (cprItems && cprItems.length > 0) {
-        console.log(`Updating ${cprItems.length} CPR items...`);
+
         for (const item of cprItems) {
           const isCompulsory = ['airway', 'breathing', 'circulation'].includes(item.section);
           const { error: updateError } = await supabase
@@ -380,12 +354,11 @@ export class DatabaseFixService {
             console.error(`Error updating item ${item.id}:`, updateError);
           }
         }
-        console.log('✅ CPR compulsory status fixed');
+
       } else {
-        console.log('No CPR items found to update');
+
       }
 
-      console.log('🎉 Quick fix completed successfully!');
       return { success: true };
 
     } catch (error) {

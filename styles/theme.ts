@@ -38,10 +38,10 @@ export const typography = {
 };
 
 export const gradients = {
-	appBackground: ["#0a0a0a", "#1a1a2e", "#16213e", "#0f3460", "#533483", "#0a0a0a"],
-	brandSweep: ["#00d4ff", "#5b73ff", "#00ff88", "#ff0080", "#ffaa00", "#00d4ff"],
-	cta: ["#00d4ff", "#5b73ff", "#00ff88"],
-	ctaDisabled: ["#4a5568", "#2d3748"],
+	appBackground: ["#0a0a0a", "#1a1a2e", "#16213e", "#0f3460", "#533483", "#0a0a0a"] as const,
+	brandSweep: ["#00d4ff", "#5b73ff", "#00ff88", "#ff0080", "#ffaa00", "#00d4ff"] as const,
+	cta: ["#00d4ff", "#5b73ff", "#00ff88"] as const,
+	ctaDisabled: ["#4a5568", "#2d3748"] as const,
 };
 
 export const elevation = {

@@ -34,7 +34,7 @@ export class ChecklistItemService {
     try {
       const { error } = await supabase.from('checklist_item').select('*').limit(1);
       if (error) {
-        console.log('Creating checklist_item table...');
+
         const createTable = `
           CREATE TABLE IF NOT EXISTS checklist_item (
             id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -69,7 +69,7 @@ export class ChecklistItemService {
         `;
         await supabase.rpc('exec_sql', { sql: createTable });
       }
-      console.log('Checklist_item table initialized successfully');
+
     } catch (error) {
       console.error('Error initializing checklist_item table:', error);
     }
@@ -266,7 +266,6 @@ export class ChecklistItemService {
         return { success: false, error: error.message };
       }
 
-      console.log('Two Man CPR checklist created successfully');
       return { success: true };
     } catch (error) {
       console.error('Error creating Two Man CPR checklist:', error);
@@ -405,7 +404,6 @@ export class ChecklistItemService {
         return { success: false, error: error.message };
       }
 
-      console.log('✅ Adult Choking checklist created successfully with 8 items');
       return { success: true };
     } catch (error) {
       console.error('Error creating Adult Choking checklist:', error);
@@ -561,7 +559,6 @@ export class ChecklistItemService {
         return { success: false, error: error.message };
       }
 
-      console.log('✅ Infant Choking checklist created successfully with 7 items');
       return { success: true };
     } catch (error) {
       console.error('Error creating Infant Choking checklist:', error);
@@ -719,7 +716,6 @@ export class ChecklistItemService {
         return { success: false, error: error.message };
       }
 
-      console.log('✅ Infant CPR checklist created successfully with 18 items');
       return { success: true };
     } catch (error) {
       console.error('Error creating Infant CPR checklist:', error);
@@ -934,8 +930,7 @@ export class ChecklistItemService {
   // Get checklist items by type
   static async getChecklistItemsByType(checklistType: string): Promise<{ success: boolean; items?: ChecklistItemData[]; error?: string }> {
     try {
-      console.log(`🔍 ChecklistItemService: Fetching checklist items for type: ${checklistType}`);
-      
+
       const { data, error } = await supabase
         .from('checklist_item')
         .select('*')
@@ -948,20 +943,15 @@ export class ChecklistItemService {
       }
 
       const items = data || [];
-      console.log(`🔍 ChecklistItemService: Found ${items.length} items for type: ${checklistType}`);
-      
+
       if (items.length > 0) {
-        console.log(`🔍 ChecklistItemService: First few items:`, items.slice(0, 3).map(item => ({
-          type: item.checklist_type,
-          section: item.section,
-          item: item.item.substring(0, 30) + '...'
-        })));
+
       }
       
       // If no items found and it's a known checklist type, create it
       if (items.length === 0) {
         if (checklistType === 'one man cpr') {
-          console.log('No One Man CPR checklist found, creating...');
+
           const createResult = await this.createOneManCPRChecklist();
           if (createResult.success) {
             // Retry fetching after creation
@@ -978,7 +968,7 @@ export class ChecklistItemService {
             }
           }
         } else if (checklistType === 'two man cpr') {
-          console.log('No Two Man CPR checklist found, creating...');
+
           const createResult = await this.createTwoManCPRChecklist();
           if (createResult.success) {
             // Retry fetching after creation
@@ -995,7 +985,7 @@ export class ChecklistItemService {
             }
           }
         } else if (checklistType === 'infant cpr') {
-          console.log('No Infant CPR checklist found, creating...');
+
           const createResult = await this.createInfantCPRChecklist();
           if (createResult.success) {
             // Retry fetching after creation
@@ -1012,7 +1002,7 @@ export class ChecklistItemService {
             }
           }
         } else if (checklistType === 'adult choking') {
-          console.log('No Adult Choking checklist found, creating...');
+
           const createResult = await this.createAdultChokingChecklist();
           if (createResult.success) {
             // Retry fetching after creation
@@ -1029,7 +1019,7 @@ export class ChecklistItemService {
             }
           }
         } else if (checklistType === 'infant choking') {
-          console.log('No Infant Choking checklist found, creating...');
+
           const createResult = await this.createInfantChokingChecklist();
           if (createResult.success) {
             // Retry fetching after creation
@@ -1233,8 +1223,7 @@ export class ChecklistItemService {
   // Fix compulsory status for existing CPR checklists
   static async fixCompulsoryStatusForCPRChecklists(): Promise<{ success: boolean; error?: string }> {
     try {
-      console.log('🔧 Fixing compulsory status for CPR checklists...');
-      
+
       // Define which sections should be compulsory for CPR checklists
       const compulsorySections = ['airway', 'breathing', 'circulation'];
       const cprTypes = ['one man cpr', 'two man cpr', 'infant cpr'];
@@ -1251,11 +1240,9 @@ export class ChecklistItemService {
       }
 
       if (!cprItems || cprItems.length === 0) {
-        console.log('No CPR items found to update');
+
         return { success: true };
       }
-
-      console.log(`Found ${cprItems.length} CPR items to update`);
 
       // Prepare updates
       const updates = cprItems.map(item => {
@@ -1291,11 +1278,9 @@ export class ChecklistItemService {
         }
         
         totalUpdated += batch.length;
-        console.log(`Updated batch: ${totalUpdated}/${updates.length} items`);
+
       }
 
-      console.log(`✅ Successfully updated ${totalUpdated} CPR checklist items`);
-      
       // Clear the cache to force refresh
       checklistStateManager.clear();
       

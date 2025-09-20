@@ -418,7 +418,6 @@ export class QuestionPoolService {
         try {
           assignments = JSON.parse(storedAssignments);
         } catch (e) {
-          console.warn('Failed to parse stored pool assignments:', e);
         }
       }
       
@@ -451,7 +450,6 @@ export class QuestionPoolService {
         try {
           assignments = JSON.parse(storedAssignments);
         } catch (e) {
-          console.warn('Failed to parse stored pool assignments:', e);
         }
       }
       

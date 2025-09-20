@@ -47,8 +47,7 @@ interface ChecklistSection {
 }
 
 export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }: ChecklistViewScreenProps) {
-  console.log(`🔍 ChecklistViewScreen: Rendering with checklistType: ${checklistType}`);
-  
+
   const [error, setError] = useState<string | null>(null);
   const [participants, setParticipants] = useState<Profile[]>([]);
   const [selectedParticipant, setSelectedParticipant] = useState<Profile | null>(null);
@@ -59,27 +58,10 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   // Use global state for checklist data
   const { data: checklistItems, refresh: refreshChecklistData, isLoading: isDataLoading } = useChecklistState(checklistType);
-  
-  console.log(`🔍 ChecklistViewScreen: Global state data for ${checklistType}:`, {
-    itemsCount: checklistItems?.length || 0,
-    isLoading: isDataLoading,
-    firstItem: checklistItems?.[0] ? {
-      type: checklistItems[0].checklist_type,
-      section: checklistItems[0].section,
-      item: checklistItems[0].item.substring(0, 30) + '...'
-    } : null
-  });
 
   // Process global state data into sections
   const sections = React.useMemo(() => {
-    console.log('🔍 Processing sections from checklistItems:', checklistItems?.length || 0, 'items');
-    console.log('🔍 Checklist type:', checklistType);
-    console.log('🔍 First few items:', checklistItems?.slice(0, 3).map(item => ({ 
-      type: item.checklist_type, 
-      section: item.section, 
-      item: item.item.substring(0, 30) + '...' 
-    })));
-    
+
     if (!checklistItems || checklistItems.length === 0) return [];
     
         // Group items by section
@@ -100,9 +82,8 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
           items: items.sort((a, b) => a.order_index - b.order_index),
         }));
 
-    console.log('🔍 Processed sections:', result.length, 'sections');
     result.forEach(section => {
-      console.log(`  - ${section.section}: ${section.items.length} items`);
+
     });
     
     return result;
@@ -113,25 +94,12 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
   const loadChecklist = useCallback(async () => {
     try {
       setError(null);
-      console.log('🔄 Loading checklist for type:', checklistType);
-      
+
       // Use global state refresh
       const result = await refreshChecklistData(() => ChecklistItemService.getChecklistItemsByType(checklistType));
-      
-      console.log('🔄 Service result:', {
-        success: result.success,
-        itemsCount: result.items?.length || 0,
-        error: result.error
-      });
-      
+
       if (result.success && result.items && result.items.length > 0) {
-        console.log('✅ Checklist loaded successfully:', result.items.length, 'items');
-        console.log('✅ First few items:', result.items.slice(0, 3).map(item => ({
-          type: item.checklist_type,
-          section: item.section,
-          item: item.item.substring(0, 30) + '...'
-        })));
-        
+
         // Animate in after loading
         Animated.parallel([
           Animated.timing(fadeAnim, {
@@ -145,10 +113,10 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
             useNativeDriver: true,
           })
         ]).start(() => {
-          console.log('Animations completed');
+
         });
       } else {
-        console.log('❌ No checklist data found for:', checklistType);
+
         setError(`No checklist data found for ${checklistType}`);
       }
     } catch (error) {
@@ -164,16 +132,14 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   const loadParticipants = async () => {
     try {
-      console.log('Loading participants...');
+
       const profiles = await ProfileService.getAllProfiles();
-      console.log('Loaded profiles:', profiles.length);
-      
+
       // Filter only participants
       const participantProfiles = profiles.filter(profile => 
         profile.user_type === 'participant' && profile.status === 'approved'
       );
-      
-      console.log('Filtered participants:', participantProfiles.length);
+
       setParticipants(participantProfiles);
     } catch (error) {
       console.error('Error loading participants:', error);
@@ -182,7 +148,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   // Manual refresh function
   const handleManualRefresh = async () => {
-    console.log('🔄 Manual refresh triggered');
+
     await loadChecklist();
   };
 
@@ -258,8 +224,6 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
         is_retake: false
       };
 
-      console.log('Submitting assessment to database:', assessmentData);
-      
       // Submit to database using synchronization service
       const result = await synchronizationService.saveAndSync(async () => {
         return await ChecklistResultService.submitChecklistResult(assessmentData);
@@ -286,10 +250,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
   };
 
   const toggleItem = (sectionIndex: number, itemIndex: number) => {
-    console.log(`Toggling item ${sectionIndex}.${itemIndex}`);
-    console.log('Current sections:', sections.length);
-    console.log('Current item state:', sections[sectionIndex]?.items[itemIndex]?.completed);
-    
+
     // Check if sections and items exist
     if (!sections[sectionIndex] || !sections[sectionIndex].items[itemIndex]) {
       console.error('Invalid section or item index');
@@ -304,10 +265,10 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
-        console.log(`Item ${sectionIndex}.${itemIndex} marked as incomplete`);
+
       } else {
         newSet.add(itemId);
-        console.log(`Item ${sectionIndex}.${itemIndex} marked as completed`);
+
       }
       return newSet;
     });
@@ -587,7 +548,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
                     <TouchableOpacity
                       key={participant.id}
                       onPress={() => {
-                        console.log('Selected participant:', participant.name);
+
                         setSelectedParticipant(participant);
                         setShowParticipantSelector(false);
                         setSearchQuery('');
@@ -711,7 +672,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
                         
                         <TouchableOpacity
                           onPress={() => {
-                            console.log(`TouchableOpacity pressed for item ${sectionIndex}.${itemIndex}`);
+
                             toggleItem(sectionIndex, itemIndex);
                           }}
                           style={styles.modernToggleContainer}

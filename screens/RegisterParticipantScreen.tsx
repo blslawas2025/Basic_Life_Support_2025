@@ -42,7 +42,6 @@ interface RegisterParticipantScreenProps {
   onBack: () => void;
 }
 
-
 interface FormData {
   email: string;
   name: string;
@@ -200,7 +199,6 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
       }
     }
   };
-
 
   const startAnimations = () => {
     // Entrance animations
@@ -469,8 +467,6 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
       setIsSubmitting(false);
     }
   };
-
-
 
   const handleInputFocus = (inputType: string) => {
     setFocusedInput(inputType);
@@ -891,7 +887,6 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
               </View>
             )}
 
-
             {/* Tempat Bertugas */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>🏢 Tempat Bertugas</Text>
@@ -1209,7 +1204,6 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
           </View>
         </View>
       </Modal>
-
 
       <Modal
         visible={showBlsModal}

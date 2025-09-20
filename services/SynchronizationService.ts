@@ -37,7 +37,6 @@ export class SynchronizationService {
             table: 'checklist_item'
           },
           (payload) => {
-            console.log('Checklist item changed:', payload);
             this.handleChecklistItemChange(payload);
           }
         )
@@ -54,14 +53,12 @@ export class SynchronizationService {
             table: 'checklist_result'
           },
           (payload) => {
-            console.log('Checklist result changed:', payload);
             this.handleChecklistResultChange(payload);
           }
         )
         .subscribe();
 
       this.isListening = true;
-      console.log('SynchronizationService: Started listening to Supabase changes');
     } catch (error) {
       console.error('Failed to start synchronization:', error);
     }
@@ -75,7 +72,6 @@ export class SynchronizationService {
 
     supabase.removeAllChannels();
     this.isListening = false;
-    console.log('SynchronizationService: Stopped listening to Supabase changes');
   }
 
   /**
@@ -105,8 +101,6 @@ export class SynchronizationService {
    * Force refresh a specific checklist type
    */
   async refreshChecklistType(checklistType: string): Promise<void> {
-    console.log(`SynchronizationService: Refreshing ${checklistType}`);
-    
     // Clear cache for this type
     checklistStateManager.clearCacheForType(checklistType);
     
@@ -124,8 +118,6 @@ export class SynchronizationService {
    * Force refresh all data
    */
   async refreshAll(): Promise<void> {
-    console.log('SynchronizationService: Refreshing all data');
-    
     // Clear all cache
     checklistStateManager.clearAllCache();
     
@@ -202,5 +194,4 @@ export class SynchronizationService {
 
 // Export singleton instance
 export const synchronizationService = SynchronizationService.getInstance();
-
 

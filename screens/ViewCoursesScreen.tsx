@@ -165,7 +165,6 @@ export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesS
   };
 
   const handleToggleStatus = async (course: CourseSession) => {
-    console.log('handleToggleStatus called for course:', course.id);
     setCourseToToggle(course);
     setShowConfirmModal(true);
   };
@@ -175,21 +174,10 @@ export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesS
     
     const newStatus = courseToToggle.status === 'active' ? 'inactive' : 'active';
     const actionText = newStatus === 'active' ? 'activate' : 'deactivate';
-    
-    console.log('Confirming toggle:', { 
-      courseId: courseToToggle.id, 
-      currentStatus: courseToToggle.status, 
-      newStatus: newStatus,
-      actionText: actionText 
-    });
-    
     try {
-      console.log('Updating course status to:', newStatus);
       await CourseSessionService.updateCourseSession(courseToToggle.id, { 
         status: newStatus 
       });
-      console.log('Course status updated successfully');
-      
       // Show success message
       Alert.alert("Success", `Course ${actionText}d successfully.`);
       loadCourses(); // Reload the list
@@ -203,7 +191,6 @@ export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesS
   };
 
   const handleCancelToggle = () => {
-    console.log('User cancelled the toggle');
     setShowConfirmModal(false);
     setCourseToToggle(null);
   };
@@ -297,7 +284,6 @@ export default function ViewCoursesScreen({ onBack, onEditCourse }: ViewCoursesS
               course.status === 'active' ? styles.inactiveButton : styles.activeButton
             ]}
             onPress={() => {
-              console.log('Toggle button pressed for course:', course.id);
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               handleToggleStatus(course);
             }}

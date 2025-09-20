@@ -163,7 +163,6 @@ interface ResultsAnalyticsScreenProps {
   onNavigateToCertificateManagement?: () => void;
 }
 
-
 interface AnalyticsData {
   totalParticipants: number;
   preTestParticipants: number;
@@ -1221,7 +1220,6 @@ export default function ResultsAnalyticsScreen({
         </ScrollView>
         </View>
 
-
       {/* Modern Export Modal */}
       <Modal
         visible={showExportModal}
@@ -1834,7 +1832,6 @@ export default function ResultsAnalyticsScreen({
           </View>
         </View>
       </Modal>
-
 
     </View>
   );
