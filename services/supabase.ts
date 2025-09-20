@@ -101,7 +101,6 @@ export class JobService {
           .select('*');
         
         adminData = adminDataResult;
-        } else {
         }
 
       // Now try with the is_active filter
