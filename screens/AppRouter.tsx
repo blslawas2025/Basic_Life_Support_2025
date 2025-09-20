@@ -136,7 +136,7 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'viewParticipants' && userData) {
-		return <SimpleViewParticipantsScreen onBack={props.onBackToManageParticipant} />;
+		return <ViewParticipantsScreen onBack={props.onBackToManageParticipant} />;
 	}
 
 	if (currentScreen === 'manageStaff' && userData) {
@@ -227,21 +227,50 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'dashboard' && isLoggedIn && userData) {
-		return (
-			<SimpleDashboard
-				userName={userData.userName}
-				onLogout={props.onLogout}
-				onNavigateToManageParticipant={props.onNavigateToManageParticipant}
-				onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
-				onNavigateToManageStaff={props.onNavigateToManageStaff}
-				onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
-				onNavigateToManageQuestions={props.onNavigateToManageQuestions}
-				onNavigateToManageChecklist={props.onNavigateToManageChecklist}
-				onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
-				onNavigateToCreateCourse={props.onNavigateToCreateCourse}
-				onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
-			/>
-		);
+		if (userData.roles === 'admin' || userData.isSuperAdmin) {
+			return (
+				<SuperAdminDashboard
+					userName={userData.userName}
+					onLogout={props.onLogout}
+					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
+					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
+					onNavigateToManageStaff={props.onNavigateToManageStaff}
+					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
+					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
+					onNavigateToManageChecklist={props.onNavigateToManageChecklist}
+					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
+					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+				/>
+			);
+		} else if (userData.roles === 'staff') {
+			return (
+				<AdminDashboard 
+					userName={userData.userName}
+					onLogout={props.onLogout}
+					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
+					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
+					onNavigateToManageStaff={props.onNavigateToManageStaff}
+					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
+					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
+					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
+					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+				/>
+			);
+		} else {
+			return (
+				<AdminDashboard 
+					userName={userData.userName}
+					onLogout={props.onLogout}
+					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
+					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
+					onNavigateToManageStaff={props.onNavigateToManageStaff}
+					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
+					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
+					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+				/>
+			);
+		}
 	}
 
 	if (currentScreen === 'testSettings' && isLoggedIn && userData) {
@@ -340,7 +369,7 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'comprehensiveResults' && isLoggedIn && userData) {
-		return <SimpleComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
+		return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
 	}
 
 	if (currentScreen === 'createCourse' && isLoggedIn && userData) {

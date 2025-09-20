@@ -1,455 +1,357 @@
-// App.tsx - Ultra Simple Mobile-First Version
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, TextInput, Alert, Dimensions } from 'react-native';
+// App.tsx
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-native";
+import { synchronizationService } from "./services/SynchronizationService";
+import LoginScreen from "./screens/LoginScreen";
+import SuperAdminDashboard from "./screens/SuperAdminDashboard";
+import AdminDashboard from "./screens/AdminDashboard";
+import ManageParticipantScreen from "./screens/ManageParticipantScreen";
+import RegisterParticipantScreen from "./screens/RegisterParticipantScreen";
+import BulkImportScreen from "./screens/BulkImportScreen";
+import ApproveParticipantsScreen from "./screens/ApproveParticipantsScreen";
+import ViewParticipantsScreen from "./screens/ViewParticipantsScreen";
+import ManageStaffScreen from "./screens/ManageStaffScreen";
+import RegisterStaffScreen from "./screens/RegisterStaffScreen";
+import ViewStaffScreen from "./screens/ViewStaffScreen";
+import StaffDashboard from "./screens/StaffDashboard";
+import ManageQuestionScreen from "./screens/ManageQuestionScreen";
+import UploadQuestionsScreen from "./screens/UploadQuestionsScreen";
+import ManageChecklistScreen from "./screens/ManageChecklistScreen";
+import ChecklistViewScreen from "./screens/ChecklistViewScreen";
+import ChecklistResultsScreen from "./screens/ChecklistResultsScreen";
+import UploadChecklistScreen from "./screens/UploadChecklistScreen";
+import ViewEditDeleteChecklistScreen from "./screens/ViewEditDeleteChecklistScreen";
+import ChecklistSettingsScreen from "./screens/ChecklistSettingsScreen";
+import PreTestScreen from "./screens/PreTestScreen";
+import PostTestScreen from "./screens/PostTestScreen";
+import TestInterfaceScreen from "./screens/TestInterfaceScreen";
+import TestResultsScreen from "./screens/TestResultsScreen";
+import QuestionPoolManagementScreen from "./screens/QuestionPoolManagementScreen";
+import AccessControlManagementScreen from "./screens/AccessControlManagementScreen";
+import ResultsAnalyticsScreen from "./screens/ResultsAnalyticsScreen";
+import ImportResultsScreen from "./screens/ImportResultsScreen";
+import BulkImportResultsScreen from "./screens/BulkImportResultsScreen";
+import ResultViewScreen from "./screens/ResultViewScreen";
+import ResultAnalysisScreen from "./screens/ResultAnalysisScreen";
+import ResultSettingsScreen from "./screens/ResultSettingsScreen";
+import CertificateManagementScreen from "./screens/CertificateManagementScreen";
+import ComprehensiveResultsScreen from "./screens/ComprehensiveResultsScreen";
+import CreateCourseScreen from "./screens/CreateCourseScreen";
+import ViewCoursesScreen from "./screens/ViewCoursesScreen";
+import EditCourseScreen from "./screens/EditCourseScreen";
+import AttendanceMonitoringScreen from "./screens/AttendanceMonitoringScreen";
+import AppRouter from "./screens/AppRouter";
+import { ROUTES } from "./routes/routeMap";
 
-const { width } = Dimensions.get('window');
-
-// Types
 interface UserData {
-  id: string;
+  id: string; // UUID from profiles table
   email: string;
+  isSuperAdmin: boolean;
   userName: string;
-  roles: string;
+  roles: 'admin' | 'staff' | 'user';
 }
 
-type Screen = 'login' | 'dashboard' | 'participants' | 'results';
+type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('dashboard');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [userData] = useState<UserData>({
-    id: 'demo-user',
-    email: 'demo@example.com',
-    userName: 'Demo User',
-    roles: 'admin'
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<Screen>(ROUTES.login as Screen);
+  const [testResults, setTestResults] = useState<any>(null);
+  const [currentTestType, setCurrentTestType] = useState<'pre' | 'post'>('pre');
+  const [currentChecklistType, setCurrentChecklistType] = useState<string>('');
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
-  // Navigation
-  const navigateToScreen = (screen: Screen) => {
-    setCurrentScreen(screen);
-  };
-
-  // Login Screen
-  const LoginScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleLogin = () => {
-      if (email && password) {
-        setIsLoggedIn(true);
-        setCurrentScreen('dashboard');
-      } else {
-        Alert.alert('Error', 'Please enter email and password');
+  // Initialize synchronization service
+  useEffect(() => {
+    const initializeSync = async () => {
+      try {
+        console.log('🚀 Initializing synchronization service...');
+        await synchronizationService.startListening();
+        console.log('✅ Synchronization service started successfully');
+      } catch (error) {
+        console.error('❌ Failed to initialize synchronization service:', error);
       }
     };
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.loginContainer}>
-          <View style={styles.loginHeader}>
-            <Text style={styles.loginTitle}>🏥 Basic Life Support</Text>
-            <Text style={styles.loginSubtitle}>Mobile Training Platform</Text>
-          </View>
+    initializeSync();
 
-          <View style={styles.loginForm}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email Address"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
-          </View>
+    // Cleanup on unmount
+    return () => {
+      synchronizationService.stopListening();
+    };
+  }, []);
 
-          <View style={styles.loginFooter}>
-            <Text style={styles.footerText}>✅ No Authentication Issues</Text>
-            <Text style={styles.footerText}>✅ Mobile Optimized</Text>
-            <Text style={styles.footerText}>✅ Perfect Scrolling</Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+  const handleLogin = (loginData: UserData) => {
+    setUserData(loginData);
+    setIsLoggedIn(true);
+    setCurrentScreen(ROUTES.dashboard as Screen);
   };
 
-  // Dashboard Screen
-  const DashboardScreen = () => {
-    const menuItems = [
-      { title: "👥 Participants", subtitle: "View participant list", screen: 'participants' as Screen, color: "#3498db" },
-      { title: "📊 Results", subtitle: "Test results & analytics", screen: 'results' as Screen, color: "#27ae60" },
-    ];
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.dashboardContent}>
-          <View style={styles.header}>
-            <Text style={styles.welcomeText}>Welcome back,</Text>
-            <Text style={styles.userName}>{userData.userName}</Text>
-            <Text style={styles.subtitle}>Basic Life Support Training</Text>
-            <Text style={styles.statusText}>✅ All Issues Fixed • Mobile Ready</Text>
-          </View>
-
-          <View style={styles.menuGrid}>
-            {menuItems.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.menuItem, { backgroundColor: item.color }]}
-                onPress={() => navigateToScreen(item.screen)}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.menuTitle}>{item.title}</Text>
-                <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <View style={styles.statusSection}>
-            <Text style={styles.sectionTitle}>🔧 Fixed Issues:</Text>
-            <Text style={styles.statusItem}>✅ No more Vercel authentication</Text>
-            <Text style={styles.statusItem}>✅ Perfect mobile scrolling</Text>
-            <Text style={styles.statusItem}>✅ No blank screens</Text>
-            <Text style={styles.statusItem}>✅ Responsive layouts</Text>
-            <Text style={styles.statusItem}>✅ Working navigation</Text>
-          </View>
-
-          <TouchableOpacity style={styles.logoutButton} onPress={() => Alert.alert('Logout', 'Logout functionality works!')}>
-            <Text style={styles.logoutText}>🚪 Test Logout</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    );
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserData(null);
+    setCurrentScreen(ROUTES.login as Screen);
   };
 
-  // Participants Screen
-  const ParticipantsScreen = () => {
-    const participants = [
-      { id: '1', name: 'MUHSINAH BINTI ABDUL SHOMAD', email: 'muhsinah92@gmail.com', job: 'PEGAWAI PERGIGIAN' },
-      { id: '2', name: 'Ahmad Bin Hassan', email: 'ahmad.hassan@example.com', job: 'NURSE' },
-      { id: '3', name: 'Siti Noor Aishah', email: 'siti.aishah@example.com', job: 'DOCTOR' }
-    ];
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.screenHeader}>
-          <TouchableOpacity onPress={() => navigateToScreen('dashboard')}>
-            <Text style={styles.backButton}>← Back to Dashboard</Text>
-          </TouchableOpacity>
-          <Text style={styles.screenTitle}>👥 Participants</Text>
-          <Text style={styles.screenSubtitle}>✅ Perfect Mobile Layout • Scrolling Fixed</Text>
-        </View>
-
-        <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-          {participants.map(participant => (
-            <View key={participant.id} style={styles.listItem}>
-              <Text style={styles.itemTitle}>{participant.name}</Text>
-              <Text style={styles.itemSubtitle}>📧 {participant.email}</Text>
-              <Text style={styles.itemDetail}>💼 {participant.job}</Text>
-            </View>
-          ))}
-          
-          <View style={styles.scrollTestSection}>
-            <Text style={styles.sectionTitle}>🧪 Scroll Test Section</Text>
-            <Text style={styles.scrollText}>This content tests that scrolling works perfectly on mobile devices.</Text>
-            <Text style={styles.scrollText}>No more sticky elements or broken layouts!</Text>
-            <Text style={styles.scrollText}>Keep scrolling to test...</Text>
-            {[1,2,3,4,5].map(i => (
-              <View key={i} style={styles.testItem}>
-                <Text style={styles.testText}>Test Item {i} - Scrolling Works!</Text>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+  const handleNavigateToManageParticipant = () => {
+    setCurrentScreen(ROUTES.manageParticipant as Screen);
   };
 
-  // Results Screen
-  const ResultsScreen = () => {
-    const results = [
-      { id: '1', name: 'MUHSINAH BINTI ABDUL SHOMAD', test: 'Pre-Test', score: 85, status: 'Pass' },
-      { id: '2', name: 'Ahmad Bin Hassan', test: 'Post-Test', score: 92, status: 'Pass' },
-      { id: '3', name: 'Siti Noor Aishah', test: 'Pre-Test', score: 65, status: 'Fail' }
-    ];
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.screenHeader}>
-          <TouchableOpacity onPress={() => navigateToScreen('dashboard')}>
-            <Text style={styles.backButton}>← Back to Dashboard</Text>
-          </TouchableOpacity>
-          <Text style={styles.screenTitle}>📊 Test Results</Text>
-          <Text style={styles.screenSubtitle}>✅ No More Blank Screens</Text>
-        </View>
-
-        <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-          {results.map(result => (
-            <View key={result.id} style={styles.listItem}>
-              <Text style={styles.itemTitle}>{result.name}</Text>
-              <Text style={styles.itemSubtitle}>📝 {result.test}</Text>
-              <Text style={styles.itemDetail}>🎯 Score: {result.score}%</Text>
-              <View style={[styles.statusBadge, { backgroundColor: result.status === 'Pass' ? '#27ae60' : '#e74c3c' }]}>
-                <Text style={styles.statusText}>{result.status}</Text>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
-      </SafeAreaView>
-    );
+  const handleBackToDashboard = () => {
+    setCurrentScreen(ROUTES.dashboard as Screen);
   };
 
-  // Main render
-  if (!isLoggedIn) {
-    return <LoginScreen />;
-  }
+  const handleBackToDashboardFromChecklist = () => {
+    setCurrentScreen(ROUTES.dashboard as Screen);
+  };
 
-  switch (currentScreen) {
-    case 'participants':
-      return <ParticipantsScreen />;
-    case 'results':
-      return <ResultsScreen />;
-    default:
-      return <DashboardScreen />;
-  }
+  const handleNavigateToRegisterParticipant = () => {
+    setCurrentScreen(ROUTES.registerParticipant as Screen);
+  };
+
+  const handleBackToManageParticipant = () => {
+    setCurrentScreen(ROUTES.manageParticipant as Screen);
+  };
+
+  const handleNavigateToBulkImport = () => {
+    setCurrentScreen(ROUTES.bulkImport as Screen);
+  };
+
+  const handleNavigateToApproveParticipants = () => {
+    setCurrentScreen(ROUTES.approveParticipants as Screen);
+  };
+
+  const handleNavigateToViewParticipants = () => {
+    setCurrentScreen(ROUTES.viewParticipants as Screen);
+  };
+
+  const handleNavigateToManageStaff = () => {
+    setCurrentScreen(ROUTES.manageStaff as Screen);
+  };
+
+  const handleNavigateToRegisterStaff = () => {
+    setCurrentScreen(ROUTES.registerStaff as Screen);
+  };
+
+  const handleNavigateToViewStaff = () => {
+    setCurrentScreen(ROUTES.viewStaff as Screen);
+  };
+
+  const handleBackToManageStaff = () => {
+    setCurrentScreen(ROUTES.manageStaff as Screen);
+  };
+
+  const handleNavigateToStaffDashboard = () => {
+    setCurrentScreen(ROUTES.staffDashboard as Screen);
+  };
+
+  const handleBackToStaffDashboard = () => {
+    setCurrentScreen(ROUTES.staffDashboard as Screen);
+  };
+
+  const handleNavigateToManageQuestions = () => {
+    setCurrentScreen(ROUTES.manageQuestions as Screen);
+  };
+
+  const handleNavigateToUploadQuestions = () => {
+    setCurrentScreen(ROUTES.uploadQuestions as Screen);
+  };
+
+  const handleNavigateToManageChecklist = () => {
+    setCurrentScreen(ROUTES.manageChecklist as Screen);
+  };
+
+  const handleNavigateToViewEditDeleteChecklist = () => {
+    setCurrentScreen(ROUTES.viewEditDeleteChecklist as Screen);
+  };
+
+  const handleNavigateToChecklistSettings = () => {
+    setCurrentScreen(ROUTES.checklistSettings as Screen);
+  };
+
+  const handleNavigateToChecklistView = (checklistType: string) => {
+    console.log('handleNavigateToChecklistView called with:', checklistType);
+    console.log('Current screen before:', currentScreen);
+    setCurrentChecklistType(checklistType);
+    setCurrentScreen(ROUTES.checklistView as Screen);
+    console.log('Current screen after:', 'checklistView');
+  };
+
+  const handleNavigateToChecklistResults = () => {
+    console.log('handleNavigateToChecklistResults called');
+    setCurrentScreen(ROUTES.checklistResults as Screen);
+  };
+
+  const handleNavigateToPreTest = () => {
+    console.log('handleNavigateToPreTest called');
+    console.log('Current screen before:', currentScreen);
+    setCurrentScreen(ROUTES.preTest as Screen);
+    console.log('Current screen after:', 'preTest');
+  };
+
+  const handleNavigateToPostTest = () => {
+    console.log('handleNavigateToPostTest called');
+    console.log('Current screen before:', currentScreen);
+    setCurrentScreen(ROUTES.postTest as Screen);
+    console.log('Current screen after:', 'postTest');
+  };
+
+  const handleNavigateToTestSettings = () => {
+    console.log('handleNavigateToTestSettings called');
+    console.log('Current screen before:', currentScreen);
+    setCurrentScreen(ROUTES.testSettings as Screen);
+    console.log('Current screen after:', 'testSettings');
+  };
+
+  const handleShowTestResults = (results: any) => {
+    setTestResults(results);
+    setCurrentScreen(ROUTES.testResults as Screen);
+  };
+
+  const handleBackFromResults = () => {
+    setTestResults(null);
+    setCurrentScreen('manageQuestions');
+  };
+
+  const handleNavigateToQuestionPools = () => {
+    console.log('handleNavigateToQuestionPools called');
+    setCurrentScreen(ROUTES.questionPoolManagement as Screen);
+  };
+
+  const handleNavigateToAccessControl = () => {
+    console.log('handleNavigateToAccessControl called');
+    setCurrentScreen(ROUTES.accessControlManagement as Screen);
+  };
+
+  const handleNavigateToResults = () => {
+    console.log('handleNavigateToResults called');
+    setCurrentScreen(ROUTES.resultsAnalytics as Screen);
+  };
+
+  const handleNavigateToImportResults = () => {
+    console.log('handleNavigateToImportResults called');
+    setCurrentScreen(ROUTES.importResults as Screen);
+  };
+
+  const handleNavigateToBulkImportResults = () => {
+    console.log('handleNavigateToBulkImportResults called');
+    setCurrentScreen(ROUTES.bulkImportResults as Screen);
+  };
+
+  const handleNavigateToResultView = () => {
+    console.log('handleNavigateToResultView called');
+    setCurrentScreen(ROUTES.resultView as Screen);
+  };
+
+  const handleNavigateToResultAnalysis = () => {
+    console.log('handleNavigateToResultAnalysis called');
+    setCurrentScreen(ROUTES.resultAnalysis as Screen);
+  };
+
+  const handleNavigateToResultSettings = () => {
+    console.log('handleNavigateToResultSettings called');
+    setCurrentScreen(ROUTES.resultSettings as Screen);
+  };
+
+  const handleNavigateToCertificateManagement = () => {
+    console.log('handleNavigateToCertificateManagement called');
+    setCurrentScreen(ROUTES.certificateManagement as Screen);
+  };
+
+  const handleNavigateToComprehensiveResults = () => {
+    console.log('handleNavigateToComprehensiveResults called');
+    setCurrentScreen(ROUTES.comprehensiveResults as Screen);
+  };
+
+  const handleNavigateToCreateCourse = () => {
+    console.log('handleNavigateToCreateCourse called');
+    setCurrentScreen(ROUTES.createCourse as Screen);
+  };
+
+  const handleNavigateToAttendanceMonitoring = () => {
+    console.log('handleNavigateToAttendanceMonitoring called');
+    setCurrentScreen(ROUTES.attendanceMonitoring as Screen);
+  };
+
+  const handleNavigateToViewCourses = () => {
+    console.log('handleNavigateToViewCourses called');
+    setCurrentScreen(ROUTES.viewCourses as Screen);
+  };
+
+  const handleEditCourse = (course: any) => {
+    console.log('handleEditCourse called with course:', course);
+    setSelectedCourse(course);
+    setCurrentScreen(ROUTES.editCourse as Screen);
+  };
+
+  const handleBackFromEditCourse = () => {
+    setSelectedCourse(null);
+    setCurrentScreen(ROUTES.viewCourses as Screen);
+  };
+
+  const handleCourseUpdated = () => {
+    console.log('Course updated successfully');
+    // The ViewCoursesScreen will refresh automatically when we go back
+  };
+
+  const handleBackToManageChecklist = () => {
+    setCurrentScreen('manageChecklist');
+  };
+
+  // Render via AppRouter to keep file short and maintainable (logic unchanged)
+  return (
+    <AppRouter
+      currentScreen={currentScreen}
+      isLoggedIn={isLoggedIn}
+      userData={userData}
+      testResults={testResults}
+      currentTestType={currentTestType}
+      currentChecklistType={currentChecklistType}
+      selectedCourse={selectedCourse}
+      onLogin={handleLogin}
+      onLogout={handleLogout}
+      onBackToDashboard={handleBackToDashboard}
+      onBackToDashboardFromChecklist={handleBackToDashboardFromChecklist}
+      onNavigateToManageParticipant={handleNavigateToManageParticipant}
+      onNavigateToRegisterParticipant={handleNavigateToRegisterParticipant}
+      onNavigateToBulkImport={handleNavigateToBulkImport}
+      onNavigateToViewParticipants={handleNavigateToViewParticipants}
+      onNavigateToApproveParticipants={handleNavigateToApproveParticipants}
+      onNavigateToManageStaff={handleNavigateToManageStaff}
+      onNavigateToRegisterStaff={handleNavigateToRegisterStaff}
+      onNavigateToViewStaff={handleNavigateToViewStaff}
+      onNavigateToStaffDashboard={handleNavigateToStaffDashboard}
+      onBackToManageParticipant={handleBackToManageParticipant}
+      onBackToManageStaff={handleBackToManageStaff}
+      onNavigateToManageQuestions={handleNavigateToManageQuestions}
+      onNavigateToUploadQuestions={handleNavigateToUploadQuestions}
+      onNavigateToPreTest={handleNavigateToPreTest}
+      onNavigateToPostTest={handleNavigateToPostTest}
+      onNavigateToTestSettings={handleNavigateToTestSettings}
+      onShowTestResults={handleShowTestResults}
+      onBackFromResults={handleBackFromResults}
+      onNavigateToQuestionPools={handleNavigateToQuestionPools}
+      onNavigateToAccessControl={handleNavigateToAccessControl}
+      onNavigateToResults={handleNavigateToResults}
+      onNavigateToImportResults={handleNavigateToImportResults}
+      onNavigateToBulkImportResults={handleNavigateToBulkImportResults}
+      onNavigateToResultView={handleNavigateToResultView}
+      onNavigateToResultAnalysis={handleNavigateToResultAnalysis}
+      onNavigateToResultSettings={handleNavigateToResultSettings}
+      onNavigateToCertificateManagement={handleNavigateToCertificateManagement}
+      onNavigateToComprehensiveResults={handleNavigateToComprehensiveResults}
+      onNavigateToManageChecklist={handleNavigateToManageChecklist}
+      onBackToManageChecklist={handleBackToManageChecklist}
+      onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
+      onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
+      onNavigateToChecklistView={handleNavigateToChecklistView}
+      onNavigateToChecklistResults={handleNavigateToChecklistResults}
+      onNavigateToCreateCourse={handleNavigateToCreateCourse}
+      onNavigateToAttendanceMonitoring={handleNavigateToAttendanceMonitoring}
+      onNavigateToViewCourses={handleNavigateToViewCourses}
+      onEditCourse={handleEditCourse}
+      onBackFromEditCourse={handleBackFromEditCourse}
+    />
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  // Login styles
-  loginContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  loginHeader: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  loginTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  loginSubtitle: {
-    fontSize: 16,
-    color: '#7f8c8d',
-    textAlign: 'center',
-  },
-  loginForm: {
-    marginBottom: 40,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-    marginBottom: 15,
-  },
-  loginButton: {
-    backgroundColor: '#3498db',
-    borderRadius: 10,
-    padding: 15,
-    alignItems: 'center',
-  },
-  loginButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  loginFooter: {
-    alignItems: 'center',
-  },
-  footerText: {
-    color: '#27ae60',
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 5,
-    fontWeight: '600',
-  },
-  // Dashboard styles
-  dashboardContent: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-    paddingTop: 20,
-  },
-  welcomeText: {
-    fontSize: 18,
-    color: '#666',
-    textAlign: 'center',
-  },
-  userName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginVertical: 5,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#7f8c8d',
-    textAlign: 'center',
-  },
-  statusText: {
-    fontSize: 14,
-    color: '#27ae60',
-    fontWeight: '600',
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  menuGrid: {
-    marginBottom: 30,
-  },
-  menuItem: {
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 15,
-  },
-  menuTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  menuSubtitle: {
-    fontSize: 14,
-    color: '#fff',
-    opacity: 0.9,
-  },
-  statusSection: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 15,
-  },
-  statusItem: {
-    fontSize: 14,
-    color: '#27ae60',
-    marginBottom: 8,
-    fontWeight: '500',
-  },
-  logoutButton: {
-    backgroundColor: '#e74c3c',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  logoutText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  // Screen header styles
-  screenHeader: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  backButton: {
-    fontSize: 16,
-    color: '#3498db',
-    fontWeight: '600',
-    marginBottom: 10,
-  },
-  screenTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 5,
-  },
-  screenSubtitle: {
-    fontSize: 14,
-    color: '#27ae60',
-    fontWeight: '600',
-  },
-  // List styles
-  listContainer: {
-    flex: 1,
-    padding: 20,
-  },
-  listItem: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 5,
-  },
-  itemSubtitle: {
-    fontSize: 14,
-    color: '#3498db',
-    marginBottom: 3,
-  },
-  itemDetail: {
-    fontSize: 14,
-    color: '#7f8c8d',
-    marginBottom: 8,
-  },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    alignSelf: 'flex-start',
-  },
-  statusText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  // Scroll test styles
-  scrollTestSection: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginTop: 20,
-    marginBottom: 50,
-  },
-  scrollText: {
-    fontSize: 14,
-    color: '#7f8c8d',
-    marginBottom: 10,
-    lineHeight: 20,
-  },
-  testItem: {
-    backgroundColor: '#f8f9fa',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  testText: {
-    fontSize: 14,
-    color: '#2c3e50',
-    textAlign: 'center',
-  },
-});
