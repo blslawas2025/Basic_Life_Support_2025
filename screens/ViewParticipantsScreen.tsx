@@ -1323,9 +1323,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0f0f23',
-    minHeight: '100vh',
     width: '100%',
-    display: 'flex',
     flexDirection: 'column',
   },
   backgroundContainer: {
@@ -2025,10 +2023,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#e5e7eb',
     marginBottom: 20,
-  },
-  detailLabel: {
-    fontWeight: '600',
-    color: '#ffffff',
   },
   warningText: {
     fontSize: 16,

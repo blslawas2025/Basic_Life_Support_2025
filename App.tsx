@@ -342,6 +342,7 @@ export default function App() {
       onNavigateToCertificateManagement={handleNavigateToCertificateManagement}
       onNavigateToComprehensiveResults={handleNavigateToComprehensiveResults}
       onNavigateToManageChecklist={handleNavigateToManageChecklist}
+      onBackToManageChecklist={handleBackToManageChecklist}
       onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
       onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
       onNavigateToChecklistView={handleNavigateToChecklistView}

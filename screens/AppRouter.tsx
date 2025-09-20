@@ -90,6 +90,7 @@ interface AppRouterProps {
 	onNavigateToCertificateManagement: () => void;
 	onNavigateToComprehensiveResults: () => void;
 	onNavigateToManageChecklist: () => void;
+	onBackToManageChecklist: () => void;
 	onNavigateToViewEditDeleteChecklist: () => void;
 	onNavigateToChecklistSettings: () => void;
 	onNavigateToChecklistView: (checklistType: string) => void;
