@@ -8,6 +8,7 @@ import RegisterParticipantScreen from "./RegisterParticipantScreen";
 import BulkImportScreen from "./BulkImportScreen";
 import ApproveParticipantsScreen from "./ApproveParticipantsScreen";
 import ViewParticipantsScreen from "./ViewParticipantsScreen";
+import SimpleViewParticipantsScreen from "./SimpleViewParticipantsScreen";
 import ManageStaffScreen from "./ManageStaffScreen";
 import RegisterStaffScreen from "./RegisterStaffScreen";
 import ViewStaffScreen from "./ViewStaffScreen";
@@ -34,6 +35,7 @@ import ResultAnalysisScreen from "./ResultAnalysisScreen";
 import ResultSettingsScreen from "./ResultSettingsScreen";
 import CertificateManagementScreen from "./CertificateManagementScreen";
 import ComprehensiveResultsScreen from "./ComprehensiveResultsScreen";
+import SimpleComprehensiveResultsScreen from "./SimpleComprehensiveResultsScreen";
 import CreateCourseScreen from "./CreateCourseScreen";
 import ViewCoursesScreen from "./ViewCoursesScreen";
 import EditCourseScreen from "./EditCourseScreen";
@@ -134,7 +136,7 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'viewParticipants' && userData) {
-		return <ViewParticipantsScreen onBack={props.onBackToManageParticipant} />;
+		return <SimpleViewParticipantsScreen onBack={props.onBackToManageParticipant} />;
 	}
 
 	if (currentScreen === 'manageStaff' && userData) {
@@ -338,7 +340,7 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
 	if (currentScreen === 'comprehensiveResults' && isLoggedIn && userData) {
-		return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
+		return <SimpleComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
 	}
 
 	if (currentScreen === 'createCourse' && isLoggedIn && userData) {
