@@ -48,6 +48,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [selectedResult, setSelectedResult] = useState<MockResult | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial' | 'remedial_allowed' | 'remedial_not_allowed'>('all');
+  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Load data on component mount
   useEffect(() => {
@@ -60,8 +62,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     }
   }, [results, searchQuery, filterStatus, dataLoaded]);
 
-  const loadResults = async () => {
+  const loadResults = async (forceRefresh = false) => {
     try {
+      // Check if we have cached data and it's recent (less than 5 minutes old)
+      const now = Date.now();
+      const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+      
+      if (!forceRefresh && dataLoaded && (now - lastFetchTime) < CACHE_DURATION) {
+        console.log('Using cached data');
+        return;
+      }
+
       setLoading(true);
       
       // Load actual data from Supabase
@@ -158,6 +169,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     } finally {
       setLoading(false);
       setDataLoaded(true);
+      setLastFetchTime(Date.now());
     }
   };
 
@@ -284,6 +296,12 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     setSelectedResult(null);
   };
 
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await loadResults(true); // Force refresh
+    setIsRefreshing(false);
+  };
+
   const renderResultRow = (result: MockResult, index: number) => (
     <TouchableOpacity
       key={`${result.id}-${index}`}
@@ -360,7 +378,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     </TouchableOpacity>
     );
 
-  if (loading) {
+  if (loading && !dataLoaded) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -371,6 +389,16 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         </View>
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingText}>Loading results...</Text>
+          <View style={styles.skeletonContainer}>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <View key={i} style={styles.skeletonRow}>
+                <View style={styles.skeletonCell} />
+                <View style={styles.skeletonCell} />
+                <View style={styles.skeletonCell} />
+                <View style={styles.skeletonCell} />
+              </View>
+            ))}
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -419,13 +447,24 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
 
       {/* Filters */}
       <View style={styles.filterContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="🔍 Search participants..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor="#999"
-        />
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="🔍 Search participants..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity 
+            style={styles.refreshButton} 
+            onPress={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <Text style={styles.refreshButtonText}>
+              {isRefreshing ? '⟳' : '↻'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScrollView}>
           <View style={styles.filterButtons}>
@@ -445,9 +484,6 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                 ]}
                 onPress={() => {
                   setFilterStatus(filter.key as any);
-                  if (!dataLoaded) {
-                    loadResults();
-                  }
                 }}
               >
                 <Text style={[
@@ -670,6 +706,24 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     color: '#6c757d',
+    marginBottom: 20,
+  },
+  skeletonContainer: {
+    width: '100%',
+  },
+  skeletonRow: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f2f6',
+  },
+  skeletonCell: {
+    height: 20,
+    backgroundColor: '#e9ecef',
+    borderRadius: 4,
+    marginHorizontal: 4,
+    flex: 1,
   },
   statsScrollView: {
     maxHeight: 120,
@@ -712,6 +766,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   searchInput: {
     backgroundColor: '#f8f9fa',
     borderRadius: 10,
@@ -719,7 +778,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#e9ecef',
-    marginBottom: 15,
+    flex: 1,
+    marginRight: 10,
+  },
+  refreshButton: {
+    backgroundColor: '#3498db',
+    borderRadius: 10,
+    padding: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 50,
+  },
+  refreshButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   filterScrollView: {
     maxHeight: 50,
