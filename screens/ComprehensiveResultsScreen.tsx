@@ -99,7 +99,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         total: convertedResults.length,
         clinical: convertedResults.filter(r => r.category === 'Clinical').length,
         nonClinical: convertedResults.filter(r => r.category === 'Non-Clinical').length,
-        categories: [...new Set(convertedResults.map(r => r.category))]
+        categories: [...new Set(convertedResults.map(r => r.category))],
+        sampleData: convertedResults.slice(0, 3).map(r => ({ name: r.participantName, category: r.category }))
       });
       
     } catch (error) {

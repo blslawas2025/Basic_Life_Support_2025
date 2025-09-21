@@ -333,12 +333,29 @@ export class ComprehensiveResultsService {
           }
         };
 
+        // Get category from test submission job_category, fallback to profile user_type
+        const getParticipantCategory = () => {
+          // Try to get category from any test submission
+          const preTestSubmission = testSubmissions['pre_test'];
+          const postTestSubmission = testSubmissions['post_test'];
+          
+          if (preTestSubmission?.job_category) {
+            return preTestSubmission.job_category;
+          }
+          if (postTestSubmission?.job_category) {
+            return postTestSubmission.job_category;
+          }
+          
+          // Fallback to profile user_type or default
+          return profile.user_type === 'clinical' ? 'Clinical' : 'Non-Clinical';
+        };
+
         return {
           participant_id: profile.id,
           participant_name: profile.name || 'Unknown',
           participant_ic_number: profile.ic_number || 'N/A',
           participant_job_position: profile.job_position_name || 'N/A',
-          participant_category: profile.category || 'Non-Clinical',
+          participant_category: getParticipantCategory(),
           pre_test: getTestResult('pre_test'),
           post_test: getTestResult('post_test'),
           one_man_cpr: getChecklistResult('one man cpr'),
