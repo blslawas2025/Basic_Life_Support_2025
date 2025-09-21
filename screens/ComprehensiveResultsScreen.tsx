@@ -478,100 +478,104 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           </TouchableOpacity>
         </View>
         
-        {/* Filter Buttons */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScrollView}>
-          <View style={styles.filterButtons}>
+        {/* Modern Filter Section */}
+        <View style={styles.modernFilterContainer}>
+          <View style={styles.filterSection}>
+            <Text style={styles.filterLabel}>Remedial Eligibility</Text>
+            <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[
-                  styles.filterButton,
-                { backgroundColor: remedialFilter === 'all' ? '#3498db' : '#f8f9fa' }
+                  styles.modernFilterButton,
+                  remedialFilter === 'all' && styles.modernFilterButtonActive
                 ]}
-              onPress={() => setRemedialFilter('all')}
+                onPress={() => setRemedialFilter('all')}
               >
                 <Text style={[
-                  styles.filterButtonText,
-                { color: remedialFilter === 'all' ? '#fff' : '#666' }
+                  styles.modernFilterText,
+                  remedialFilter === 'all' && styles.modernFilterTextActive
                 ]}>
-                All Remedial
+                  All
                 </Text>
               </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.filterButton,
-                { backgroundColor: remedialFilter === 'allowed' ? '#3498db' : '#f8f9fa' }
-              ]}
-              onPress={() => setRemedialFilter('allowed')}
-            >
-              <Text style={[
-                styles.filterButtonText,
-                { color: remedialFilter === 'allowed' ? '#fff' : '#666' }
-              ]}>
-                Remedial Allowed
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.filterButton,
-                { backgroundColor: remedialFilter === 'not_allowed' ? '#3498db' : '#f8f9fa' }
-              ]}
-              onPress={() => setRemedialFilter('not_allowed')}
-            >
-              <Text style={[
-                styles.filterButtonText,
-                { color: remedialFilter === 'not_allowed' ? '#fff' : '#666' }
-              ]}>
-                Remedial Not Allowed
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.modernFilterButton,
+                  remedialFilter === 'allowed' && styles.modernFilterButtonActive
+                ]}
+                onPress={() => setRemedialFilter('allowed')}
+              >
+                <Text style={[
+                  styles.modernFilterText,
+                  remedialFilter === 'allowed' && styles.modernFilterTextActive
+                ]}>
+                  Allowed
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.modernFilterButton,
+                  remedialFilter === 'not_allowed' && styles.modernFilterButtonActive
+                ]}
+                onPress={() => setRemedialFilter('not_allowed')}
+              >
+                <Text style={[
+                  styles.modernFilterText,
+                  remedialFilter === 'not_allowed' && styles.modernFilterTextActive
+                ]}>
+                  Not Allowed
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </ScrollView>
-        
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScrollView}>
-          <View style={styles.filterButtons}>
-            <TouchableOpacity
-              style={[
-                styles.filterButton,
-                { backgroundColor: certificationFilter === 'all' ? '#3498db' : '#f8f9fa' }
-              ]}
-              onPress={() => setCertificationFilter('all')}
-            >
-              <Text style={[
-                styles.filterButtonText,
-                { color: certificationFilter === 'all' ? '#fff' : '#666' }
-              ]}>
-                All Certification
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.filterButton,
-                { backgroundColor: certificationFilter === 'allowed' ? '#3498db' : '#f8f9fa' }
-              ]}
-              onPress={() => setCertificationFilter('allowed')}
-            >
-              <Text style={[
-                styles.filterButtonText,
-                { color: certificationFilter === 'allowed' ? '#fff' : '#666' }
-              ]}>
-                Certification Allowed
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.filterButton,
-                { backgroundColor: certificationFilter === 'not_allowed' ? '#3498db' : '#f8f9fa' }
-              ]}
-              onPress={() => setCertificationFilter('not_allowed')}
-            >
-              <Text style={[
-                styles.filterButtonText,
-                { color: certificationFilter === 'not_allowed' ? '#fff' : '#666' }
-              ]}>
-                Certification Not Allowed
-              </Text>
-            </TouchableOpacity>
+          
+          <View style={styles.filterSection}>
+            <Text style={styles.filterLabel}>Certification Eligibility</Text>
+            <View style={styles.filterRow}>
+              <TouchableOpacity
+                style={[
+                  styles.modernFilterButton,
+                  certificationFilter === 'all' && styles.modernFilterButtonActive
+                ]}
+                onPress={() => setCertificationFilter('all')}
+              >
+                <Text style={[
+                  styles.modernFilterText,
+                  certificationFilter === 'all' && styles.modernFilterTextActive
+                ]}>
+                  All
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.modernFilterButton,
+                  certificationFilter === 'allowed' && styles.modernFilterButtonActive
+                ]}
+                onPress={() => setCertificationFilter('allowed')}
+              >
+                <Text style={[
+                  styles.modernFilterText,
+                  certificationFilter === 'allowed' && styles.modernFilterTextActive
+                ]}>
+                  Allowed
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.modernFilterButton,
+                  certificationFilter === 'not_allowed' && styles.modernFilterButtonActive
+                ]}
+                onPress={() => setCertificationFilter('not_allowed')}
+              >
+                <Text style={[
+                  styles.modernFilterText,
+                  certificationFilter === 'not_allowed' && styles.modernFilterTextActive
+                ]}>
+                  Not Allowed
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </ScrollView>
+        </View>
       </View>
 
       {/* Results */}
@@ -587,50 +591,68 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             <Text style={styles.emptySubtitle}>Try adjusting your search or filter</Text>
           </View>
         ) : (
-          // All Results or Remedial - show comprehensive table
-          <View>
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>📋 All Results Table</Text>
-              <Text style={styles.emptySubtitle}>Results shown by category side by side</Text>
-            </View>
-            
-            {/* Comprehensive Table */}
-            <View style={styles.comprehensiveTableContainer}>
+          // Side by Side Tables - Clinical and Non-Clinical
+          <View style={styles.sideBySideContainer}>
+            {/* Clinical Participants Table */}
+            <View style={styles.tableContainer}>
+              <Text style={styles.tableTitle}>Clinical Participants</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                 <View style={styles.table}>
-                  {/* Table Header */}
                   <View style={styles.tableHeader}>
+                    <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
                     <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                     <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
-                    <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Clinical/Non-Clinical</Text>
-                    {/* Show only relevant test column based on filter */}
-                    {filterStatus === 'pre' ? (
-                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
-                    ) : filterStatus === 'post' ? (
-                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
-                    ) : (
-                      <>
-                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
-                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
-                      </>
-                    )}
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial Needed</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
+                    <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q1</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q2</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q3</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q4</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q5</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q6</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q7</Text>
                   </View>
-                
-                  {/* Table Body */}
-                  {filteredResults.length === 0 ? (
+                  
+                  {getClinicalResults().length === 0 ? (
                     <View style={styles.emptyTableRow}>
-                      <Text style={styles.emptyTableText}>No results found</Text>
+                      <Text style={styles.emptyTableText}>No clinical participants found</Text>
                     </View>
                   ) : (
-                    filteredResults.map((result, index) => renderResultRow(result, index))
+                    getClinicalResults().map((result, index) => renderResultRow(result, index))
+                  )}
+                </View>
+              </ScrollView>
+            </View>
+
+            {/* Non-Clinical Participants Table */}
+            <View style={styles.tableContainer}>
+              <Text style={styles.tableTitle}>Non-Clinical Participants</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                <View style={styles.table}>
+                  <View style={styles.tableHeader}>
+                    <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
+                    <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                    <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                    <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                    <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q1</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q2</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q3</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q4</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q5</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q6</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q7</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q8</Text>
+                  </View>
+                  
+                  {getNonClinicalResults().length === 0 ? (
+                    <View style={styles.emptyTableRow}>
+                      <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
+                    </View>
+                  ) : (
+                    getNonClinicalResults().map((result, index) => renderResultRow(result, index))
                   )}
                 </View>
               </ScrollView>
@@ -838,6 +860,74 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  
+  // Modern Filter Styles
+  modernFilterContainer: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9ecef',
+  },
+  filterSection: {
+    marginBottom: 16,
+  },
+  filterLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#495057',
+    marginBottom: 8,
+  },
+  filterRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  modernFilterButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#f8f9fa',
+    borderWidth: 1,
+    borderColor: '#dee2e6',
+  },
+  modernFilterButtonActive: {
+    backgroundColor: '#007bff',
+    borderColor: '#007bff',
+  },
+  modernFilterText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6c757d',
+  },
+  modernFilterTextActive: {
+    color: '#fff',
+  },
+  
+  // Side by Side Container
+  sideBySideContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    padding: 12,
+  },
+  tableContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    overflow: 'hidden',
+  },
+  tableTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#007bff',
+    textAlign: 'center',
+    paddingVertical: 12,
+    backgroundColor: '#f8f9fa',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9ecef',
+  },
+  
   resultsContainer: {
     flex: 1,
     paddingHorizontal: 10,
@@ -956,6 +1046,12 @@ const styles = StyleSheet.create({
   },
   assessmentColumn: {
     width: 80,
+    paddingHorizontal: 6,
+    textAlign: 'center',
+    minHeight: 40,
+  },
+  rankColumn: {
+    width: 60,
     paddingHorizontal: 6,
     textAlign: 'center',
     minHeight: 40,
