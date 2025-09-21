@@ -273,8 +273,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>✅ WORKING VERSION - PRE/POST TESTS FIXED ✅</Text>
-        <Text style={styles.subtitle}>This is the NEW file - if you see this, the fix is working!</Text>
+        <Text style={styles.title}>📊 Comprehensive Results</Text>
+        <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
       {/* Statistics */}

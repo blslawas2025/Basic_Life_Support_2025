@@ -262,13 +262,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>🔥 FORCE DEPLOY - DEBUG MODE ACTIVE 🔥</Text>
-        <Text style={styles.subtitle}>FORCE DEPLOY: {new Date().toLocaleString()} - CHECKING CATEGORY DISTRIBUTION!</Text>
-        {dataLoaded && (
-          <Text style={[styles.subtitle, { fontSize: 12, color: '#e74c3c' }]}>
-            DEBUG: Total: {results.length} | Clinical: {results.filter(r => r.category === 'Clinical').length} | Non-Clinical: {results.filter(r => r.category === 'Non-Clinical').length}
-          </Text>
-        )}
+        <Text style={styles.title}>📊 Comprehensive Results</Text>
+        <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
       {/* Statistics */}
