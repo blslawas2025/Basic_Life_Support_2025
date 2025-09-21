@@ -225,20 +225,59 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       onPress={() => handleResultPress(result)}
       activeOpacity={0.7}
     >
-      <Text style={[styles.tableCellText, styles.rankColumn]}>{index + 1}</Text>
       <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2}>{result.participantName}</Text>
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
       <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2}>{result.jobPosition || 'N/A'}</Text>
       <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
-      <View style={[styles.resultColumn, { alignItems: 'center' }]}>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontWeight: 'bold', fontSize: 13 }]}>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
           {result.correctAnswers || 0}/{result.totalQuestions || 30}
         </Text>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
+        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 10 }]}>
           ({result.score}%)
         </Text>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(result.status), paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, marginTop: 2 }]}>
-          <Text style={[styles.statusText, { fontSize: 10 }]}>{result.status}</Text>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
+          {result.correctAnswers || 0}/{result.totalQuestions || 30}
+        </Text>
+        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 10 }]}>
+          ({result.score}%)
+        </Text>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: result.status === 'Pass' ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.status === 'Pass' ? 'No' : 'Yes'}</Text>
+        </View>
+      </View>
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: result.status === 'Pass' ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.status === 'Pass' ? 'Yes' : 'No'}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -418,22 +457,31 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             
             {/* Comprehensive Table */}
             <View style={styles.comprehensiveTableContainer}>
-              <View style={styles.tableHeader}>
-                <Text style={[styles.tableHeaderText, styles.rankColumn]}>#</Text>
-                <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
-                <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
-                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-              </View>
-              
-              {filteredResults.length === 0 ? (
-                <View style={styles.emptyTableRow}>
-                  <Text style={styles.emptyTableText}>No results found</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                <View style={styles.tableHeader}>
+                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Clinical/Non-Clinical</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
+                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
                 </View>
-              ) : (
-                filteredResults.map((result, index) => renderResultRow(result, index))
-              )}
+              
+                {filteredResults.length === 0 ? (
+                  <View style={styles.emptyTableRow}>
+                    <Text style={styles.emptyTableText}>No results found</Text>
+                  </View>
+                ) : (
+                  filteredResults.map((result, index) => renderResultRow(result, index))
+                )}
+              </ScrollView>
             </View>
           </View>
         )}
@@ -691,30 +739,30 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
     textAlign: 'center',
   },
-  rankColumn: {
-    width: 60,
-    paddingHorizontal: 4,
-    textAlign: 'center',
-  },
   nameColumn: {
-    width: 200,
+    width: 150,
     paddingHorizontal: 4,
+    textAlign: 'left',
   },
   icColumn: {
-    width: 120,
+    width: 100,
     paddingHorizontal: 4,
+    textAlign: 'center',
   },
   jobColumn: {
     width: 120,
     paddingHorizontal: 4,
+    textAlign: 'left',
   },
   categoryColumn: {
-    width: 100,
+    width: 80,
     paddingHorizontal: 4,
+    textAlign: 'center',
   },
-  resultColumn: {
-    width: 120,
+  assessmentColumn: {
+    width: 80,
     paddingHorizontal: 4,
+    textAlign: 'center',
   },
   emptyTableRow: {
     paddingVertical: 20,
