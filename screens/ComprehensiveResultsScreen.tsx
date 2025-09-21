@@ -481,7 +481,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         {/* Modern Filter Section */}
         <View style={styles.modernFilterContainer}>
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Remedial Eligibility</Text>
+            <Text style={styles.filterLabel}>Show Results</Text>
             <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[
@@ -494,7 +494,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   remedialFilter === 'all' && styles.modernFilterTextActive
                 ]}>
-                  All
+                  All Participants
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -508,7 +508,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   remedialFilter === 'allowed' && styles.modernFilterTextActive
                 ]}>
-                  Allowed
+                  Need Remedial
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -522,14 +522,14 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   remedialFilter === 'not_allowed' && styles.modernFilterTextActive
                 ]}>
-                  Not Allowed
+                  Passed
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
           
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Certification Eligibility</Text>
+            <Text style={styles.filterLabel}>Certification Status</Text>
             <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[
@@ -556,7 +556,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   certificationFilter === 'allowed' && styles.modernFilterTextActive
                 ]}>
-                  Allowed
+                  Certified
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -570,7 +570,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   certificationFilter === 'not_allowed' && styles.modernFilterTextActive
                 ]}>
-                  Not Allowed
+                  Not Certified
                 </Text>
               </TouchableOpacity>
             </View>
@@ -605,13 +605,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
                     <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q1</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q2</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q3</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q4</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q5</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q6</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q7</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
                   </View>
                   
                   {getClinicalResults().length === 0 ? (
@@ -637,14 +637,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
                     <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q1</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q2</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q3</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q4</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q5</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q6</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q7</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Q8</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
                   </View>
                   
                   {getNonClinicalResults().length === 0 ? (
@@ -863,69 +862,94 @@ const styles = StyleSheet.create({
   
   // Modern Filter Styles
   modernFilterContainer: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 24,
+    paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+    borderBottomColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   filterSection: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   filterLabel: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#495057',
-    marginBottom: 8,
+    color: '#1f2937',
+    marginBottom: 12,
+    letterSpacing: 0.5,
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 12,
   },
   modernFilterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: '#f8f9fa',
-    borderWidth: 1,
-    borderColor: '#dee2e6',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
+    borderWidth: 1.5,
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   modernFilterButtonActive: {
-    backgroundColor: '#007bff',
-    borderColor: '#007bff',
+    backgroundColor: '#3b82f6',
+    borderColor: '#3b82f6',
+    shadowColor: '#3b82f6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   modernFilterText: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#6c757d',
+    fontWeight: '600',
+    color: '#6b7280',
+    letterSpacing: 0.25,
   },
   modernFilterTextActive: {
-    color: '#fff',
+    color: '#ffffff',
+    fontWeight: '700',
   },
   
   // Side by Side Container
   sideBySideContainer: {
     flexDirection: 'row',
-    gap: 12,
-    padding: 12,
+    gap: 16,
+    padding: 16,
+    backgroundColor: '#f8fafc',
   },
   tableContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#e9ecef',
+    borderColor: '#e2e8f0',
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
   },
   tableTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
-    color: '#007bff',
+    color: '#1e40af',
     textAlign: 'center',
-    paddingVertical: 12,
-    backgroundColor: '#f8f9fa',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+    paddingVertical: 16,
+    backgroundColor: '#f1f5f9',
+    borderBottomWidth: 2,
+    borderBottomColor: '#e2e8f0',
+    letterSpacing: 0.5,
   },
   
   resultsContainer: {
