@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert, Modal, SafeAreaView, Dimensions } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert, Modal, SafeAreaView, Dimensions, Animated } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { ProfileService, Profile } from "../services/ProfileService";
+import { CourseSessionService } from "../services/CourseSessionService";
+import { CourseSession } from "../types/CourseSession";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get('window');
 const isSmallScreen = width < 768;
@@ -17,80 +21,134 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
   const [selectedParticipant, setSelectedParticipant] = useState<Profile | null>(null);
   const [showModal, setShowModal] = useState(false);
 
+  // RESTORED FILTER STATES
+  const [jobFilter, setJobFilter] = useState<string>('');
+  const [allergiesFilter, setAllergiesFilter] = useState<'all' | 'yes' | 'no'>('all');
+  const [pregnantFilter, setPregnantFilter] = useState<'all' | 'yes' | 'no'>('all');
+  const [courseSessionFilter, setCourseSessionFilter] = useState<string>('');
+  const [courseSessions, setCourseSessions] = useState<CourseSession[]>([]);
+  const [showJobDropdown, setShowJobDropdown] = useState(false);
+  const [showCourseSessionDropdown, setShowCourseSessionDropdown] = useState(false);
+  const [jobSearchQuery, setJobSearchQuery] = useState('');
+  const [courseSessionSearchQuery, setCourseSessionSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Animation
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     loadParticipants();
+    loadCourseSessions();
+    startAnimations();
   }, []);
 
   useEffect(() => {
     filterParticipants();
-  }, [participants, searchQuery]);
+  }, [participants, searchQuery, jobFilter, allergiesFilter, pregnantFilter, courseSessionFilter]);
+
+  const startAnimations = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const loadParticipants = async () => {
     try {
       setLoading(true);
       const allProfiles = await ProfileService.getAllProfiles();
-      // Filter to only show user profiles
       const userProfiles = allProfiles.filter(p => p.roles === 'user');
       setParticipants(userProfiles);
     } catch (error) {
       console.error('Error loading participants:', error);
-      // Create demo data if service fails
-      const demoData: Profile[] = [
-        {
-          id: '1',
-          name: 'MUHSINAH BINTI ABDUL SHOMAD',
-          email: 'muhsinah92@gmail.com',
-          ic_number: '920408-08-5506',
-          phone_number: '',
-          job_position_name: 'PEGAWAI PERGIGIAN UG 9 • Clinical',
-          workplace_name: 'KLINIK PERGIGIAN LAWAS',
-          roles: 'user',
-          has_allergies: false,
-          is_pregnant: false,
-          course_session_id: null,
-          profile_id: '1',
-          user_id: '1',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: '2',
-          name: 'Ahmad Bin Hassan',
-          email: 'ahmad.hassan@example.com',
-          ic_number: '901234-56-7890',
-          phone_number: '+60123456789',
-          job_position_name: 'NURSE • Emergency',
-          workplace_name: 'HOSPITAL KUALA LUMPUR',
-          roles: 'user',
-          has_allergies: false,
-          is_pregnant: false,
-          course_session_id: null,
-          profile_id: '2',
-          user_id: '2',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      setParticipants(demoData);
+      Alert.alert('Error', 'Failed to load participants');
     } finally {
       setLoading(false);
     }
   };
 
+  const loadCourseSessions = async () => {
+    try {
+      const sessions = await CourseSessionService.getAllCourseSessions();
+      setCourseSessions(sessions);
+    } catch (error) {
+      console.error('Error loading course sessions:', error);
+    }
+  };
+
+  // RESTORED FILTER LOGIC
   const filterParticipants = () => {
     let filtered = participants;
 
+    // Filter to only show profiles with user roles
+    filtered = filtered.filter(p => p.roles === 'user');
+
+    // Filter by search query (name only)
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(query) ||
-        (p.email && p.email.toLowerCase().includes(query))
+        p.name.toLowerCase().includes(query)
       );
     }
 
-    // Sort by name
+    // Filter by job
+    if (jobFilter.trim()) {
+      filtered = filtered.filter(p => 
+        p.job_position_name && p.job_position_name.toLowerCase().includes(jobFilter.toLowerCase())
+      );
+    }
+
+    // Filter by allergies
+    if (allergiesFilter !== 'all') {
+      filtered = filtered.filter(p => 
+        allergiesFilter === 'yes' ? p.has_allergies : !p.has_allergies
+      );
+    }
+
+    // Filter by pregnant
+    if (pregnantFilter !== 'all') {
+      filtered = filtered.filter(p => 
+        pregnantFilter === 'yes' ? p.is_pregnant : !p.is_pregnant
+      );
+    }
+
+    // Filter by course session
+    if (courseSessionFilter.trim()) {
+      filtered = filtered.filter(p => 
+        p.course_session_id === courseSessionFilter
+      );
+    }
+
+    // Sort by name A-Z
     filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
     setFilteredParticipants(filtered);
+  };
+
+  // Get unique job positions for dropdown
+  const getUniqueJobPositions = () => {
+    const jobs = participants
+      .map(p => p.job_position_name)
+      .filter((job, index, arr) => job && arr.indexOf(job) === index)
+      .sort();
+    return jobs;
+  };
+
+  // Filter job positions based on search
+  const getFilteredJobPositions = () => {
+    const allJobs = getUniqueJobPositions();
+    if (!jobSearchQuery.trim()) return allJobs;
+    return allJobs.filter(job => 
+      job.toLowerCase().includes(jobSearchQuery.toLowerCase())
+    );
+  };
+
+  // Filter course sessions based on search
+  const getFilteredCourseSessions = () => {
+    if (!courseSessionSearchQuery.trim()) return courseSessions;
+    return courseSessions.filter(session =>
+      session.course_name.toLowerCase().includes(courseSessionSearchQuery.toLowerCase())
+    );
   };
 
   const handleParticipantPress = (participant: Profile) => {
@@ -101,6 +159,26 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
   const closeModal = () => {
     setShowModal(false);
     setSelectedParticipant(null);
+  };
+
+  const clearAllFilters = () => {
+    setSearchQuery('');
+    setJobFilter('');
+    setAllergiesFilter('all');
+    setPregnantFilter('all');
+    setCourseSessionFilter('');
+    setJobSearchQuery('');
+    setCourseSessionSearchQuery('');
+  };
+
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (searchQuery.trim()) count++;
+    if (jobFilter.trim()) count++;
+    if (allergiesFilter !== 'all') count++;
+    if (pregnantFilter !== 'all') count++;
+    if (courseSessionFilter.trim()) count++;
+    return count;
   };
 
   if (loading) {
@@ -121,102 +199,283 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Fixed Header - NO POSITION ABSOLUTE */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>👥 View Participants</Text>
-        <Text style={styles.subtitle}>Mobile-optimized • Proper scrolling</Text>
-      </View>
-
-      {/* Search Section - NO POSITION ABSOLUTE */}
-      <View style={styles.searchSection}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="🔍 Search participants..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor="#999"
-        />
-        <Text style={styles.resultCount}>
-          {filteredParticipants.length} participant{filteredParticipants.length !== 1 ? 's' : ''} found
-        </Text>
-      </View>
-
-      {/* Scrollable Content - PROPER SCROLLVIEW */}
-      <ScrollView 
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        bounces={true}
-      >
-        {filteredParticipants.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>No participants found</Text>
-            <Text style={styles.emptySubtitle}>
-              {searchQuery ? 'Try adjusting your search' : 'No participants available'}
-            </Text>
+      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+        {/* Fixed Header - NO POSITION ABSOLUTE */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={onBack}>
+            <Ionicons name="arrow-back" size={24} color="#3498db" />
+            <Text style={styles.backButtonText}>Back</Text>
+          </TouchableOpacity>
+          <View style={styles.headerTitle}>
+            <Text style={styles.title}>👥 View Participants</Text>
+            <Text style={styles.subtitle}>✅ All filters restored • Mobile scrolling fixed</Text>
           </View>
-        ) : (
-          filteredParticipants.map((participant, index) => (
-            <TouchableOpacity
-              key={participant.id}
-              style={styles.participantCard}
-              onPress={() => handleParticipantPress(participant)}
-              activeOpacity={0.7}
-            >
-              <View style={styles.cardHeader}>
-                <Text style={styles.participantName}>{participant.name}</Text>
-                <Text style={styles.participantIndex}>#{index + 1}</Text>
-              </View>
-              
-              <Text style={styles.participantEmail}>📧 {participant.email}</Text>
-              <Text style={styles.participantJob}>💼 {participant.job_position_name || 'No job specified'}</Text>
-              <Text style={styles.participantWorkplace}>🏢 {participant.workplace_name || 'No workplace specified'}</Text>
-              
-              {participant.ic_number && (
-                <Text style={styles.participantIC}>🆔 IC: {participant.ic_number}</Text>
-              )}
-              
-              <View style={styles.statusRow}>
-                {participant.has_allergies && (
-                  <View style={styles.statusBadge}>
-                    <Text style={styles.statusText}>⚠️ Allergies</Text>
-                  </View>
-                )}
-                {participant.is_pregnant && (
-                  <View style={[styles.statusBadge, { backgroundColor: '#f39c12' }]}>
-                    <Text style={styles.statusText}>🤰 Pregnant</Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
-          ))
-        )}
-
-        {/* Test Scrolling Section */}
-        <View style={styles.testScrollSection}>
-          <Text style={styles.testTitle}>📱 Scroll Test Section</Text>
-          <Text style={styles.testDescription}>
-            This section tests that scrolling works properly on mobile devices.
-            The participant details should scroll with the content, not stay fixed.
-          </Text>
-          
-          {[1,2,3,4,5,6,7,8,9,10].map(i => (
-            <View key={i} style={styles.testItem}>
-              <Text style={styles.testItemText}>
-                Test Item {i} - Everything scrolls properly now! 🎉
-              </Text>
-            </View>
-          ))}
         </View>
-        
-        {/* Bottom spacing */}
-        <View style={styles.bottomSpacing} />
-      </ScrollView>
 
-      {/* Participant Detail Modal - PROPER MODAL */}
+        {/* Search and Filter Toggle - SCROLLABLE */}
+        <View style={styles.searchSection}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="🔍 Search participants by name..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholderTextColor="#999"
+          />
+          
+          <View style={styles.filterControls}>
+            <TouchableOpacity
+              style={[styles.filterToggle, showFilters && styles.filterToggleActive]}
+              onPress={() => setShowFilters(!showFilters)}
+            >
+              <Ionicons name="filter" size={20} color={showFilters ? "#fff" : "#3498db"} />
+              <Text style={[styles.filterToggleText, showFilters && styles.filterToggleTextActive]}>
+                Filters {getActiveFilterCount() > 0 && `(${getActiveFilterCount()})`}
+              </Text>
+            </TouchableOpacity>
+            
+            {getActiveFilterCount() > 0 && (
+              <TouchableOpacity style={styles.clearFiltersButton} onPress={clearAllFilters}>
+                <Text style={styles.clearFiltersText}>Clear All</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <Text style={styles.resultCount}>
+            {filteredParticipants.length} participant{filteredParticipants.length !== 1 ? 's' : ''} found
+          </Text>
+        </View>
+
+        {/* SCROLLABLE CONTENT - PROPER SCROLLVIEW */}
+        <ScrollView 
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          bounces={true}
+        >
+          {/* Filter Section - INSIDE SCROLLVIEW */}
+          {showFilters && (
+            <View style={styles.filtersContainer}>
+              <Text style={styles.filtersTitle}>🔍 Filter Options</Text>
+              
+              {/* Job Position Filter */}
+              <View style={styles.filterGroup}>
+                <Text style={styles.filterLabel}>💼 Job Position:</Text>
+                <TouchableOpacity
+                  style={styles.dropdownButton}
+                  onPress={() => setShowJobDropdown(!showJobDropdown)}
+                >
+                  <Text style={styles.dropdownButtonText}>
+                    {jobFilter || 'All Jobs'}
+                  </Text>
+                  <Ionicons name={showJobDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
+                </TouchableOpacity>
+                
+                {showJobDropdown && (
+                  <View style={styles.dropdown}>
+                    <TextInput
+                      style={styles.dropdownSearch}
+                      placeholder="Search jobs..."
+                      value={jobSearchQuery}
+                      onChangeText={setJobSearchQuery}
+                      placeholderTextColor="#999"
+                    />
+                    <ScrollView style={styles.dropdownList} nestedScrollEnabled>
+                      <TouchableOpacity
+                        style={styles.dropdownItem}
+                        onPress={() => {
+                          setJobFilter('');
+                          setShowJobDropdown(false);
+                          setJobSearchQuery('');
+                        }}
+                      >
+                        <Text style={[styles.dropdownItemText, !jobFilter && styles.dropdownItemTextActive]}>
+                          All Jobs
+                        </Text>
+                      </TouchableOpacity>
+                      {getFilteredJobPositions().map((job, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setJobFilter(job);
+                            setShowJobDropdown(false);
+                            setJobSearchQuery('');
+                          }}
+                        >
+                          <Text style={[styles.dropdownItemText, jobFilter === job && styles.dropdownItemTextActive]}>
+                            {job}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+                )}
+              </View>
+
+              {/* Allergies Filter */}
+              <View style={styles.filterGroup}>
+                <Text style={styles.filterLabel}>⚠️ Allergies:</Text>
+                <View style={styles.filterButtons}>
+                  {['all', 'yes', 'no'].map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={[
+                        styles.filterButton,
+                        allergiesFilter === option && styles.filterButtonActive
+                      ]}
+                      onPress={() => setAllergiesFilter(option as any)}
+                    >
+                      <Text style={[
+                        styles.filterButtonText,
+                        allergiesFilter === option && styles.filterButtonTextActive
+                      ]}>
+                        {option === 'all' ? 'All' : option === 'yes' ? 'Yes' : 'No'}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              {/* Pregnant Filter */}
+              <View style={styles.filterGroup}>
+                <Text style={styles.filterLabel}>🤰 Pregnant:</Text>
+                <View style={styles.filterButtons}>
+                  {['all', 'yes', 'no'].map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={[
+                        styles.filterButton,
+                        pregnantFilter === option && styles.filterButtonActive
+                      ]}
+                      onPress={() => setPregnantFilter(option as any)}
+                    >
+                      <Text style={[
+                        styles.filterButtonText,
+                        pregnantFilter === option && styles.filterButtonTextActive
+                      ]}>
+                        {option === 'all' ? 'All' : option === 'yes' ? 'Yes' : 'No'}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              {/* Course Session Filter */}
+              {courseSessions.length > 0 && (
+                <View style={styles.filterGroup}>
+                  <Text style={styles.filterLabel}>🎓 Course Session:</Text>
+                  <TouchableOpacity
+                    style={styles.dropdownButton}
+                    onPress={() => setShowCourseSessionDropdown(!showCourseSessionDropdown)}
+                  >
+                    <Text style={styles.dropdownButtonText}>
+                      {courseSessionFilter ? 
+                        courseSessions.find(s => s.id === courseSessionFilter)?.course_name || 'All Sessions'
+                        : 'All Sessions'
+                      }
+                    </Text>
+                    <Ionicons name={showCourseSessionDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
+                  </TouchableOpacity>
+                  
+                  {showCourseSessionDropdown && (
+                    <View style={styles.dropdown}>
+                      <TextInput
+                        style={styles.dropdownSearch}
+                        placeholder="Search sessions..."
+                        value={courseSessionSearchQuery}
+                        onChangeText={setCourseSessionSearchQuery}
+                        placeholderTextColor="#999"
+                      />
+                      <ScrollView style={styles.dropdownList} nestedScrollEnabled>
+                        <TouchableOpacity
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setCourseSessionFilter('');
+                            setShowCourseSessionDropdown(false);
+                            setCourseSessionSearchQuery('');
+                          }}
+                        >
+                          <Text style={[styles.dropdownItemText, !courseSessionFilter && styles.dropdownItemTextActive]}>
+                            All Sessions
+                          </Text>
+                        </TouchableOpacity>
+                        {getFilteredCourseSessions().map((session) => (
+                          <TouchableOpacity
+                            key={session.id}
+                            style={styles.dropdownItem}
+                            onPress={() => {
+                              setCourseSessionFilter(session.id);
+                              setShowCourseSessionDropdown(false);
+                              setCourseSessionSearchQuery('');
+                            }}
+                          >
+                            <Text style={[styles.dropdownItemText, courseSessionFilter === session.id && styles.dropdownItemTextActive]}>
+                              {session.course_name}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  )}
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* Participants List */}
+          <View style={styles.participantsList}>
+            {filteredParticipants.length === 0 ? (
+              <View style={styles.emptyState}>
+                <Text style={styles.emptyTitle}>No participants found</Text>
+                <Text style={styles.emptySubtitle}>
+                  {getActiveFilterCount() > 0 
+                    ? 'Try adjusting your filters or search' 
+                    : 'No participants available'}
+                </Text>
+              </View>
+            ) : (
+              filteredParticipants.map((participant, index) => (
+                <TouchableOpacity
+                  key={participant.id}
+                  style={styles.participantCard}
+                  onPress={() => handleParticipantPress(participant)}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.cardHeader}>
+                    <Text style={styles.participantName}>{participant.name}</Text>
+                    <Text style={styles.participantIndex}>#{index + 1}</Text>
+                  </View>
+                  
+                  <Text style={styles.participantEmail}>📧 {participant.email}</Text>
+                  <Text style={styles.participantJob}>💼 {participant.job_position_name || 'No job specified'}</Text>
+                  <Text style={styles.participantWorkplace}>🏢 {participant.workplace_name || 'No workplace specified'}</Text>
+                  
+                  {participant.ic_number && (
+                    <Text style={styles.participantIC}>🆔 IC: {participant.ic_number}</Text>
+                  )}
+                  
+                  <View style={styles.statusRow}>
+                    {participant.has_allergies && (
+                      <View style={styles.statusBadge}>
+                        <Text style={styles.statusText}>⚠️ Allergies</Text>
+                      </View>
+                    )}
+                    {participant.is_pregnant && (
+                      <View style={[styles.statusBadge, { backgroundColor: '#f39c12' }]}>
+                        <Text style={styles.statusText}>🤰 Pregnant</Text>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))
+            )}
+          </View>
+          
+          {/* Bottom spacing for scroll */}
+          <View style={styles.bottomSpacing} />
+        </ScrollView>
+      </Animated.View>
+
+      {/* Participant Detail Modal */}
       <Modal
         visible={showModal}
         animationType="slide"
@@ -295,6 +554,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f9fa',
   },
+  content: {
+    flex: 1,
+  },
   // Header styles - NO POSITION ABSOLUTE
   header: {
     backgroundColor: '#fff',
@@ -307,23 +569,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   backButton: {
-    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 15,
   },
   backButtonText: {
     fontSize: 16,
     color: '#3498db',
     fontWeight: '600',
+    marginLeft: 5,
+  },
+  headerTitle: {
+    flex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#2c3e50',
-    marginBottom: 5,
+    marginBottom: 2,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#27ae60',
     fontWeight: '600',
   },
@@ -342,7 +612,46 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#e9ecef',
+    marginBottom: 15,
+  },
+  filterControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
+  },
+  filterToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#3498db',
+  },
+  filterToggleActive: {
+    backgroundColor: '#3498db',
+  },
+  filterToggleText: {
+    marginLeft: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#3498db',
+  },
+  filterToggleTextActive: {
+    color: '#fff',
+  },
+  clearFiltersButton: {
+    backgroundColor: '#e74c3c',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  clearFiltersText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
   },
   resultCount: {
     fontSize: 14,
@@ -353,10 +662,117 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  scrollContent: {
+  // Filters container - INSIDE SCROLLVIEW
+  filtersContainer: {
+    backgroundColor: '#fff',
+    margin: 20,
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  filtersTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  filterGroup: {
+    marginBottom: 20,
+  },
+  filterLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#2c3e50',
+    marginBottom: 10,
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  filterButton: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    alignItems: 'center',
+  },
+  filterButtonActive: {
+    backgroundColor: '#3498db',
+    borderColor: '#3498db',
+  },
+  filterButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+  },
+  filterButtonTextActive: {
+    color: '#fff',
+  },
+  dropdownButton: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dropdownButtonText: {
+    fontSize: 14,
+    color: '#333',
+    flex: 1,
+  },
+  dropdown: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    marginTop: 5,
+    maxHeight: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  dropdownSearch: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    padding: 10,
+    margin: 8,
+    fontSize: 14,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+  },
+  dropdownList: {
+    maxHeight: 140,
+  },
+  dropdownItem: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f8f9fa',
+  },
+  dropdownItemText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  dropdownItemTextActive: {
+    color: '#3498db',
+    fontWeight: '600',
+  },
+  // Participants list
+  participantsList: {
     padding: 20,
   },
-  // Participant cards
   participantCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -450,36 +866,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     color: '#6c757d',
-  },
-  // Test scroll section
-  testScrollSection: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginTop: 20,
-  },
-  testTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 10,
-  },
-  testDescription: {
-    fontSize: 14,
-    color: '#6c757d',
-    marginBottom: 20,
-    lineHeight: 20,
-  },
-  testItem: {
-    backgroundColor: '#f8f9fa',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  testItemText: {
-    fontSize: 14,
-    color: '#2c3e50',
-    textAlign: 'center',
   },
   bottomSpacing: {
     height: 50,
