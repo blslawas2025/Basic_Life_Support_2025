@@ -103,7 +103,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                      result.infant_cpr.status === 'PASS' &&
                      result.infant_choking.status === 'PASS' &&
                      result.adult_choking.status === 'PASS', // Certified only if post test AND all 5 checklists passed
-          remedialAllowed: result.pre_test.status === 'FAIL',
+          remedialAllowed: result.post_test.status === 'PASS', // Remedial only allowed if post-test passed
           // Add pre and post test specific data
           preTestScore: result.pre_test.score || 0,
           preTestPercentage: result.pre_test.percentage || 0,
