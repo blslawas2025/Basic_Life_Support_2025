@@ -52,6 +52,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   // New filter states for remedial and certification
   const [remedialFilter, setRemedialFilter] = useState<'all' | 'allowed' | 'not_allowed'>('all');
   const [certificationFilter, setCertificationFilter] = useState<'all' | 'allowed' | 'not_allowed'>('all');
+  const [showFilters, setShowFilters] = useState(false);
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -495,103 +496,115 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           </TouchableOpacity>
         </View>
         
-        {/* Modern Filter Section */}
-        <View style={styles.modernFilterContainer}>
-          <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Status</Text>
-            <View style={styles.filterRow}>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  remedialFilter === 'all' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setRemedialFilter('all')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  remedialFilter === 'all' && styles.modernFilterTextActive
-                ]}>
-                  All
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  remedialFilter === 'allowed' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setRemedialFilter('allowed')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  remedialFilter === 'allowed' && styles.modernFilterTextActive
-                ]}>
-                  Remedial
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  remedialFilter === 'not_allowed' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setRemedialFilter('not_allowed')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  remedialFilter === 'not_allowed' && styles.modernFilterTextActive
-                ]}>
-                  Passed
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        {/* Collapsible Filter Section */}
+        <View style={styles.collapsibleFilterContainer}>
+          <TouchableOpacity 
+            style={styles.filterToggleButton}
+            onPress={() => setShowFilters(!showFilters)}
+          >
+            <Text style={styles.filterToggleText}>Filters</Text>
+            <Text style={styles.filterToggleIcon}>{showFilters ? '−' : '+'}</Text>
+          </TouchableOpacity>
           
-          <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Certification</Text>
-            <View style={styles.filterRow}>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  certificationFilter === 'all' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setCertificationFilter('all')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  certificationFilter === 'all' && styles.modernFilterTextActive
-                ]}>
-                  All
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  certificationFilter === 'allowed' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setCertificationFilter('allowed')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  certificationFilter === 'allowed' && styles.modernFilterTextActive
-                ]}>
-                  Certified
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.modernFilterButton,
-                  certificationFilter === 'not_allowed' && styles.modernFilterButtonActive
-                ]}
-                onPress={() => setCertificationFilter('not_allowed')}
-              >
-                <Text style={[
-                  styles.modernFilterText,
-                  certificationFilter === 'not_allowed' && styles.modernFilterTextActive
-                ]}>
-                  Not Certified
-                </Text>
-              </TouchableOpacity>
+          {showFilters && (
+            <View style={styles.filterContent}>
+              <View style={styles.filterSection}>
+                <Text style={styles.filterLabel}>Status</Text>
+                <View style={styles.filterRow}>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      remedialFilter === 'all' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setRemedialFilter('all')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      remedialFilter === 'all' && styles.modernFilterTextActive
+                    ]}>
+                      All
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      remedialFilter === 'allowed' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setRemedialFilter('allowed')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      remedialFilter === 'allowed' && styles.modernFilterTextActive
+                    ]}>
+                      Remedial
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      remedialFilter === 'not_allowed' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setRemedialFilter('not_allowed')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      remedialFilter === 'not_allowed' && styles.modernFilterTextActive
+                    ]}>
+                      Passed
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              <View style={styles.filterSection}>
+                <Text style={styles.filterLabel}>Certification</Text>
+                <View style={styles.filterRow}>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      certificationFilter === 'all' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setCertificationFilter('all')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      certificationFilter === 'all' && styles.modernFilterTextActive
+                    ]}>
+                      All
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      certificationFilter === 'allowed' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setCertificationFilter('allowed')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      certificationFilter === 'allowed' && styles.modernFilterTextActive
+                    ]}>
+                      Certified
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.modernFilterButton,
+                      certificationFilter === 'not_allowed' && styles.modernFilterButtonActive
+                    ]}
+                    onPress={() => setCertificationFilter('not_allowed')}
+                  >
+                    <Text style={[
+                      styles.modernFilterText,
+                      certificationFilter === 'not_allowed' && styles.modernFilterTextActive
+                    ]}>
+                      Not Certified
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
 
@@ -877,16 +890,41 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   
-  // Professional Filter Styles
-  modernFilterContainer: {
+  // Collapsible Filter Styles
+  collapsibleFilterContainer: {
     backgroundColor: '#f8fafc',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#e2e8f0',
   },
+  filterToggleButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+  },
+  filterToggleText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  filterToggleIcon: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#6b7280',
+    width: 20,
+    textAlign: 'center',
+  },
+  filterContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#f8fafc',
+  },
   filterSection: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
   filterLabel: {
     fontSize: 12,
