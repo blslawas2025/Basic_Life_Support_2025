@@ -229,13 +229,21 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const getClinicalResults = () => {
     return filteredResults
       .filter(result => result.category === 'Clinical')
-      .sort((a, b) => a.participant_name.localeCompare(b.participant_name));
+      .sort((a, b) => {
+        const nameA = a.participant_name || '';
+        const nameB = b.participant_name || '';
+        return nameA.localeCompare(nameB);
+      });
   };
   
   const getNonClinicalResults = () => {
     return filteredResults
       .filter(result => result.category === 'Non-Clinical')
-      .sort((a, b) => a.participant_name.localeCompare(b.participant_name));
+      .sort((a, b) => {
+        const nameA = a.participant_name || '';
+        const nameB = b.participant_name || '';
+        return nameA.localeCompare(nameB);
+      });
   };
 
   const getStatusColor = (status: string) => {
