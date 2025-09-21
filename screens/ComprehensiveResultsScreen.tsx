@@ -717,8 +717,9 @@ const styles = StyleSheet.create({
   tableHeaderText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 10,
     textAlign: 'center',
+    flexWrap: 'wrap',
   },
   tableRow: {
     flexDirection: 'row',
@@ -735,33 +736,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   tableCellText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#2c3e50',
     textAlign: 'center',
+    flexWrap: 'wrap',
   },
   nameColumn: {
-    width: 150,
-    paddingHorizontal: 4,
+    width: 200,
+    paddingHorizontal: 8,
     textAlign: 'left',
   },
   icColumn: {
-    width: 100,
-    paddingHorizontal: 4,
+    width: 120,
+    paddingHorizontal: 8,
     textAlign: 'center',
   },
   jobColumn: {
-    width: 120,
-    paddingHorizontal: 4,
+    width: 180,
+    paddingHorizontal: 8,
     textAlign: 'left',
   },
   categoryColumn: {
-    width: 80,
-    paddingHorizontal: 4,
+    width: 120,
+    paddingHorizontal: 8,
     textAlign: 'center',
   },
   assessmentColumn: {
-    width: 80,
-    paddingHorizontal: 4,
+    width: 100,
+    paddingHorizontal: 8,
     textAlign: 'center',
   },
   emptyTableRow: {
