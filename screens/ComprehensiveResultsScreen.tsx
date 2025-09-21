@@ -313,36 +313,74 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
       <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2} ellipsizeMode="tail">{result.jobPosition || 'N/A'}</Text>
       <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
-      {/* Pre Test Column */}
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        {result.preTestStatus && result.preTestStatus !== 'Not Taken' ? (
-          <>
-            <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 11 }]}>
-              {result.preTestScore || 0}/{result.preTestTotalQuestions || 30}
-            </Text>
-            <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 10 }]}>
-              ({result.preTestPercentage || 0}%)
-            </Text>
-          </>
-        ) : (
-          <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
-        )}
-      </View>
-      {/* Post Test Column */}
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        {result.postTestStatus && result.postTestStatus !== 'Not Taken' ? (
-          <>
-            <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 11 }]}>
-              {result.postTestScore || 0}/{result.postTestTotalQuestions || 30}
-            </Text>
-            <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 10 }]}>
-              ({result.postTestPercentage || 0}%)
-            </Text>
-          </>
-        ) : (
-          <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
-        )}
-      </View>
+      {/* Show only relevant test column based on filter */}
+      {filterStatus === 'pre' ? (
+        /* Pre Test Column Only */
+        <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+          {result.preTestStatus && result.preTestStatus !== 'Not Taken' ? (
+            <>
+              <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 11 }]}>
+                {result.preTestScore || 0}/{result.preTestTotalQuestions || 30}
+              </Text>
+              <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 10 }]}>
+                ({result.preTestPercentage || 0}%)
+              </Text>
+            </>
+          ) : (
+            <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+          )}
+        </View>
+      ) : filterStatus === 'post' ? (
+        /* Post Test Column Only */
+        <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+          {result.postTestStatus && result.postTestStatus !== 'Not Taken' ? (
+            <>
+              <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 11 }]}>
+                {result.postTestScore || 0}/{result.postTestTotalQuestions || 30}
+              </Text>
+              <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 10 }]}>
+                ({result.postTestPercentage || 0}%)
+              </Text>
+            </>
+          ) : (
+            <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+          )}
+        </View>
+      ) : (
+        /* Both Pre and Post Test Columns */
+        <>
+          {/* Pre Test Column */}
+          <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+            {result.preTestStatus && result.preTestStatus !== 'Not Taken' ? (
+              <>
+                <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 11 }]}>
+                  {result.preTestScore || 0}/{result.preTestTotalQuestions || 30}
+                </Text>
+                <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 10 }]}>
+                  ({result.preTestPercentage || 0}%)
+                </Text>
+              </>
+            ) : (
+              <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+            )}
+          </View>
+          {/* Post Test Column */}
+          <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+            {result.postTestStatus && result.postTestStatus !== 'Not Taken' ? (
+              <>
+                <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 11 }]}>
+                  {result.postTestScore || 0}/{result.postTestTotalQuestions || 30}
+                </Text>
+                <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 10 }]}>
+                  ({result.postTestPercentage || 0}%)
+                </Text>
+              </>
+            ) : (
+              <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+            )}
+          </View>
+        </>
+      )}
       {/* One Man CPR Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
         {renderStatusBadge(result.oneManCprStatus || 'Not Taken')}
@@ -586,8 +624,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
                     <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Clinical/Non-Clinical</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
+                    {/* Show only relevant test column based on filter */}
+                    {filterStatus === 'pre' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
+                    ) : filterStatus === 'post' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
+                    ) : (
+                      <>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
+                      </>
+                    )}
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
