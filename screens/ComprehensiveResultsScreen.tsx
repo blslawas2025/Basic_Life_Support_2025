@@ -48,6 +48,10 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [selectedResult, setSelectedResult] = useState<MockResult | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial' | 'remedial_allowed' | 'remedial_not_allowed'>('all');
+  
+  // New filter states for remedial and certification
+  const [remedialFilter, setRemedialFilter] = useState<'all' | 'allowed' | 'not_allowed'>('all');
+  const [certificationFilter, setCertificationFilter] = useState<'all' | 'allowed' | 'not_allowed'>('all');
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -60,7 +64,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     if (dataLoaded) {
     filterResults();
     }
-  }, [results, searchQuery, filterStatus, dataLoaded]);
+  }, [results, searchQuery, filterStatus, remedialFilter, certificationFilter, dataLoaded]);
 
   const loadResults = async (forceRefresh = false) => {
     try {
@@ -184,7 +188,33 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       );
     }
 
-    // Apply tab-specific filters
+    // Apply remedial filter
+    if (remedialFilter !== 'all') {
+      filtered = filtered.filter(result => {
+        const isPass = result.postTestStatus === 'Pass' || (result.postTestPercentage && result.postTestPercentage >= (result.category === 'Clinical' ? 83 : 67));
+        if (remedialFilter === 'allowed') {
+          return !isPass; // Failed participants are allowed for remedial
+        } else if (remedialFilter === 'not_allowed') {
+          return isPass; // Passed participants are not allowed for remedial
+        }
+        return true;
+      });
+    }
+    
+    // Apply certification filter
+    if (certificationFilter !== 'all') {
+      filtered = filtered.filter(result => {
+        const isPass = result.postTestStatus === 'Pass' || (result.postTestPercentage && result.postTestPercentage >= (result.category === 'Clinical' ? 83 : 67));
+        if (certificationFilter === 'allowed') {
+          return isPass; // Passed participants are allowed for certification
+        } else if (certificationFilter === 'not_allowed') {
+          return !isPass; // Failed participants are not allowed for certification
+        }
+        return true;
+      });
+    }
+
+    // Apply tab-specific filters (keeping original logic for compatibility)
     if (filterStatus === 'pre') {
       // Show all participants but sort by pre-test scores
       filtered = filtered.sort((a, b) => {
@@ -504,34 +534,98 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           </TouchableOpacity>
         </View>
         
+        {/* Filter Buttons */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScrollView}>
           <View style={styles.filterButtons}>
-            {[
-              { key: 'all', label: 'All Results' },
-              { key: 'pre', label: 'Pre Test' },
-              { key: 'post', label: 'Post Test' },
-              { key: 'remedial', label: 'Remedial (Pass/Fail)' },
-              { key: 'remedial_allowed', label: 'Remedial Allowed' },
-              { key: 'remedial_not_allowed', label: 'Remedial Not Allowed' }
-            ].map((filter) => (
               <TouchableOpacity
-                key={filter.key}
                 style={[
                   styles.filterButton,
-                  { backgroundColor: filterStatus === filter.key ? '#3498db' : '#f8f9fa' }
+                { backgroundColor: remedialFilter === 'all' ? '#3498db' : '#f8f9fa' }
                 ]}
-                onPress={() => {
-                  setFilterStatus(filter.key as any);
-                }}
+              onPress={() => setRemedialFilter('all')}
               >
                 <Text style={[
                   styles.filterButtonText,
-                  { color: filterStatus === filter.key ? '#fff' : '#666' }
+                { color: remedialFilter === 'all' ? '#fff' : '#666' }
                 ]}>
-                  {filter.label}
+                All Remedial
                 </Text>
               </TouchableOpacity>
-            ))}
+            <TouchableOpacity
+              style={[
+                styles.filterButton,
+                { backgroundColor: remedialFilter === 'allowed' ? '#3498db' : '#f8f9fa' }
+              ]}
+              onPress={() => setRemedialFilter('allowed')}
+            >
+              <Text style={[
+                styles.filterButtonText,
+                { color: remedialFilter === 'allowed' ? '#fff' : '#666' }
+              ]}>
+                Remedial Allowed
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.filterButton,
+                { backgroundColor: remedialFilter === 'not_allowed' ? '#3498db' : '#f8f9fa' }
+              ]}
+              onPress={() => setRemedialFilter('not_allowed')}
+            >
+              <Text style={[
+                styles.filterButtonText,
+                { color: remedialFilter === 'not_allowed' ? '#fff' : '#666' }
+              ]}>
+                Remedial Not Allowed
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScrollView}>
+          <View style={styles.filterButtons}>
+            <TouchableOpacity
+              style={[
+                styles.filterButton,
+                { backgroundColor: certificationFilter === 'all' ? '#3498db' : '#f8f9fa' }
+              ]}
+              onPress={() => setCertificationFilter('all')}
+            >
+              <Text style={[
+                styles.filterButtonText,
+                { color: certificationFilter === 'all' ? '#fff' : '#666' }
+              ]}>
+                All Certification
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.filterButton,
+                { backgroundColor: certificationFilter === 'allowed' ? '#3498db' : '#f8f9fa' }
+              ]}
+              onPress={() => setCertificationFilter('allowed')}
+            >
+              <Text style={[
+                styles.filterButtonText,
+                { color: certificationFilter === 'allowed' ? '#fff' : '#666' }
+              ]}>
+                Certification Allowed
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.filterButton,
+                { backgroundColor: certificationFilter === 'not_allowed' ? '#3498db' : '#f8f9fa' }
+              ]}
+              onPress={() => setCertificationFilter('not_allowed')}
+            >
+              <Text style={[
+                styles.filterButtonText,
+                { color: certificationFilter === 'not_allowed' ? '#fff' : '#666' }
+              ]}>
+                Certification Not Allowed
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -604,14 +698,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           // All Results or Remedial - show comprehensive table
           <View>
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>📋 {
-                filterStatus === 'all' ? 'All Results' : 
-                filterStatus === 'remedial' ? 'Remedial Status' :
-                filterStatus === 'remedial_allowed' ? 'Remedial Allowed' :
-                filterStatus === 'remedial_not_allowed' ? 'Remedial Not Allowed' :
-                'Results'
-              } Table</Text>
-              <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
+              <Text style={styles.emptyTitle}>📋 All Results Table</Text>
+              <Text style={styles.emptySubtitle}>Results shown by category side by side</Text>
             </View>
             
             {/* Comprehensive Table */}
