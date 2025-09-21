@@ -35,7 +35,8 @@ import ResultViewScreen from "./screens/ResultViewScreen";
 import ResultAnalysisScreen from "./screens/ResultAnalysisScreen";
 import ResultSettingsScreen from "./screens/ResultSettingsScreen";
 import CertificateManagementScreen from "./screens/CertificateManagementScreen";
-import ComprehensiveResultsScreen from "./screens/ComprehensiveResultsScreen";
+import ComprehensiveResultsScreen from "./screens/ComprehensiveResultsScreen_NEW";
+// FORCE UPDATE - NEW FILE IMPORTED
 import CreateCourseScreen from "./screens/CreateCourseScreen";
 import ViewCoursesScreen from "./screens/ViewCoursesScreen";
 import EditCourseScreen from "./screens/EditCourseScreen";

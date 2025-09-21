@@ -338,7 +338,7 @@ export class ComprehensiveResultsService {
           participant_name: profile.name || 'Unknown',
           participant_ic_number: profile.ic_number || 'N/A',
           participant_job_position: profile.job_position_name || 'N/A',
-          participant_category: testSubmissions.pre_test?.job_category || testSubmissions.post_test?.job_category || 'Non-Clinical',
+          participant_category: profile.category || 'Non-Clinical',
           pre_test: getTestResult('pre_test'),
           post_test: getTestResult('post_test'),
           one_man_cpr: getChecklistResult('one man cpr'),
