@@ -339,6 +339,18 @@ export class ComprehensiveResultsService {
           const preTestSubmission = testSubmissions['pre_test'];
           const postTestSubmission = testSubmissions['post_test'];
           
+          // Debug: Log ALVIN DULAMIT's data specifically
+          if (profile.name === 'ALVIN DULAMIT') {
+            console.log('ALVIN DULAMIT service debug:', {
+              profileName: profile.name,
+              profileUserType: profile.user_type,
+              preTestJobCategory: preTestSubmission?.job_category,
+              postTestJobCategory: postTestSubmission?.job_category,
+              preTestSubmission: preTestSubmission,
+              postTestSubmission: postTestSubmission
+            });
+          }
+          
           if (preTestSubmission?.job_category) {
             return preTestSubmission.job_category;
           }

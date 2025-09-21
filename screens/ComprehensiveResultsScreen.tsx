@@ -102,6 +102,18 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         categories: [...new Set(convertedResults.map(r => r.category))],
         sampleData: convertedResults.slice(0, 3).map(r => ({ name: r.participantName, category: r.category }))
       });
+
+      // Debug: Check ALVIN DULAMIT specifically
+      const alvinResult = convertedResults.find(r => r.participantName === 'ALVIN DULAMIT');
+      if (alvinResult) {
+        console.log('ALVIN DULAMIT debug:', {
+          name: alvinResult.participantName,
+          category: alvinResult.category,
+          icNumber: alvinResult.icNumber,
+          testType: alvinResult.testType,
+          id: alvinResult.id
+        });
+      }
       
     } catch (error) {
       console.error('Error loading results:', error);
