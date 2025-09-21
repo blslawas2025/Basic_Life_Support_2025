@@ -226,8 +226,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     setFilteredResults(filtered);
   };
 
-  const getClinicalResults = () => filteredResults.filter(result => result.category === 'Clinical');
-  const getNonClinicalResults = () => filteredResults.filter(result => result.category === 'Non-Clinical');
+  const getClinicalResults = () => {
+    return filteredResults
+      .filter(result => result.category === 'Clinical')
+      .sort((a, b) => a.participant_name.localeCompare(b.participant_name));
+  };
+  
+  const getNonClinicalResults = () => {
+    return filteredResults
+      .filter(result => result.category === 'Non-Clinical')
+      .sort((a, b) => a.participant_name.localeCompare(b.participant_name));
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -863,61 +872,43 @@ const styles = StyleSheet.create({
   // Modern Filter Styles
   modernFilterContainer: {
     backgroundColor: '#ffffff',
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   filterSection: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   filterLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: 12,
-    letterSpacing: 0.5,
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#374151',
+    marginBottom: 8,
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 8,
   },
   modernFilterButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
     backgroundColor: '#f9fafb',
-    borderWidth: 1.5,
-    borderColor: '#e5e7eb',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
   },
   modernFilterButtonActive: {
     backgroundColor: '#3b82f6',
     borderColor: '#3b82f6',
-    shadowColor: '#3b82f6',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   modernFilterText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '500',
     color: '#6b7280',
-    letterSpacing: 0.25,
   },
   modernFilterTextActive: {
     color: '#ffffff',
-    fontWeight: '700',
   },
   
   // Side by Side Container
