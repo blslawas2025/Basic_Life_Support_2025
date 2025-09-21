@@ -58,13 +58,14 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   // Load data on component mount
   useEffect(() => {
     loadResults();
+    setDataLoaded(true); // Auto-load data instead of waiting for tab click
   }, []);
 
   useEffect(() => {
     if (dataLoaded) {
     filterResults();
     }
-  }, [results, searchQuery, filterStatus, remedialFilter, certificationFilter, dataLoaded]);
+  }, [results, searchQuery, remedialFilter, certificationFilter, dataLoaded]);
 
   const loadResults = async (forceRefresh = false) => {
     try {
@@ -214,70 +215,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       });
     }
 
-    // Apply tab-specific filters (keeping original logic for compatibility)
-    if (filterStatus === 'pre') {
-      // Show all participants but sort by pre-test scores
-      filtered = filtered.sort((a, b) => {
-        if (a.category !== b.category) {
-          return a.category.localeCompare(b.category);
-        }
-        return (b.preTestPercentage || 0) - (a.preTestPercentage || 0);
-      });
-    } else if (filterStatus === 'post') {
-      // Show all participants but sort by post-test scores
-      filtered = filtered.sort((a, b) => {
-        if (a.category !== b.category) {
-          return a.category.localeCompare(b.category);
-        }
-        return (b.postTestPercentage || 0) - (a.postTestPercentage || 0);
-      });
-    } else if (filterStatus === 'remedial') {
-      const participantMap = new Map();
-      filtered.forEach(result => {
-        if (!participantMap.has(result.participantName)) {
-          participantMap.set(result.participantName, result);
-        }
-      });
-      filtered = Array.from(participantMap.values());
+    // Default sorting - by name within category
       filtered = filtered.sort((a, b) => {
         if (a.category !== b.category) {
           return a.category.localeCompare(b.category);
         }
         return a.participantName.localeCompare(b.participantName);
       });
-    } else if (filterStatus === 'remedial_allowed') {
-      const participantMap = new Map();
-      filtered.forEach(result => {
-        if (!participantMap.has(result.participantName)) {
-          participantMap.set(result.participantName, result);
-        }
-      });
-      filtered = Array.from(participantMap.values());
-      filtered = filtered.filter(result => result.remedialAllowed === true);
-      filtered = filtered.sort((a, b) => {
-        if (a.category !== b.category) {
-          return a.category.localeCompare(b.category);
-        }
-        return a.participantName.localeCompare(b.participantName);
-      });
-    } else if (filterStatus === 'remedial_not_allowed') {
-      const participantMap = new Map();
-      filtered.forEach(result => {
-        if (!participantMap.has(result.participantName)) {
-          participantMap.set(result.participantName, result);
-        }
-      });
-      filtered = Array.from(participantMap.values());
-      filtered = filtered.filter(result => result.remedialAllowed === false);
-      filtered = filtered.sort((a, b) => {
-        if (a.category !== b.category) {
-          return a.category.localeCompare(b.category);
-        }
-        return a.participantName.localeCompare(b.participantName);
-      });
-    } else {
-      filtered = filtered.sort((a, b) => a.participantName.localeCompare(b.participantName));
-    }
 
     setFilteredResults(filtered);
   };
@@ -634,65 +578,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       <ScrollView style={styles.resultsContainer} showsVerticalScrollIndicator={false}>
         {!dataLoaded ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>📋 Click a tab above to load data</Text>
-            <Text style={styles.emptySubtitle}>Select All Results, Pre Test, Post Test, or Remedial</Text>
+            <Text style={styles.emptyTitle}>📋 Loading data...</Text>
+            <Text style={styles.emptySubtitle}>Please wait while we load the results</Text>
           </View>
         ) : filteredResults.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyTitle}>No results found</Text>
             <Text style={styles.emptySubtitle}>Try adjusting your search or filter</Text>
-          </View>
-        ) : (filterStatus === 'pre' || filterStatus === 'post') ? (
-          <View>
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>📊 {filterStatus === 'pre' ? 'Pre Test' : 'Post Test'} Results</Text>
-              <Text style={styles.emptySubtitle}>Results shown by category side by side</Text>
-            </View>
-              
-            {/* Side by Side Tables Container */}
-            <View style={styles.sideBySideContainer}>
-            {/* Clinical Table */}
-              <View style={styles.sideBySideTable}>
-                <Text style={styles.tableTitle}>Clinical Participants</Text>
-              <View style={styles.separateTableHeader}>
-                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
-                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
-                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
-                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-              </View>
-              
-              {getClinicalResults().length === 0 ? (
-                <View style={styles.emptyTableRow}>
-                  <Text style={styles.emptyTableText}>No clinical participants found</Text>
-                </View>
-              ) : (
-                  getClinicalResults().map((result, index) => renderResultRow(result, index))
-              )}
-            </View>
-
-            {/* Non-Clinical Table */}
-              <View style={styles.sideBySideTable}>
-                <Text style={styles.tableTitle}>Non-Clinical Participants</Text>
-              <View style={styles.separateTableHeader}>
-                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
-                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
-                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
-                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-              </View>
-              
-              {getNonClinicalResults().length === 0 ? (
-                <View style={styles.emptyTableRow}>
-                  <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
-                </View>
-              ) : (
-                  getNonClinicalResults().map((result, index) => renderResultRow(result, index))
-                )}
-                    </View>
-                  </View>
           </View>
         ) : (
           // All Results or Remedial - show comprehensive table
