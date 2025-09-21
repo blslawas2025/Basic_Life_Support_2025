@@ -557,7 +557,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial Needed</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
                   </View>
                 
