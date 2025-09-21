@@ -186,20 +186,20 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
 
     // Apply tab-specific filters
     if (filterStatus === 'pre') {
-      filtered = filtered.filter(result => result.testType === 'pre');
+      // Show all participants but sort by pre-test scores
       filtered = filtered.sort((a, b) => {
         if (a.category !== b.category) {
           return a.category.localeCompare(b.category);
         }
-        return b.score - a.score;
+        return (b.preTestPercentage || 0) - (a.preTestPercentage || 0);
       });
     } else if (filterStatus === 'post') {
-      filtered = filtered.filter(result => result.testType === 'post');
+      // Show all participants but sort by post-test scores
       filtered = filtered.sort((a, b) => {
         if (a.category !== b.category) {
           return a.category.localeCompare(b.category);
         }
-        return b.score - a.score;
+        return (b.postTestPercentage || 0) - (a.postTestPercentage || 0);
       });
     } else if (filterStatus === 'remedial') {
       const participantMap = new Map();
