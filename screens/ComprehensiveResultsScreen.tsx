@@ -225,9 +225,9 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       onPress={() => handleResultPress(result)}
       activeOpacity={0.7}
     >
-      <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2}>{result.participantName}</Text>
+      <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2} ellipsizeMode="tail">{result.participantName}</Text>
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
-      <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2}>{result.jobPosition || 'N/A'}</Text>
+      <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2} ellipsizeMode="tail">{result.jobPosition || 'N/A'}</Text>
       <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
         <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
@@ -458,29 +458,33 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             {/* Comprehensive Table */}
             <View style={styles.comprehensiveTableContainer}>
               <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                <View style={styles.tableHeader}>
-                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
-                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Clinical/Non-Clinical</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
-                  <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
-                </View>
-              
-                {filteredResults.length === 0 ? (
-                  <View style={styles.emptyTableRow}>
-                    <Text style={styles.emptyTableText}>No results found</Text>
+                <View style={styles.table}>
+                  {/* Table Header */}
+                  <View style={styles.tableHeader}>
+                    <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                    <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                    <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                    <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Clinical/Non-Clinical</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Adult Choking</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Remedial</Text>
+                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Certified</Text>
                   </View>
-                ) : (
-                  filteredResults.map((result, index) => renderResultRow(result, index))
-                )}
+                
+                  {/* Table Body */}
+                  {filteredResults.length === 0 ? (
+                    <View style={styles.emptyTableRow}>
+                      <Text style={styles.emptyTableText}>No results found</Text>
+                    </View>
+                  ) : (
+                    filteredResults.map((result, index) => renderResultRow(result, index))
+                  )}
+                </View>
               </ScrollView>
             </View>
           </View>
@@ -728,6 +732,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f1f2f6',
     alignItems: 'center',
+    minHeight: 50,
   },
   evenRow: {
     backgroundColor: '#f8f9fa',
@@ -740,11 +745,13 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
     textAlign: 'center',
     flexWrap: 'wrap',
+    lineHeight: 14,
   },
   nameColumn: {
     width: 200,
     paddingHorizontal: 8,
     textAlign: 'left',
+    minHeight: 40,
   },
   icColumn: {
     width: 120,
@@ -755,6 +762,7 @@ const styles = StyleSheet.create({
     width: 180,
     paddingHorizontal: 8,
     textAlign: 'left',
+    minHeight: 40,
   },
   categoryColumn: {
     width: 120,
@@ -762,9 +770,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   assessmentColumn: {
-    width: 100,
-    paddingHorizontal: 8,
+    width: 80,
+    paddingHorizontal: 6,
     textAlign: 'center',
+    minHeight: 40,
   },
   emptyTableRow: {
     paddingVertical: 20,
@@ -796,6 +805,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  table: {
+    minWidth: 1100, // Ensure table has minimum width for all columns (200+120+180+120+80*9)
   },
   modalContainer: {
     flex: 1,
