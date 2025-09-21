@@ -490,7 +490,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         {/* Modern Filter Section */}
         <View style={styles.modernFilterContainer}>
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Show Results</Text>
+            <Text style={styles.filterLabel}>Status</Text>
             <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[
@@ -503,7 +503,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   remedialFilter === 'all' && styles.modernFilterTextActive
                 ]}>
-                  All Participants
+                  All
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -517,7 +517,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                   styles.modernFilterText,
                   remedialFilter === 'allowed' && styles.modernFilterTextActive
                 ]}>
-                  Need Remedial
+                  Remedial
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -538,7 +538,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           </View>
           
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Certification Status</Text>
+            <Text style={styles.filterLabel}>Certification</Text>
             <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[
@@ -869,46 +869,51 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   
-  // Modern Filter Styles
+  // Professional Filter Styles
   modernFilterContainer: {
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    backgroundColor: '#f8fafc',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#e2e8f0',
   },
   filterSection: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   filterLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: 8,
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#475569',
+    marginBottom: 6,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
   },
   modernFilterButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-    backgroundColor: '#f9fafb',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderColor: '#d1d5db',
+    borderColor: '#cbd5e1',
+    minWidth: 60,
+    alignItems: 'center',
   },
   modernFilterButtonActive: {
-    backgroundColor: '#3b82f6',
-    borderColor: '#3b82f6',
+    backgroundColor: '#1e40af',
+    borderColor: '#1e40af',
   },
   modernFilterText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '500',
-    color: '#6b7280',
+    color: '#64748b',
   },
   modernFilterTextActive: {
     color: '#ffffff',
+    fontWeight: '600',
   },
   
   // Side by Side Container
