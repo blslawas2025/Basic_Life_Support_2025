@@ -10,6 +10,7 @@ interface MockResult {
   id: string;
   participantName: string;
   icNumber?: string;
+  jobPosition?: string;
   testType: 'pre' | 'post' | 'checklist';
   score: number;
   percentage: number;
@@ -57,6 +58,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             id: `${result.participant_id}-pre`,
             participantName: result.participant_name || 'Unknown',
             icNumber: result.participant_ic_number || '',
+            jobPosition: result.participant_job_position || 'N/A',
                 testType: 'pre',
             score: result.pre_test.percentage || 0,
             percentage: result.pre_test.percentage || 0,
@@ -77,6 +79,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             id: `${result.participant_id}-post`,
             participantName: result.participant_name || 'Unknown',
             icNumber: result.participant_ic_number || '',
+            jobPosition: result.participant_job_position || 'N/A',
                 testType: 'post',
             score: result.post_test.percentage || 0,
             percentage: result.post_test.percentage || 0,
@@ -114,6 +117,12 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           id: alvinResult.id
         });
       }
+
+      // Debug: Show ALL participants and their categories
+      console.log('ALL PARTICIPANTS CATEGORIES:');
+      convertedResults.forEach((result, index) => {
+        console.log(`${index + 1}. ${result.participantName} - ${result.category} (${result.testType})`);
+      });
       
     } catch (error) {
       console.error('Error loading results:', error);
@@ -214,7 +223,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       <Text style={[styles.tableCellText, styles.rankColumn]}>{index + 1}</Text>
       <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2}>{result.participantName}</Text>
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
-      <Text style={[styles.tableCellText, styles.jobColumn]}>{result.category}</Text>
+      <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2}>{result.jobPosition || 'N/A'}</Text>
+      <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
       <View style={[styles.resultColumn, { alignItems: 'center' }]}>
         <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontWeight: 'bold', fontSize: 13 }]}>
           {result.correctAnswers || 0}/{result.totalQuestions || 30}
@@ -362,7 +372,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                 <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
                   <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                   <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
                 <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
               </View>
               
@@ -382,7 +393,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                 <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
                   <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                   <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                  <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
                 <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
               </View>
               
@@ -686,6 +698,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   jobColumn: {
+    width: 120,
+    paddingHorizontal: 4,
+  },
+  categoryColumn: {
     width: 100,
     paddingHorizontal: 4,
   },
