@@ -654,6 +654,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 8,
   },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#6c7ae0',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+  },
   tableHeaderText: {
     color: '#fff',
     fontWeight: 'bold',
@@ -729,7 +735,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 10,
     padding: 20,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
