@@ -231,8 +231,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>🚀 LATEST VERSION - REAL DATA + SIDE-BY-SIDE LAYOUT 🚀</Text>
-        <Text style={styles.subtitle}>Deployed: {new Date().toLocaleString()} - Real Supabase data with side-by-side tables!</Text>
+        <Text style={styles.title}>🚀 AUTO-DEPLOY ENABLED - REAL DATA + SIDE-BY-SIDE LAYOUT 🚀</Text>
+        <Text style={styles.subtitle}>Last Update: {new Date().toLocaleString()} - Real Supabase data with side-by-side tables!</Text>
       </View>
 
       {/* Statistics */}
