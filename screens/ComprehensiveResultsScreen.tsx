@@ -22,6 +22,15 @@ interface MockResult {
   category: 'Clinical' | 'Non-Clinical';
   certified: boolean;
   remedialAllowed: boolean;
+  // Pre and Post test specific data
+  preTestScore?: number;
+  preTestPercentage?: number;
+  preTestTotalQuestions?: number;
+  preTestStatus?: 'Pass' | 'Fail' | 'Not Taken';
+  postTestScore?: number;
+  postTestPercentage?: number;
+  postTestTotalQuestions?: number;
+  postTestStatus?: 'Pass' | 'Fail' | 'Not Taken';
 }
 
 export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResultsScreenProps) {
@@ -52,52 +61,39 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       // Load actual data from Supabase
       const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults();
       
-      // Convert to MockResult format for compatibility
+      // Convert to MockResult format for compatibility - group by participant
           const convertedResults: MockResult[] = [];
           
-      // Create separate entries for pre-test and post-test results
+      // Create single entry per participant with both pre and post test data
       comprehensiveResults.forEach((result, index) => {
-        // Pre-test entry
-        if (result.pre_test.status !== 'NOT_TAKEN') {
-              convertedResults.push({
-            id: `${result.participant_id}-pre`,
-            participantName: result.participant_name || 'Unknown',
-            icNumber: result.participant_ic_number || '',
-            jobPosition: result.participant_job_position || 'N/A',
-                testType: 'pre',
-            score: result.pre_test.percentage || 0,
-            percentage: result.pre_test.percentage || 0,
-            totalQuestions: result.pre_test.total_questions || 30,
-            correctAnswers: result.pre_test.score || 0,
-            status: result.pre_test.status === 'PASS' ? 'Pass' : 'Fail',
-            date: result.pre_test.submitted_at ? result.pre_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
-            duration: 'N/A',
-            category: result.participant_category as 'Clinical' | 'Non-Clinical',
-            certified: result.pre_test.status === 'PASS',
-            remedialAllowed: result.pre_test.status === 'FAIL'
-          });
-        }
+        const participantResult: MockResult = {
+          id: result.participant_id,
+          participantName: result.participant_name || 'Unknown',
+          icNumber: result.participant_ic_number || '',
+          jobPosition: result.participant_job_position || 'N/A',
+          testType: 'pre', // Default to pre for compatibility
+          score: result.pre_test.percentage || 0,
+          percentage: result.pre_test.percentage || 0,
+          totalQuestions: result.pre_test.total_questions || 30,
+          correctAnswers: result.pre_test.score || 0,
+          status: result.pre_test.status === 'PASS' ? 'Pass' : 'Fail',
+          date: result.pre_test.submitted_at ? result.pre_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
+          duration: 'N/A',
+          category: result.participant_category as 'Clinical' | 'Non-Clinical',
+          certified: result.post_test.status === 'PASS', // Use post-test for certification
+          remedialAllowed: result.pre_test.status === 'FAIL',
+          // Add pre and post test specific data
+          preTestScore: result.pre_test.score || 0,
+          preTestPercentage: result.pre_test.percentage || 0,
+          preTestTotalQuestions: result.pre_test.total_questions || 30,
+          preTestStatus: result.pre_test.status === 'PASS' ? 'Pass' : 'Fail',
+          postTestScore: result.post_test.score || 0,
+          postTestPercentage: result.post_test.percentage || 0,
+          postTestTotalQuestions: result.post_test.total_questions || 30,
+          postTestStatus: result.post_test.status === 'PASS' ? 'Pass' : 'Fail',
+        };
         
-        // Post-test entry
-        if (result.post_test.status !== 'NOT_TAKEN') {
-              convertedResults.push({
-            id: `${result.participant_id}-post`,
-            participantName: result.participant_name || 'Unknown',
-            icNumber: result.participant_ic_number || '',
-            jobPosition: result.participant_job_position || 'N/A',
-                testType: 'post',
-            score: result.post_test.percentage || 0,
-            percentage: result.post_test.percentage || 0,
-            totalQuestions: result.post_test.total_questions || 30,
-            correctAnswers: result.post_test.score || 0,
-            status: result.post_test.status === 'PASS' ? 'Pass' : 'Fail',
-            date: result.post_test.submitted_at ? result.post_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
-            duration: 'N/A',
-            category: result.participant_category as 'Clinical' | 'Non-Clinical',
-            certified: result.post_test.status === 'PASS',
-            remedialAllowed: result.post_test.status === 'FAIL'
-          });
-        }
+        convertedResults.push(participantResult);
       });
       
           setResults(convertedResults);
@@ -229,21 +225,35 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
       <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2} ellipsizeMode="tail">{result.jobPosition || 'N/A'}</Text>
       <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
+      {/* Pre Test Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
-          {result.correctAnswers || 0}/{result.totalQuestions || 30}
-        </Text>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 10 }]}>
-          ({result.score}%)
-        </Text>
+        {result.preTestStatus && result.preTestStatus !== 'Not Taken' ? (
+          <>
+            <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 11 }]}>
+              {result.preTestScore || 0}/{result.preTestTotalQuestions || 30}
+            </Text>
+            <Text style={[styles.tableCellText, { color: getStatusColor(result.preTestStatus), fontSize: 10 }]}>
+              ({result.preTestPercentage || 0}%)
+            </Text>
+          </>
+        ) : (
+          <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+        )}
       </View>
+      {/* Post Test Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 11 }]}>
-          {result.correctAnswers || 0}/{result.totalQuestions || 30}
-        </Text>
-        <Text style={[styles.tableCellText, { color: getStatusColor(result.status), fontSize: 10 }]}>
-          ({result.score}%)
-        </Text>
+        {result.postTestStatus && result.postTestStatus !== 'Not Taken' ? (
+          <>
+            <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 11 }]}>
+              {result.postTestScore || 0}/{result.postTestTotalQuestions || 30}
+            </Text>
+            <Text style={[styles.tableCellText, { color: getStatusColor(result.postTestStatus), fontSize: 10 }]}>
+              ({result.postTestPercentage || 0}%)
+            </Text>
+          </>
+        ) : (
+          <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
+        )}
       </View>
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
         <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
