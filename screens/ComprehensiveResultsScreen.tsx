@@ -231,8 +231,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>✅ WORKING VERSION - PRE/POST TESTS FIXED ✅</Text>
-        <Text style={styles.subtitle}>Now using real Supabase data with side-by-side layout!</Text>
+        <Text style={styles.title}>🚀 LATEST VERSION - REAL DATA + SIDE-BY-SIDE LAYOUT 🚀</Text>
+        <Text style={styles.subtitle}>Deployed: {new Date().toLocaleString()} - Real Supabase data with side-by-side tables!</Text>
       </View>
 
       {/* Statistics */}
@@ -572,8 +572,8 @@ const styles = StyleSheet.create({
   },
   sideBySideContainer: {
     flexDirection: 'row',
-    gap: 10,
     marginVertical: 10,
+    paddingHorizontal: 5,
   },
   sideBySideTable: {
     flex: 1,
@@ -582,6 +582,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e9ecef',
     overflow: 'hidden',
+    marginHorizontal: 5,
   },
   tableTitle: {
     fontSize: 18,
