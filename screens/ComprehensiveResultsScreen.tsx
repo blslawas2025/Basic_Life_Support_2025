@@ -43,91 +43,56 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     try {
       setLoading(true);
       
-      // Demo data
-      const demoResults: MockResult[] = [
-        {
-          id: '1',
-          participantName: 'MUHSINAH BINTI ABDUL SHOMAD',
-          icNumber: '951015-10-5566',
-          testType: 'pre',
-          score: 85,
-          percentage: 85,
-          totalQuestions: 30,
-          correctAnswers: 25,
-          status: 'Pass',
-          date: '2024-01-15',
-          duration: '25 minutes',
-          category: 'Clinical',
-          certified: true,
-          remedialAllowed: false
-        },
-        {
-          id: '2',
-          participantName: 'Ahmad Bin Hassan',
-          icNumber: '880725-05-4433',
-          testType: 'pre',
-          score: 78,
-          percentage: 78,
-          totalQuestions: 30,
-          correctAnswers: 23,
-          status: 'Pass',
-          date: '2024-01-16',
-          duration: '25 minutes',
-          category: 'Non-Clinical',
-          certified: true,
-          remedialAllowed: false
-        },
-        {
-          id: '3',
-          participantName: 'Dr. Sarah Abdullah',
-          icNumber: '900105-12-3456',
-          testType: 'pre',
-          score: 92,
-          percentage: 92,
-          totalQuestions: 30,
-          correctAnswers: 28,
-          status: 'Pass',
-          date: '2024-01-17',
-          duration: '25 minutes',
-          category: 'Clinical',
-          certified: true,
-          remedialAllowed: false
-        },
-        {
-          id: '4',
-          participantName: 'Ahmad Bin Hassan',
-          icNumber: '880725-05-4433',
-          testType: 'post',
-          score: 92,
-          percentage: 92,
-          totalQuestions: 30,
-          correctAnswers: 28,
-          status: 'Pass',
-          date: '2024-01-16',
-          duration: '22 minutes',
-          category: 'Non-Clinical',
-          certified: true,
-          remedialAllowed: false
-        },
-        {
-          id: '5',
-          participantName: 'Siti Noor Aishah',
-          icNumber: '920305-08-7788',
-          testType: 'pre',
-          score: 65,
-          percentage: 65,
-          totalQuestions: 30,
-          correctAnswers: 19,
-          status: 'Fail',
-          date: '2024-01-17',
-          duration: '30 minutes',
-          category: 'Clinical',
-          certified: false,
-          remedialAllowed: true
-        }
-      ];
+      // Load actual data from Supabase
+      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults();
       
-      setResults(demoResults);
+      // Convert to MockResult format for compatibility
+      const convertedResults: MockResult[] = [];
+      
+      // Create separate entries for pre-test and post-test results
+      comprehensiveResults.forEach((result, index) => {
+        // Pre-test entry
+        if (result.pre_test.status !== 'NOT_TAKEN') {
+          convertedResults.push({
+            id: `${result.participant_id}-pre`,
+            participantName: result.participant_name || 'Unknown',
+            icNumber: result.participant_ic_number || '',
+            testType: 'pre',
+            score: result.pre_test.percentage || 0,
+            percentage: result.pre_test.percentage || 0,
+            totalQuestions: result.pre_test.total_questions || 30,
+            correctAnswers: result.pre_test.score || 0,
+            status: result.pre_test.status === 'PASS' ? 'Pass' : 'Fail',
+            date: result.pre_test.submitted_at ? result.pre_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
+            duration: 'N/A',
+            category: result.participant_category as 'Clinical' | 'Non-Clinical',
+            certified: result.pre_test.status === 'PASS',
+            remedialAllowed: result.pre_test.status === 'FAIL'
+          });
+        }
+        
+        // Post-test entry
+        if (result.post_test.status !== 'NOT_TAKEN') {
+          convertedResults.push({
+            id: `${result.participant_id}-post`,
+            participantName: result.participant_name || 'Unknown',
+            icNumber: result.participant_ic_number || '',
+            testType: 'post',
+            score: result.post_test.percentage || 0,
+            percentage: result.post_test.percentage || 0,
+            totalQuestions: result.post_test.total_questions || 30,
+            correctAnswers: result.post_test.score || 0,
+            status: result.post_test.status === 'PASS' ? 'Pass' : 'Fail',
+            date: result.post_test.submitted_at ? result.post_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
+            duration: 'N/A',
+            category: result.participant_category as 'Clinical' | 'Non-Clinical',
+            certified: result.post_test.status === 'PASS',
+            remedialAllowed: result.post_test.status === 'FAIL'
+          });
+        }
+      });
+      
+      setResults(convertedResults);
       
     } catch (error) {
       console.error('Error loading results:', error);
@@ -266,8 +231,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>🚨 CACHE PROBLEM - FORCE REFRESH NOW 🚨</Text>
-        <Text style={styles.subtitle}>IF YOU SEE THIS - CACHE IS CLEARED! PRE/POST TESTS FIXED!</Text>
+        <Text style={styles.title}>✅ WORKING VERSION - PRE/POST TESTS FIXED ✅</Text>
+        <Text style={styles.subtitle}>Now using real Supabase data with side-by-side layout!</Text>
       </View>
 
       {/* Statistics */}
@@ -359,47 +324,50 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           <View>
             <View style={styles.emptyState}>
               <Text style={styles.emptyTitle}>📊 {filterStatus === 'pre' ? 'Pre Test' : 'Post Test'} Results</Text>
-              <Text style={styles.emptySubtitle}>Results shown by category below</Text>
+              <Text style={styles.emptySubtitle}>Results shown by category side by side</Text>
             </View>
               
-            {/* Clinical Table */}
-            <View style={styles.separateTableContainer}>
-              <Text style={styles.tableTitle}>Clinical Participants</Text>
-              <View style={styles.separateTableHeader}>
-                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
-                <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
-                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-              </View>
-              
-              {getClinicalResults().length === 0 ? (
-                <View style={styles.emptyTableRow}>
-                  <Text style={styles.emptyTableText}>No clinical participants found</Text>
+            {/* Side by Side Tables Container */}
+            <View style={styles.sideBySideContainer}>
+              {/* Clinical Table */}
+              <View style={styles.sideBySideTable}>
+                <Text style={styles.tableTitle}>Clinical Participants</Text>
+                <View style={styles.separateTableHeader}>
+                  <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
+                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                  <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
                 </View>
-              ) : (
-                getClinicalResults().map((result, index) => renderResultRow(result, index))
-              )}
-            </View>
+                
+                {getClinicalResults().length === 0 ? (
+                  <View style={styles.emptyTableRow}>
+                    <Text style={styles.emptyTableText}>No clinical participants found</Text>
+                  </View>
+                ) : (
+                  getClinicalResults().map((result, index) => renderResultRow(result, index))
+                )}
+              </View>
 
-            {/* Non-Clinical Table */}
-            <View style={styles.separateTableContainer}>
-              <Text style={styles.tableTitle}>Non-Clinical Participants</Text>
-              <View style={styles.separateTableHeader}>
-                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
-                <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
-                <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
-                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-              </View>
-              
-              {getNonClinicalResults().length === 0 ? (
-                <View style={styles.emptyTableRow}>
-                  <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
+              {/* Non-Clinical Table */}
+              <View style={styles.sideBySideTable}>
+                <Text style={styles.tableTitle}>Non-Clinical Participants</Text>
+                <View style={styles.separateTableHeader}>
+                  <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
+                  <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                  <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                  <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                  <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
                 </View>
-              ) : (
-                getNonClinicalResults().map((result, index) => renderResultRow(result, index))
-              )}
+                
+                {getNonClinicalResults().length === 0 ? (
+                  <View style={styles.emptyTableRow}>
+                    <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
+                  </View>
+                ) : (
+                  getNonClinicalResults().map((result, index) => renderResultRow(result, index))
+                )}
+              </View>
             </View>
           </View>
         ) : (
@@ -600,6 +568,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e9ecef',
     marginVertical: 10,
+    overflow: 'hidden',
+  },
+  sideBySideContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginVertical: 10,
+  },
+  sideBySideTable: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
     overflow: 'hidden',
   },
   tableTitle: {
