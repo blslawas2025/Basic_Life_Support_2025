@@ -142,8 +142,8 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
       email: participant.email,
       ic_number: participant.ic_number,
       phone_number: participant.phone_number || '',
-      job_position_name: participant.job_position_name || '',
-      workplace_name: participant.workplace_name || '',
+              job_position_name: participant.job_position_name || '',
+              tempat_bertugas: participant.tempat_bertugas || '',
       has_allergies: participant.has_allergies,
       is_pregnant: participant.is_pregnant,
     });
@@ -166,7 +166,7 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
         ic_number: editFormData.ic_number,
         phone_number: editFormData.phone_number,
         job_position_name: editFormData.job_position_name,
-        workplace_name: editFormData.workplace_name,
+        tempat_bertugas: editFormData.tempat_bertugas,
         has_allergies: editFormData.has_allergies,
         is_pregnant: editFormData.is_pregnant,
       };
@@ -584,7 +584,7 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
                           <View style={styles.infoRow}>
                             <Ionicons name="business" size={16} color="#27ae60" />
                             <Text style={styles.participantWorkplace}>
-                              {participant.workplace_name || 'No workplace specified'}
+                              {participant.tempat_bertugas || 'No workplace specified'}
                             </Text>
                           </View>
                           
@@ -681,7 +681,7 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
                     </View>
                     <View style={styles.detailRow}>
                       <Text style={styles.detailLabel}>Workplace:</Text>
-                      <Text style={styles.detailValue}>{selectedParticipant.workplace_name || 'Not specified'}</Text>
+                      <Text style={styles.detailValue}>{selectedParticipant.tempat_bertugas || 'Not specified'}</Text>
                     </View>
                   </LinearGradient>
                 </View>
@@ -791,8 +791,8 @@ export default function ViewParticipantsScreen({ onBack }: ViewParticipantsScree
                     <Text style={styles.inputLabel}>Workplace</Text>
                     <TextInput
                       style={styles.editInput}
-                      value={editFormData.workplace_name}
-                      onChangeText={(text) => setEditFormData({...editFormData, workplace_name: text})}
+                      value={editFormData.tempat_bertugas}
+                      onChangeText={(text) => setEditFormData({...editFormData, tempat_bertugas: text})}
                       placeholder="Workplace name"
                     />
                   </View>
