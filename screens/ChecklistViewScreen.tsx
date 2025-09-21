@@ -10,6 +10,7 @@ import {
   Animated,
   Platform,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -22,23 +23,10 @@ import { synchronizationService } from '../services/SynchronizationService';
 
 const { width } = Dimensions.get('window');
 
-// Cross-platform BlurView component - simplified for web compatibility
-const ConditionalBlurView = ({ children, intensity, style }: { children: React.ReactNode, intensity: number, style: any }) => {
-  // Always use fallback for maximum compatibility
-  return (
-    <View style={[style, { 
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-      backdropFilter: Platform.OS === 'web' ? 'blur(20px)' : undefined,
-    }]}>
-      {children}
-    </View>
-  );
-};
-
 interface ChecklistViewScreenProps {
   onBack: () => void;
   checklistType: string;
-  onRefresh?: () => void; // Add refresh callback
+  onRefresh?: () => void;
 }
 
 interface ChecklistSection {
@@ -47,7 +35,6 @@ interface ChecklistSection {
 }
 
 export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }: ChecklistViewScreenProps) {
-
   const [error, setError] = useState<string | null>(null);
   const [participants, setParticipants] = useState<Profile[]>([]);
   const [selectedParticipant, setSelectedParticipant] = useState<Profile | null>(null);
@@ -61,46 +48,38 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   // Process global state data into sections
   const sections = React.useMemo(() => {
-
     if (!checklistItems || checklistItems.length === 0) return [];
     
-        // Group items by section
+    // Group items by section
     const groupedItems = checklistItems.reduce((acc, item) => {
-          if (!acc[item.section]) {
-            acc[item.section] = [];
-          }
-          acc[item.section].push({ 
-            ...item, 
-            completed: completedItems.has(item.id || '') 
-          });
-          return acc;
-        }, {} as Record<string, (ChecklistItemData & { completed: boolean })[]>);
+      if (!acc[item.section]) {
+        acc[item.section] = [];
+      }
+      acc[item.section].push({ 
+        ...item, 
+        completed: completedItems.has(item.id || '') 
+      });
+      return acc;
+    }, {} as Record<string, (ChecklistItemData & { completed: boolean })[]>);
 
-        // Convert to sections array
+    // Convert to sections array
     const result = Object.entries(groupedItems).map(([section, items]) => ({
-          section,
-          items: items.sort((a, b) => a.order_index - b.order_index),
-        }));
-
-    result.forEach(section => {
-
-    });
+      section,
+      items: items.sort((a, b) => a.order_index - b.order_index),
+    }));
     
     return result;
   }, [checklistItems, checklistType, completedItems]);
+
   const fadeAnim = new Animated.Value(0);
   const slideAnim = new Animated.Value(50);
 
   const loadChecklist = useCallback(async () => {
     try {
       setError(null);
-
-      // Use global state refresh
       const result = await refreshChecklistData(() => ChecklistItemService.getChecklistItemsByType(checklistType));
 
       if (result.success && result.items && result.items.length > 0) {
-
-        // Animate in after loading
         Animated.parallel([
           Animated.timing(fadeAnim, {
             toValue: 1,
@@ -112,11 +91,8 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
             duration: 800,
             useNativeDriver: true,
           })
-        ]).start(() => {
-
-        });
+        ]).start();
       } else {
-
         setError(`No checklist data found for ${checklistType}`);
       }
     } catch (error) {
@@ -128,27 +104,21 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
   useEffect(() => {
     loadChecklist();
     loadParticipants();
-  }, [checklistType]); // Only depend on checklistType, not loadChecklist
+  }, [checklistType]);
 
   const loadParticipants = async () => {
     try {
-
       const profiles = await ProfileService.getAllProfiles();
-
-      // Filter only participants
       const participantProfiles = profiles.filter(profile => 
         profile.user_type === 'participant' && profile.status === 'approved'
       );
-
       setParticipants(participantProfiles);
     } catch (error) {
       console.error('Error loading participants:', error);
     }
   };
 
-  // Manual refresh function
   const handleManualRefresh = async () => {
-
     await loadChecklist();
   };
 
@@ -158,120 +128,14 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
     (participant.job_position_name && participant.job_position_name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const handleSubmit = async () => {
-    if (!selectedParticipant) {
-      alert('Please select a participant first');
-      return;
+  const toggleItem = (itemId: string) => {
+    const newCompletedItems = new Set(completedItems);
+    if (newCompletedItems.has(itemId)) {
+      newCompletedItems.delete(itemId);
+    } else {
+      newCompletedItems.add(itemId);
     }
-
-    // Show confirmation alert
-    const confirmMessage = `Are you sure you want to submit this assessment for ${selectedParticipant.name}?\n\nScore: ${Math.round(overallProgress.percentage)}%\nStatus: ${overallProgress.status}\n\nThis action cannot be undone.`;
-    
-    if (!confirm(confirmMessage)) {
-      return; // User cancelled
-    }
-
-    try {
-      // Prepare section results
-      const sectionResults = sections.map(section => ({
-        section: section.section,
-        completed: section.items.every(item => item.completed),
-        items: section.items.map(item => ({
-          id: item.id,
-          item: item.item,
-          completed: item.completed,
-          is_compulsory: item.is_compulsory
-        }))
-      }));
-
-      // Validate PASS status - ensure all compulsory items are completed
-      if (overallProgress.status === 'PASS') {
-        const validation = ChecklistResultService.validatePassStatus(sectionResults);
-        if (!validation.isValid) {
-          alert(`❌ Invalid PASS Status!\n\nCannot submit as PASS. The following compulsory items are not completed:\n\n${validation.missingCompulsory.join('\n')}\n\nPlease complete all compulsory items or change the status to FAIL.`);
-          return;
-        }
-      }
-
-      // Prepare assessment data for database
-      const assessmentData = {
-        participant_id: selectedParticipant.id,
-        participant_name: selectedParticipant.name,
-        participant_email: selectedParticipant.email,
-        participant_ic_number: selectedParticipant.ic_number || undefined,
-        participant_phone_number: selectedParticipant.phone_number || undefined,
-        participant_job_position: selectedParticipant.job_position_name || undefined,
-        participant_category: selectedParticipant.category || undefined,
-        participant_workplace: selectedParticipant.tempat_bertugas || undefined,
-        participant_pregnancy_status: selectedParticipant.is_pregnant,
-        participant_pregnancy_weeks: selectedParticipant.pregnancy_weeks || undefined,
-        participant_allergies: selectedParticipant.has_allergies,
-        participant_allergies_description: selectedParticipant.allergies_description || undefined,
-        participant_asthma_status: selectedParticipant.has_asthma,
-        checklist_type: checklistType,
-        checklist_version: '1.0',
-        total_items: overallProgress.total,
-        completed_items: overallProgress.completed,
-        completion_percentage: overallProgress.percentage,
-        status: overallProgress.status as 'INCOMPLETE' | 'FAIL' | 'PASS',
-        can_pass: overallProgress.canPass,
-        all_compulsory_completed: overallProgress.canPass,
-        section_results: sectionResults,
-        instructor_comments: comment,
-        submitted_at: new Date().toISOString(),
-        assessment_duration_seconds: 0, // Could be calculated if we track start time
-        retake_count: 0, // Could be fetched from previous assessments
-        is_retake: false
-      };
-
-      // Submit to database using synchronization service
-      const result = await synchronizationService.saveAndSync(async () => {
-        return await ChecklistResultService.submitChecklistResult(assessmentData);
-      }, 'results');
-      
-      if (result.success) {
-        // Show success alert
-        const successMessage = `✅ Assessment submitted successfully!\n\nParticipant: ${selectedParticipant.name}\nScore: ${Math.round(overallProgress.percentage)}%\nStatus: ${overallProgress.status}\n\nAssessment ID: ${result.data?.id?.substring(0, 8)}...`;
-        alert(successMessage);
-        
-        // Reset form
-        setComment('');
-        // Note: In a real implementation, you would reset the sections state here
-        setSelectedParticipant(null);
-      } else {
-        // Show error alert
-        alert(`❌ Failed to submit assessment!\n\nError: ${result.error}\n\nPlease try again.`);
-      }
-      
-    } catch (error) {
-      console.error('Error submitting assessment:', error);
-      alert(`❌ Error submitting assessment!\n\n${error instanceof Error ? error.message : 'Unknown error'}\n\nPlease try again.`);
-    }
-  };
-
-  const toggleItem = (sectionIndex: number, itemIndex: number) => {
-
-    // Check if sections and items exist
-    if (!sections[sectionIndex] || !sections[sectionIndex].items[itemIndex]) {
-      console.error('Invalid section or item index');
-      return;
-    }
-    
-    const item = sections[sectionIndex].items[itemIndex];
-    const itemId = item.id || '';
-    
-    // Update the local completed state
-    setCompletedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-
-      } else {
-        newSet.add(itemId);
-
-      }
-      return newSet;
-    });
+    setCompletedItems(newCompletedItems);
   };
 
   const getSectionProgress = (section: ChecklistSection) => {
@@ -282,34 +146,22 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   const getOverallProgress = () => {
     const totalItems = sections.reduce((sum, section) => sum + section.items.length, 0);
-    const completedItems = sections.reduce(
-      (sum, section) => sum + section.items.filter(item => item.completed).length,
-      0
-    );
+    const completedItems = sections.reduce((sum, section) => 
+      sum + section.items.filter(item => item.completed).length, 0);
     
-    // Use database data for all checklist types - no hardcoded logic
-    const allCompulsoryItems = sections.flatMap(section => 
-      section.items.filter(item => item.is_compulsory)
-    );
-    const completedCompulsoryItems = allCompulsoryItems.filter(item => item.completed);
+    const allCompulsoryItems = sections.flatMap(s => s.items.filter(item => item.is_compulsory));
+    const compulsoryCompleted = allCompulsoryItems.length > 0 ? allCompulsoryItems.every(item => item.completed) : true;
     
-    let status = 'INCOMPLETE';
     let canPass = false;
-    let compulsoryCompleted = false;
+    let status = 'INCOMPLETE';
     
-    // Check if all compulsory items are completed
-    compulsoryCompleted = allCompulsoryItems.length > 0 ? allCompulsoryItems.every(item => item.completed) : true;
-    
-    // For choking checklists, use 4 out of total items logic if no compulsory items defined
     if (checklistType === 'adult choking' || checklistType === 'infant choking') {
       const requiredItems = 4;
       canPass = completedItems >= requiredItems;
     } else {
-      // For other checklists, use compulsory items logic - ALL compulsory items must be completed
       canPass = compulsoryCompleted;
     }
     
-    // Status calculation: PASS only if canPass is true AND at least one item is completed
     if (completedItems > 0) {
       status = canPass ? 'PASS' : 'FAIL';
     } else {
@@ -326,8 +178,84 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
     };
   };
 
+  const handleSubmit = async () => {
+    if (!selectedParticipant) {
+      alert('Please select a participant first');
+      return;
+    }
+
+    const confirmMessage = `Are you sure you want to submit this assessment for ${selectedParticipant.name}?\n\nScore: ${Math.round(overallProgress.percentage)}%\nStatus: ${overallProgress.status}\n\nThis action cannot be undone.`;
+    
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      const sectionResults = sections.map(section => ({
+        section: section.section,
+        completed: section.items.every(item => item.completed),
+        items: section.items.map(item => ({
+          id: item.id,
+          item: item.item,
+          completed: item.completed,
+          is_compulsory: item.is_compulsory
+        }))
+      }));
+
+      if (overallProgress.status === 'PASS') {
+        const validation = ChecklistResultService.validatePassStatus(sectionResults);
+        if (!validation.isValid) {
+          alert(`❌ Invalid PASS Status!\n\nCannot submit as PASS. The following compulsory items are not completed:\n\n${validation.missingCompulsory.join('\n')}\n\nPlease complete all compulsory items or change the status to FAIL.`);
+          return;
+        }
+      }
+
+      const assessmentData = {
+        participant_id: selectedParticipant.id,
+        participant_name: selectedParticipant.name,
+        participant_email: selectedParticipant.email,
+        participant_ic: selectedParticipant.ic_number,
+        participant_job: selectedParticipant.job_position_name,
+        participant_workplace: selectedParticipant.tempat_bertugas,
+        checklist_type: checklistType,
+        overall_score: Math.round(overallProgress.percentage),
+        overall_status: overallProgress.status,
+        section_results: sectionResults,
+        instructor_comments: comment.trim() || null,
+        assessment_date: new Date().toISOString(),
+        created_by: 'instructor',
+        metadata: {
+          total_items: overallProgress.total,
+          completed_items: overallProgress.completed,
+          compulsory_completed: overallProgress.compulsoryCompleted,
+          can_pass: overallProgress.canPass
+        }
+      };
+
+      const result = await ChecklistResultService.submitAssessment(assessmentData);
+      
+      if (result.success) {
+        alert(`✅ Assessment submitted successfully!\n\nParticipant: ${selectedParticipant.name}\nScore: ${Math.round(overallProgress.percentage)}%\nStatus: ${overallProgress.status}`);
+        
+        // Reset form
+        setCompletedItems(new Set());
+        setComment('');
+        setSelectedParticipant(null);
+        
+        // Trigger refresh if callback provided
+        if (onRefresh) {
+          onRefresh();
+        }
+      } else {
+        throw new Error(result.error || 'Failed to submit assessment');
+      }
+    } catch (error) {
+      console.error('Error submitting assessment:', error);
+      alert(`❌ Failed to submit assessment: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
   const formatSectionName = (section: string) => {
-    // Use database section names directly - no hardcoded mapping
     return section.toUpperCase().replace(/([A-Z])/g, ' $1').trim();
   };
 
@@ -335,73 +263,56 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
   if (isDataLoading) {
     return (
-      <View style={styles.container}>
-        <LinearGradient 
-          colors={["#0a0a0a", "#1a1a2e", "#16213e"]} 
-          style={styles.background}
-        />
+      <SafeAreaView style={styles.container}>
+        <LinearGradient colors={['#667eea', '#764ba2']} style={styles.background} />
         <View style={styles.loadingContainer}>
+          <Ionicons name="list" size={60} color="#fff" />
           <Text style={styles.loadingText}>Loading checklist...</Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
-        <LinearGradient 
-          colors={["#0a0a0a", "#1a1a2e", "#16213e"]} 
-          style={styles.background}
-        />
+      <SafeAreaView style={styles.container}>
+        <LinearGradient colors={['#667eea', '#764ba2']} style={styles.background} />
         <View style={styles.loadingContainer}>
+          <Ionicons name="alert-circle" size={60} color="#ff6b6b" />
           <Text style={styles.loadingText}>Error: {error}</Text>
-          <TouchableOpacity 
-            style={styles.retryButton}
-            onPress={() => loadChecklist()}
-          >
+          <TouchableOpacity style={styles.retryButton} onPress={() => loadChecklist()}>
             <Text style={styles.retryButtonText}>Retry</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      
-      {/* Modern Background */}
-      <LinearGradient 
-        colors={["#667eea", "#764ba2", "#f093fb", "#f5576c", "#4facfe", "#00f2fe"]} 
-        style={styles.background}
-      >
-        <View style={styles.backgroundOverlay} />
-      </LinearGradient>
+      <LinearGradient colors={['#667eea', '#764ba2']} style={styles.background} />
 
-      {/* Modern Header */}
-      <View style={styles.modernHeader}>
-        <TouchableOpacity onPress={onBack} style={styles.modernBackButton}>
-              <LinearGradient colors={['#ff6b6b', '#ee5a52']} style={styles.backButtonGradient}>
-                <Ionicons name="arrow-back" size={24} color="#ffffff" />
-              </LinearGradient>
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={handleManualRefresh} style={styles.refreshButton}>
-              <LinearGradient colors={['#4ecdc4', '#44a08d']} style={styles.refreshButtonGradient}>
-                <Ionicons name="refresh" size={24} color="#ffffff" />
-              </LinearGradient>
-            </TouchableOpacity>
-            
-            <View style={styles.headerContent}>
-          <Text style={styles.modernHeaderTitle}>
+      {/* Fixed Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={handleManualRefresh} style={styles.refreshButton}>
+          <Ionicons name="refresh" size={24} color="#fff" />
+        </TouchableOpacity>
+        
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>
             {checklistType === 'two man cpr' ? 'Two Man CPR' : 
              checklistType === 'one man cpr' ? 'One Man CPR' : 
              checklistType?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'CPR Checklist'}
           </Text>
-          <Text style={styles.modernHeaderSubtitle}>
-                {overallProgress.completed}/{overallProgress.total} completed • {Math.round(overallProgress.percentage)}%
-              </Text>
+          <Text style={styles.headerSubtitle}>
+            {overallProgress.completed}/{overallProgress.total} completed • {Math.round(overallProgress.percentage)}%
+          </Text>
           {!overallProgress.canPass && (
             <Text style={styles.compulsoryWarning}>
               {checklistType === 'adult choking' || checklistType === 'infant choking' 
@@ -410,44 +321,41 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
               }
             </Text>
           )}
-            </View>
-
-        <View style={styles.progressBadge}>
-          <LinearGradient colors={['#4ecdc4', '#44a08d']} style={styles.badgeGradient}>
-            <Text style={styles.badgeText}>{Math.round(overallProgress.percentage)}%</Text>
-              </LinearGradient>
-            </View>
-          </View>
-
-      {/* Progress Bar */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressTrack}>
-            <LinearGradient
-            colors={['#ff9a9e', '#fecfef']}
-              style={[styles.progressFill, { width: `${overallProgress.percentage}%` }]}
-            />
-          </View>
         </View>
 
-      {/* Participant Selector */}
-      <View style={styles.participantSection}>
-        <LinearGradient
-          colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
-          style={styles.participantCard}
-        >
-          <View style={styles.participantHeader}>
-            <Text style={styles.participantTitle}>Participant Details</Text>
-            <TouchableOpacity
-              onPress={() => setShowParticipantSelector(!showParticipantSelector)}
-              style={styles.searchButton}
-            >
-              <Ionicons name="search" size={20} color="#667eea" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.progressBadge}>
+          <Text style={styles.badgeText}>{Math.round(overallProgress.percentage)}%</Text>
+        </View>
+      </View>
 
-          {selectedParticipant ? (
-            <View style={styles.selectedParticipant}>
-              <View style={styles.participantInfo}>
+      {/* Progress Bar */}
+      <View style={styles.progressContainer}>
+        <View style={styles.progressTrack}>
+          <View style={[styles.progressFill, { width: `${overallProgress.percentage}%` }]} />
+        </View>
+      </View>
+
+      {/* SCROLLABLE CONTENT - EVERYTHING INSIDE */}
+      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        {/* Participant Selector - NOW SCROLLS WITH CONTENT */}
+        <View style={styles.participantSection}>
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
+            style={styles.participantCard}
+          >
+            <View style={styles.participantHeader}>
+              <Text style={styles.participantTitle}>📋 Participant Details</Text>
+              <TouchableOpacity
+                onPress={() => setShowParticipantSelector(!showParticipantSelector)}
+                style={styles.searchButton}
+              >
+                <Ionicons name="search" size={20} color="#667eea" />
+                <Text style={styles.searchButtonText}>Select</Text>
+              </TouchableOpacity>
+            </View>
+
+            {selectedParticipant ? (
+              <View style={styles.selectedParticipant}>
                 <Text style={styles.participantName}>{selectedParticipant.name}</Text>
                 
                 <View style={styles.participantDetailsGrid}>
@@ -501,323 +409,222 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
                       </Text>
                     </View>
                   )}
-                  
-                  {selectedParticipant.has_asthma && (
-                    <View style={styles.participantDetailRow}>
-                      <Ionicons name="medical" size={16} color="#ff6b6b" />
-                      <Text style={[styles.participantDetailText, styles.medicalText]}>
-                        Has Asthma
-                      </Text>
-                    </View>
-                  )}
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={() => setSelectedParticipant(null)}
-                style={styles.clearButton}
-              >
-                <Ionicons name="close" size={20} color="#ff6b6b" />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity
-              onPress={() => setShowParticipantSelector(true)}
-              style={styles.selectParticipantButton}
-            >
-              <Ionicons name="person-add" size={24} color="#ffffff" />
-              <Text style={styles.selectParticipantText}>Select Participant</Text>
-            </TouchableOpacity>
-          )}
-
-          {showParticipantSelector && (
-            <View style={styles.participantSelector}>
-              <View style={styles.searchContainer}>
-                <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
-                <TextInput
-                  style={styles.searchInput}
-                  placeholder="Search participants..."
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  placeholderTextColor="#999"
-                />
+            ) : (
+              <View style={styles.noParticipantSelected}>
+                <Ionicons name="person-add" size={24} color="#999" />
+                <Text style={styles.noParticipantText}>Tap "Select" to choose a participant</Text>
               </View>
-              
-              <ScrollView style={styles.participantList} showsVerticalScrollIndicator={false}>
-                {filteredParticipants.length > 0 ? (
-                  filteredParticipants.map((participant) => (
-                    <TouchableOpacity
-                      key={participant.id}
-                      onPress={() => {
+            )}
 
-                        setSelectedParticipant(participant);
-                        setShowParticipantSelector(false);
-                        setSearchQuery('');
-                      }}
-                      style={styles.participantItem}
-                    >
-                      <View style={styles.participantItemInfo}>
+            {showParticipantSelector && (
+              <View style={styles.participantSelector}>
+                <View style={styles.searchContainer}>
+                  <Ionicons name="search" size={16} color="#999" style={styles.searchIcon} />
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search participants..."
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    placeholderTextColor="#999"
+                  />
+                </View>
+                
+                <ScrollView style={styles.participantList} showsVerticalScrollIndicator={false} nestedScrollEnabled>
+                  {filteredParticipants.length > 0 ? (
+                    filteredParticipants.map((participant) => (
+                      <TouchableOpacity
+                        key={participant.id}
+                        onPress={() => {
+                          setSelectedParticipant(participant);
+                          setShowParticipantSelector(false);
+                          setSearchQuery('');
+                        }}
+                        style={styles.participantItem}
+                      >
                         <Text style={styles.participantItemName}>{participant.name}</Text>
                         <Text style={styles.participantItemDetails}>
                           {participant.job_position_name} • {participant.email}
                         </Text>
-                      </View>
-                      <Ionicons name="chevron-forward" size={16} color="#666" />
-                    </TouchableOpacity>
-                  ))
-                ) : (
-                  <View style={styles.emptyState}>
-                    <Ionicons name="people" size={48} color="#ccc" />
-                    <Text style={styles.emptyStateText}>
-                      {participants.length === 0 
-                        ? 'No participants found. Please add participants first.'
-                        : 'No participants match your search.'
-                      }
-                    </Text>
-                    <Text style={styles.emptyStateSubtext}>
-                      Total participants: {participants.length}
-                    </Text>
-                  </View>
-                )}
-              </ScrollView>
-            </View>
-          )}
-        </LinearGradient>
-      </View>
+                      </TouchableOpacity>
+                    ))
+                  ) : (
+                    <View style={styles.emptyState}>
+                      <Text style={styles.emptyStateText}>
+                        {searchQuery ? 'No participants found' : 'No participants available'}
+                      </Text>
+                    </View>
+                  )}
+                </ScrollView>
+              </View>
+            )}
+          </LinearGradient>
+        </View>
 
-      {/* Modern Content */}
-      <ScrollView style={styles.modernContent} showsVerticalScrollIndicator={false}>
+        {/* Checklist Sections - NOW PROPERLY SCROLLABLE */}
         {sections.map((section, sectionIndex) => {
           const sectionProgress = getSectionProgress(section);
           return (
-            <View key={section.section} style={[
-              styles.modernSectionContainer,
-              // Check if any item in this section is compulsory (from database)
-              section.items.some(item => item.is_compulsory) && 
-              styles.compulsorySectionContainer
-            ]}>
-              {/* Modern Section Header */}
-                <LinearGradient
+            <View key={section.section} style={styles.sectionContainer}>
+              <LinearGradient
                 colors={section.items.some(item => item.is_compulsory)
                   ? ['rgba(255, 245, 157, 0.95)', 'rgba(255, 245, 157, 0.8)'] 
                   : ['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']
                 }
-                style={styles.modernSectionHeader}
+                style={styles.sectionCard}
               >
-                <View style={styles.sectionTitleRow}>
-                    <LinearGradient 
-                      colors={['#667eea', '#764ba2']} 
-                    style={styles.sectionNumberBadge}
-                    >
-                      <Text style={styles.sectionNumberText}>{sectionIndex + 1}</Text>
-                    </LinearGradient>
-                  <View style={styles.sectionTitleContainer}>
-                    <Text style={styles.modernSectionTitle}>
-                      {formatSectionName(section.section)}
+                {/* Section Header */}
+                <View style={styles.sectionHeader}>
+                  <View style={styles.sectionTitleRow}>
+                    <View style={styles.sectionNumberBadge}>
+                      <Text style={styles.sectionNumber}>{sectionIndex + 1}</Text>
+                    </View>
+                    <Text style={styles.sectionTitle}>{formatSectionName(section.section)}</Text>
+                  </View>
+                  
+                  <View style={styles.sectionProgress}>
+                    <Text style={styles.sectionProgressText}>
+                      {sectionProgress.completed}/{sectionProgress.total}
                     </Text>
-                    {section.items.some(item => item.is_compulsory) && (
-                  <LinearGradient 
-                        colors={['#ff6b6b', '#ee5a52']} 
-                        style={styles.compulsoryBadge}
-                  >
-                        <Ionicons name="star" size={12} color="#ffffff" />
-                        <Text style={styles.compulsoryText}>Required</Text>
-                  </LinearGradient>
-                    )}
+                    <View style={styles.sectionProgressBar}>
+                      <View style={[styles.sectionProgressFill, { width: `${sectionProgress.percentage}%` }]} />
+                    </View>
                   </View>
                 </View>
-                </LinearGradient>
 
-              {/* Modern Items */}
-              <View style={[
-                styles.modernItemsContainer,
-                section.items.some(item => item.is_compulsory) && 
-                styles.compulsoryItemsContainer
-              ]}>
-                  {section.items.map((item, itemIndex) => {
-                    const itemNumber = `${sectionIndex + 1}.${itemIndex + 1}`;
-                    // Use the database is_compulsory field instead of section-based logic
-                    const isCompulsorySection = item.is_compulsory;
-                    return (
-                    <View key={item.id} style={[
-                      styles.modernItemRow,
-                      !isCompulsorySection && styles.optionalItemRow
-                    ]}>
-                        <View style={styles.itemContent}>
-                          <LinearGradient 
-                            colors={isCompulsorySection ? ['#667eea', '#764ba2'] : ['#9ca3af', '#6b7280']} 
-                          style={styles.itemNumberBadge}
-                          >
-                            <Text style={styles.itemNumberText}>{itemNumber}</Text>
-                          </LinearGradient>
-                          
-                          <View style={styles.itemTextContainer}>
-                            <Text style={[
-                              styles.modernItemText,
-                              item.completed && styles.itemTextCompleted,
-                              !isCompulsorySection && styles.optionalItemText
-                            ]}>
-                              {item.item}
-                            </Text>
-                            {isCompulsorySection ? (
-                              <View style={styles.compulsoryBadge}>
-                                <Text style={styles.compulsoryText}>Compulsory</Text>
-                              </View>
-                            ) : (
-                              <View style={styles.optionalBadge}>
-                                <Text style={styles.optionalText}>Optional</Text>
-                              </View>
-                            )}
-                          </View>
+                {/* Section Items */}
+                <View style={styles.itemsList}>
+                  {section.items.map((item, itemIndex) => (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={[
+                        styles.checklistItem,
+                        item.completed && styles.checklistItemCompleted,
+                        item.is_compulsory && styles.compulsoryItem
+                      ]}
+                      onPress={() => toggleItem(item.id || '')}
+                      activeOpacity={0.7}
+                    >
+                      <View style={styles.itemHeader}>
+                        <View style={styles.itemNumber}>
+                          <Text style={styles.itemNumberText}>{itemIndex + 1}.{item.order_index || 1}</Text>
                         </View>
                         
-                        <TouchableOpacity
-                          onPress={() => {
-
-                            toggleItem(sectionIndex, itemIndex);
-                          }}
-                          style={styles.modernToggleContainer}
-                          activeOpacity={0.7}
-                        >
-                          <LinearGradient
-                            colors={item.completed ? ['#4ecdc4', '#44a08d'] : ['#e0e0e0', '#bdbdbd']}
-                          style={styles.modernToggle}
-                          >
-                          <View style={[
-                              styles.toggleThumb,
-                              {
-                              transform: [{ translateX: item.completed ? 22 : 2 }]
-                              }
-                            ]}>
-                              {item.completed && (
-                                <Ionicons name="checkmark" size={16} color="#4ecdc4" />
-                              )}
-                          </View>
-                          </LinearGradient>
-                        </TouchableOpacity>
+                        <View style={styles.itemContent}>
+                          <Text style={[
+                            styles.itemText,
+                            item.completed && styles.itemTextCompleted
+                          ]}>
+                            {item.item}
+                          </Text>
+                          
+                          {item.is_compulsory && (
+                            <View style={styles.compulsoryBadge}>
+                              <Text style={styles.compulsoryText}>COMPULSORY</Text>
+                            </View>
+                          )}
+                        </View>
+                        
+                        <View style={[
+                          styles.checkbox,
+                          item.completed && styles.checkboxCompleted
+                        ]}>
+                          {item.completed && (
+                            <Ionicons name="checkmark" size={16} color="#fff" />
+                          )}
+                        </View>
                       </View>
-                    );
-                  })}
+                    </TouchableOpacity>
+                  ))}
                 </View>
+              </LinearGradient>
             </View>
           );
         })}
 
-        {/* Modern Summary */}
-        <View style={styles.modernSummary}>
-            <LinearGradient
-              colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
-              style={styles.summaryCard}
-            >
-              <LinearGradient 
-                colors={['#667eea', '#764ba2']} 
-                style={styles.summaryIcon}
-              >
-                <Ionicons name="trophy" size={32} color="#ffffff" />
-              </LinearGradient>
-              
-            <Text style={styles.modernSummaryTitle}>Progress Summary</Text>
-              
-              <View style={styles.summaryStats}>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>{overallProgress.total}</Text>
-                  <Text style={styles.statLabel}>Total</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>{overallProgress.completed}</Text>
-                  <Text style={styles.statLabel}>Done</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>{overallProgress.total - overallProgress.completed}</Text>
-                  <Text style={styles.statLabel}>Left</Text>
-                </View>
-              </View>
-              
-              <LinearGradient 
-              colors={overallProgress.status === 'PASS' ? ['#4ecdc4', '#44a08d'] : overallProgress.status === 'FAIL' ? ['#ff6b6b', '#ee5a52'] : ['#ff9500', '#ff6b6b']} 
-                style={styles.summaryPercentageBadge}
-              >
-                <Text style={styles.summaryPercentage}>
-                {overallProgress.status} • {Math.round(overallProgress.percentage)}%
-                </Text>
-              </LinearGradient>
-            
-            {overallProgress.status === 'FAIL' && (
-              <Text style={styles.compulsoryNote}>
-                Complete all compulsory items to pass
-              </Text>
-            )}
-            
-            {overallProgress.status === 'INCOMPLETE' && (
-              <Text style={styles.incompleteNote}>
-                Start the assessment by checking off completed items
-              </Text>
-            )}
-            </LinearGradient>
-        </View>
-
-        {/* Comment Section */}
-        <View style={styles.commentSection}>
+        {/* Comments Section */}
+        <View style={styles.commentsSection}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
-            style={styles.commentCard}
+            style={styles.commentsCard}
           >
-            <View style={styles.commentHeader}>
-              <Ionicons name="chatbubble" size={24} color="#667eea" />
-              <Text style={styles.commentTitle}>Instructor Comments</Text>
-            </View>
-            
+            <Text style={styles.commentsTitle}>💬 Instructor Comments</Text>
             <TextInput
-              style={styles.commentInput}
-              placeholder="Add your comments, observations, or feedback about this participant's performance..."
+              style={styles.commentsInput}
+              placeholder="Add any additional comments or observations..."
               value={comment}
               onChangeText={setComment}
               multiline
               numberOfLines={4}
               placeholderTextColor="#999"
-              textAlignVertical="top"
             />
-            
-            <View style={styles.commentFooter}>
-              <Text style={styles.commentCounter}>
-                {comment.length}/500 characters
-              </Text>
-            </View>
           </LinearGradient>
         </View>
 
-        {/* Submit Button */}
+        {/* Submit Section */}
         <View style={styles.submitSection}>
-          <TouchableOpacity
-            onPress={handleSubmit}
-            style={styles.submitButton}
-            disabled={!selectedParticipant}
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
+            style={styles.submitCard}
           >
-            <LinearGradient
-              colors={selectedParticipant ? ['#4ecdc4', '#44a08d'] : ['#ccc', '#999']}
-              style={styles.submitButtonGradient}
+            <View style={styles.submitSummary}>
+              <Text style={styles.submitTitle}>📊 Assessment Summary</Text>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Progress:</Text>
+                <Text style={styles.summaryValue}>
+                  {overallProgress.completed}/{overallProgress.total} ({Math.round(overallProgress.percentage)}%)
+                </Text>
+              </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Status:</Text>
+                <Text style={[
+                  styles.summaryValue,
+                  { color: overallProgress.status === 'PASS' ? '#27ae60' : overallProgress.status === 'FAIL' ? '#e74c3c' : '#f39c12' }
+                ]}>
+                  {overallProgress.status}
+                </Text>
+              </View>
+            </View>
+            
+            <TouchableOpacity
+              style={[
+                styles.submitButton,
+                (!selectedParticipant || overallProgress.completed === 0) && styles.submitButtonDisabled
+              ]}
+              onPress={handleSubmit}
+              disabled={!selectedParticipant || overallProgress.completed === 0}
             >
-              <Ionicons name="checkmark-circle" size={24} color="#ffffff" />
-              <Text style={styles.submitButtonText}>
-                {selectedParticipant ? `Submit Assessment (${overallProgress.status})` : 'Select Participant First'}
+              <LinearGradient
+                colors={(!selectedParticipant || overallProgress.completed === 0) 
+                  ? ['#bdc3c7', '#95a5a6'] 
+                  : ['#667eea', '#764ba2']
+                }
+                style={styles.submitButtonGradient}
+              >
+                <Ionicons name="checkmark-circle" size={20} color="#fff" />
+                <Text style={styles.submitButtonText}>Submit Assessment</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            
+            {selectedParticipant && (
+              <Text style={styles.submitNote}>
+                Assessment will be saved for {selectedParticipant.name}
               </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          
-          {selectedParticipant && (
-            <Text style={styles.submitNote}>
-              Assessment will be saved for {selectedParticipant.name}
-            </Text>
-          )}
+            )}
+          </LinearGradient>
         </View>
+
+        {/* Bottom spacing */}
+        <View style={styles.bottomSpacing} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
   },
   background: {
     position: 'absolute',
@@ -826,435 +633,149 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  backgroundOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-  },
-  // Modern Header Styles
-  modernHeader: {
+  // Fixed Header
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 40,
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
-  modernBackButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 16,
-    overflow: 'hidden',
-  },
-  backButtonGradient: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+  backButton: {
+    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  backButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 5,
   },
   refreshButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 16,
-    overflow: 'hidden',
-  },
-  refreshButtonGradient: {
-    width: '100%',
-    height: '100%',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 15,
   },
   headerContent: {
     flex: 1,
   },
-  modernHeaderTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
-    letterSpacing: -0.5,
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 2,
   },
-  modernHeaderSubtitle: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: 2,
+  headerSubtitle: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+    marginBottom: 2,
   },
   compulsoryWarning: {
     fontSize: 12,
-    fontWeight: '600',
     color: '#ffeb3b',
-    marginTop: 4,
+    fontWeight: '600',
   },
   progressBadge: {
-    alignItems: 'center',
-  },
-  badgeGradient: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
   },
   badgeText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   // Progress Bar
   progressContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 15,
   },
   progressTrack: {
-    height: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 4,
-    overflow: 'hidden',
+    height: 6,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 3,
   },
   progressFill: {
     height: '100%',
-    borderRadius: 4,
+    backgroundColor: '#fff',
+    borderRadius: 3,
   },
-  // Modern Content
-  modernContent: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  modernSectionContainer: {
-    marginBottom: 24,
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  compulsorySectionContainer: {
-    borderWidth: 2,
-    borderColor: '#ff6b6b',
-    shadowColor: '#ff6b6b',
-    shadowOpacity: 0.3,
-  },
-  modernSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-  },
-  sectionTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  // Scrollable Content
+  scrollContainer: {
     flex: 1,
   },
-  sectionTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  sectionNumberBadge: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  sectionNumberText: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#ffffff',
-  },
-  modernSectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    flex: 1,
-  },
-  sectionProgressBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  sectionProgressText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  // Modern Items
-  modernItemsContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-  },
-  compulsoryItemsContainer: {
-    backgroundColor: 'rgba(255, 245, 157, 0.95)',
-  },
-  modernItemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  optionalItemRow: {
-    backgroundColor: 'rgba(248, 250, 252, 0.8)',
-    opacity: 0.8,
-  },
-  optionalItemText: {
-    color: '#6b7280',
-    opacity: 0.8,
-  },
-  itemContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  itemNumberBadge: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  itemNumberText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-  modernItemText: {
-    fontSize: 16,
-    color: '#1a1a1a',
-    lineHeight: 24,
-    fontWeight: '500',
-    flex: 1,
-  },
-  itemTextContainer: {
-    flex: 1,
-  },
-  compulsoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginTop: 4,
-    alignSelf: 'flex-start',
-    backgroundColor: '#ff6b6b',
-  },
-  compulsoryText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  optionalBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginLeft: 8,
-    backgroundColor: '#e5e7eb',
-  },
-  optionalText: {
-    fontSize: 11,
-    fontWeight: '500',
-    color: '#6b7280',
-  },
-  itemTextCompleted: {
-    textDecorationLine: 'line-through',
-    color: '#9ca3af',
-    opacity: 0.6,
-  },
-  modernToggleContainer: {
-    marginLeft: 16,
-    padding: 8, // Add padding for better touch area
-    minWidth: 50, // Ensure minimum touch width
-    minHeight: 44, // Ensure minimum touch height (iOS guidelines)
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modernToggle: {
-    width: 50,
-    height: 28,
-    borderRadius: 14,
-    padding: 2,
-    justifyContent: 'center',
-  },
-  toggleThumb: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  // Modern Summary
-  modernSummary: {
-    marginVertical: 24,
-    marginBottom: 40,
-  },
-  summaryCard: {
-    padding: 32,
-    alignItems: 'center',
-    borderRadius: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  summaryIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modernSummaryTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#1a1a1a',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  summaryStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginBottom: 24,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statNumber: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    lineHeight: 28,
-  },
-  statLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    marginTop: 4,
-  },
-  summaryPercentageBadge: {
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 20,
-  },
-  summaryPercentage: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  retryButton: {
-    backgroundColor: '#00d4ff',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  compulsoryNote: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#ff6b6b',
-    textAlign: 'center',
-    marginTop: 12,
-  },
-  incompleteNote: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#ff9500',
-    textAlign: 'center',
-    marginTop: 12,
-  },
-  // Participant Selector Styles
+  // Participant Section
   participantSection: {
-    paddingHorizontal: 16,
-    marginBottom: 12,
+    paddingHorizontal: 20,
+    marginBottom: 15,
   },
   participantCard: {
     borderRadius: 12,
-    padding: 12,
+    padding: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 3,
   },
   participantHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   participantTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1a1a1a',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2c3e50',
   },
   searchButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-  },
-  selectedParticipant: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 8,
-    backgroundColor: 'rgba(102, 126, 234, 0.05)',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(102, 126, 234, 0.2)',
+    backgroundColor: 'rgba(102,126,234,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    gap: 5,
   },
-  participantInfo: {
-    flex: 1,
+  searchButtonText: {
+    color: '#667eea',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  selectedParticipant: {
+    backgroundColor: 'rgba(102,126,234,0.05)',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(102,126,234,0.2)',
   },
   participantName: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    marginBottom: 6,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    marginBottom: 8,
   },
   participantDetailsGrid: {
-    gap: 4,
+    gap: 6,
   },
   participantDetailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 3,
+    gap: 8,
   },
   participantDetailText: {
-    fontSize: 11,
+    fontSize: 14,
     color: '#666',
-    marginLeft: 6,
     flex: 1,
   },
   pregnancyText: {
@@ -1265,174 +786,319 @@ const styles = StyleSheet.create({
     color: '#ff9500',
     fontWeight: '600',
   },
-  medicalText: {
-    color: '#ff6b6b',
-    fontWeight: '600',
-  },
-  clearButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 107, 107, 0.1)',
-  },
-  selectParticipantButton: {
-    flexDirection: 'row',
+  noParticipantSelected: {
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#667eea',
-    borderRadius: 12,
-    shadowColor: '#667eea',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
+    paddingVertical: 20,
+    gap: 8,
   },
-  selectParticipantText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
-    marginLeft: 12,
+  noParticipantText: {
+    color: '#999',
+    fontSize: 14,
   },
   participantSelector: {
-    marginTop: 15,
-    maxHeight: 300,
+    marginTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(102,126,234,0.2)',
+    paddingTop: 12,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    backgroundColor: 'rgba(248,249,250,0.8)',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    marginBottom: 8,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: '#1a1a1a',
+    paddingVertical: 10,
+    fontSize: 14,
+    color: '#333',
   },
   participantList: {
     maxHeight: 200,
   },
   participantItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingHorizontal: 8,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  participantItemInfo: {
-    flex: 1,
+    borderBottomColor: 'rgba(102,126,234,0.1)',
   },
   participantItemName: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#2c3e50',
     marginBottom: 2,
   },
   participantItemDetails: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
   },
   emptyState: {
     alignItems: 'center',
-    paddingVertical: 40,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   emptyStateText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptyStateSubtext: {
-    fontSize: 14,
     color: '#999',
-    textAlign: 'center',
+    fontSize: 14,
   },
-  // Comment Section Styles
-  commentSection: {
+  // Section Styles
+  sectionContainer: {
     paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  commentCard: {
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  commentHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 15,
   },
-  commentTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    marginLeft: 10,
-  },
-  commentInput: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
+  sectionCard: {
     borderRadius: 12,
-    padding: 15,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sectionHeader: {
+    marginBottom: 12,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  sectionNumberBadge: {
+    backgroundColor: '#667eea',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  sectionNumber: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  sectionTitle: {
     fontSize: 16,
-    color: '#1a1a1a',
-    backgroundColor: '#f9f9f9',
-    minHeight: 100,
-    maxHeight: 150,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    flex: 1,
   },
-  commentFooter: {
+  sectionProgress: {
     alignItems: 'flex-end',
-    marginTop: 8,
   },
-  commentCounter: {
+  sectionProgressText: {
     fontSize: 12,
-    color: '#999',
+    color: '#666',
+    marginBottom: 4,
   },
-  // Submit Section Styles
-  submitSection: {
-    paddingHorizontal: 20,
-    marginBottom: 30,
+  sectionProgressBar: {
+    width: 60,
+    height: 4,
+    backgroundColor: 'rgba(102,126,234,0.2)',
+    borderRadius: 2,
+  },
+  sectionProgressFill: {
+    height: '100%',
+    backgroundColor: '#667eea',
+    borderRadius: 2,
+  },
+  // Items List
+  itemsList: {
+    gap: 8,
+  },
+  checklistItem: {
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(102,126,234,0.2)',
+  },
+  checklistItemCompleted: {
+    backgroundColor: 'rgba(39,174,96,0.1)',
+    borderColor: '#27ae60',
+  },
+  compulsoryItem: {
+    borderColor: '#f39c12',
+    borderWidth: 2,
+  },
+  itemHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  itemNumber: {
+    backgroundColor: 'rgba(102,126,234,0.1)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    minWidth: 40,
     alignItems: 'center',
   },
+  itemNumberText: {
+    fontSize: 12,
+    color: '#667eea',
+    fontWeight: '600',
+  },
+  itemContent: {
+    flex: 1,
+  },
+  itemText: {
+    fontSize: 14,
+    color: '#2c3e50',
+    lineHeight: 20,
+    marginBottom: 4,
+  },
+  itemTextCompleted: {
+    color: '#27ae60',
+    fontWeight: '600',
+  },
+  compulsoryBadge: {
+    backgroundColor: '#f39c12',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+  },
+  compulsoryText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#bdc3c7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxCompleted: {
+    backgroundColor: '#27ae60',
+    borderColor: '#27ae60',
+  },
+  // Comments Section
+  commentsSection: {
+    paddingHorizontal: 20,
+    marginBottom: 15,
+  },
+  commentsCard: {
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  commentsTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    marginBottom: 12,
+  },
+  commentsInput: {
+    backgroundColor: 'rgba(248,249,250,0.8)',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 14,
+    color: '#333',
+    textAlignVertical: 'top',
+    minHeight: 80,
+    borderWidth: 1,
+    borderColor: 'rgba(102,126,234,0.2)',
+  },
+  // Submit Section
+  submitSection: {
+    paddingHorizontal: 20,
+    marginBottom: 15,
+  },
+  submitCard: {
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  submitSummary: {
+    marginBottom: 16,
+  },
+  submitTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    marginBottom: 12,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  summaryLabel: {
+    fontSize: 14,
+    color: '#666',
+  },
+  summaryValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2c3e50',
+  },
   submitButton: {
-    width: '100%',
-    marginBottom: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 8,
+  },
+  submitButtonDisabled: {
+    opacity: 0.6,
   },
   submitButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    shadowColor: '#4ecdc4',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
+    paddingVertical: 15,
+    gap: 8,
   },
   submitButtonText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#ffffff',
-    marginLeft: 10,
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   submitNote: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
     textAlign: 'center',
-    fontStyle: 'italic',
+  },
+  // Loading/Error States
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+  },
+  loadingText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  retryButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  bottomSpacing: {
+    height: 50,
   },
 });
