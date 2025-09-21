@@ -31,6 +31,12 @@ interface MockResult {
   postTestPercentage?: number;
   postTestTotalQuestions?: number;
   postTestStatus?: 'Pass' | 'Fail' | 'Not Taken';
+  // Checklist assessment data
+  oneManCprStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
+  twoManCprStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
+  infantCprStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
+  infantChokingStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
+  adultChokingStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
 }
 
 export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResultsScreenProps) {
@@ -80,7 +86,12 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           date: result.pre_test.submitted_at ? result.pre_test.submitted_at.split('T')[0] : new Date().toISOString().split('T')[0],
           duration: 'N/A',
           category: result.participant_category as 'Clinical' | 'Non-Clinical',
-          certified: result.post_test.status === 'PASS', // Use post-test for certification
+          certified: result.post_test.status === 'PASS' && 
+                     result.one_man_cpr.status === 'PASS' &&
+                     result.two_man_cpr.status === 'PASS' &&
+                     result.infant_cpr.status === 'PASS' &&
+                     result.infant_choking.status === 'PASS' &&
+                     result.adult_choking.status === 'PASS', // Certified only if post test AND all 5 checklists passed
           remedialAllowed: result.pre_test.status === 'FAIL',
           // Add pre and post test specific data
           preTestScore: result.pre_test.score || 0,
@@ -91,6 +102,22 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           postTestPercentage: result.post_test.percentage || 0,
           postTestTotalQuestions: result.post_test.total_questions || 30,
           postTestStatus: result.post_test.status === 'PASS' ? 'Pass' : 'Fail',
+          // Checklist assessment data
+          oneManCprStatus: result.one_man_cpr.status === 'PASS' ? 'Pass' : 
+                          result.one_man_cpr.status === 'FAIL' ? 'Fail' : 
+                          result.one_man_cpr.status === 'INCOMPLETE' ? 'Incomplete' : 'Not Taken',
+          twoManCprStatus: result.two_man_cpr.status === 'PASS' ? 'Pass' : 
+                          result.two_man_cpr.status === 'FAIL' ? 'Fail' : 
+                          result.two_man_cpr.status === 'INCOMPLETE' ? 'Incomplete' : 'Not Taken',
+          infantCprStatus: result.infant_cpr.status === 'PASS' ? 'Pass' : 
+                          result.infant_cpr.status === 'FAIL' ? 'Fail' : 
+                          result.infant_cpr.status === 'INCOMPLETE' ? 'Incomplete' : 'Not Taken',
+          infantChokingStatus: result.infant_choking.status === 'PASS' ? 'Pass' : 
+                              result.infant_choking.status === 'FAIL' ? 'Fail' : 
+                              result.infant_choking.status === 'INCOMPLETE' ? 'Incomplete' : 'Not Taken',
+          adultChokingStatus: result.adult_choking.status === 'PASS' ? 'Pass' : 
+                             result.adult_choking.status === 'FAIL' ? 'Fail' : 
+                             result.adult_choking.status === 'INCOMPLETE' ? 'Incomplete' : 'Not Taken',
         };
         
         convertedResults.push(participantResult);
@@ -191,8 +218,21 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       case 'Pass': return '#27ae60';
       case 'Fail': return '#e74c3c';
       case 'Pending': return '#f39c12';
+      case 'Incomplete': return '#f39c12';
+      case 'Not Taken': return '#95a5a6';
       default: return '#95a5a6';
     }
+  };
+
+  const renderStatusBadge = (status: string) => {
+    const color = getStatusColor(status);
+    const text = status === 'Not Taken' ? 'N/A' : status;
+    
+    return (
+      <View style={[styles.statusBadge, { backgroundColor: color, paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+        <Text style={[styles.statusText, { fontSize: 9 }]}>{text}</Text>
+      </View>
+    );
   };
 
   const statistics = {
@@ -255,39 +295,36 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           <Text style={[styles.tableCellText, { color: '#9ca3af', fontSize: 10 }]}>N/A</Text>
         )}
       </View>
+      {/* One Man CPR Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
+        {renderStatusBadge(result.oneManCprStatus || 'Not Taken')}
+      </View>
+      {/* Two Man CPR Column */}
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        {renderStatusBadge(result.twoManCprStatus || 'Not Taken')}
+      </View>
+      {/* Infant CPR Column */}
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        {renderStatusBadge(result.infantCprStatus || 'Not Taken')}
+      </View>
+      {/* Infant Choking Column */}
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        {renderStatusBadge(result.infantChokingStatus || 'Not Taken')}
+      </View>
+      {/* Adult Choking Column */}
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        {renderStatusBadge(result.adultChokingStatus || 'Not Taken')}
+      </View>
+      {/* Remedial Column */}
+      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
+        <View style={[styles.statusBadge, { backgroundColor: result.remedialAllowed ? '#e74c3c' : '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.remedialAllowed ? 'Yes' : 'No'}</Text>
         </View>
       </View>
+      {/* Certified Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
-        </View>
-      </View>
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
-        </View>
-      </View>
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
-        </View>
-      </View>
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>Pass</Text>
-        </View>
-      </View>
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: result.status === 'Pass' ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.status === 'Pass' ? 'No' : 'Yes'}</Text>
-        </View>
-      </View>
-      <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: result.status === 'Pass' ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
-          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.status === 'Pass' ? 'Yes' : 'No'}</Text>
+        <View style={[styles.statusBadge, { backgroundColor: result.certified ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+          <Text style={[styles.statusText, { fontSize: 9 }]}>{result.certified ? 'Yes' : 'No'}</Text>
         </View>
       </View>
     </TouchableOpacity>
