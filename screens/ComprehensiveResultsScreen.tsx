@@ -347,7 +347,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       </View>
       {/* Remedial Column */}
       <View style={[styles.assessmentColumn, { alignItems: 'center' }]}>
-        <View style={[styles.statusBadge, { backgroundColor: result.remedialAllowed ? '#e74c3c' : '#27ae60', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
+        <View style={[styles.statusBadge, { backgroundColor: result.remedialAllowed ? '#27ae60' : '#e74c3c', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 6 }]}>
           <Text style={[styles.statusText, { fontSize: 9 }]}>{result.remedialAllowed ? 'Yes' : 'No'}</Text>
         </View>
       </View>
