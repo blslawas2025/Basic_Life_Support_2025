@@ -47,17 +47,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults();
       
       // Convert to MockResult format for compatibility
-      const convertedResults: MockResult[] = [];
-      
+          const convertedResults: MockResult[] = [];
+          
       // Create separate entries for pre-test and post-test results
       comprehensiveResults.forEach((result, index) => {
         // Pre-test entry
         if (result.pre_test.status !== 'NOT_TAKEN') {
-          convertedResults.push({
+              convertedResults.push({
             id: `${result.participant_id}-pre`,
             participantName: result.participant_name || 'Unknown',
             icNumber: result.participant_ic_number || '',
-            testType: 'pre',
+                testType: 'pre',
             score: result.pre_test.percentage || 0,
             percentage: result.pre_test.percentage || 0,
             totalQuestions: result.pre_test.total_questions || 30,
@@ -73,11 +73,11 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         
         // Post-test entry
         if (result.post_test.status !== 'NOT_TAKEN') {
-          convertedResults.push({
+              convertedResults.push({
             id: `${result.participant_id}-post`,
             participantName: result.participant_name || 'Unknown',
             icNumber: result.participant_ic_number || '',
-            testType: 'post',
+                testType: 'post',
             score: result.post_test.percentage || 0,
             percentage: result.post_test.percentage || 0,
             totalQuestions: result.post_test.total_questions || 30,
@@ -92,7 +92,15 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         }
       });
       
-      setResults(convertedResults);
+          setResults(convertedResults);
+      
+      // Debug: Log category distribution
+      console.log('Category distribution:', {
+        total: convertedResults.length,
+        clinical: convertedResults.filter(r => r.category === 'Clinical').length,
+        nonClinical: convertedResults.filter(r => r.category === 'Non-Clinical').length,
+        categories: [...new Set(convertedResults.map(r => r.category))]
+      });
       
     } catch (error) {
       console.error('Error loading results:', error);
@@ -233,6 +241,11 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         </TouchableOpacity>
         <Text style={styles.title}>🚀 AUTO-DEPLOY ENABLED - REAL DATA + SIDE-BY-SIDE LAYOUT 🚀</Text>
         <Text style={styles.subtitle}>Last Update: {new Date().toLocaleString()} - Real Supabase data with side-by-side tables!</Text>
+        {dataLoaded && (
+          <Text style={[styles.subtitle, { fontSize: 12, color: '#e74c3c' }]}>
+            DEBUG: Total: {results.length} | Clinical: {results.filter(r => r.category === 'Clinical').length} | Non-Clinical: {results.filter(r => r.category === 'Non-Clinical').length}
+          </Text>
+        )}
       </View>
 
       {/* Statistics */}
@@ -329,52 +342,73 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
               
             {/* Side by Side Tables Container */}
             <View style={styles.sideBySideContainer}>
-              {/* Clinical Table */}
+            {/* Clinical Table */}
               <View style={styles.sideBySideTable}>
                 <Text style={styles.tableTitle}>Clinical Participants</Text>
-                <View style={styles.separateTableHeader}>
-                  <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
+              <View style={styles.separateTableHeader}>
+                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
                   <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                   <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                   <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
-                  <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
-                </View>
-                
-                {getClinicalResults().length === 0 ? (
-                  <View style={styles.emptyTableRow}>
-                    <Text style={styles.emptyTableText}>No clinical participants found</Text>
-                  </View>
-                ) : (
-                  getClinicalResults().map((result, index) => renderResultRow(result, index))
-                )}
+                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
               </View>
+              
+              {getClinicalResults().length === 0 ? (
+                <View style={styles.emptyTableRow}>
+                  <Text style={styles.emptyTableText}>No clinical participants found</Text>
+                </View>
+              ) : (
+                  getClinicalResults().map((result, index) => renderResultRow(result, index))
+              )}
+            </View>
 
-              {/* Non-Clinical Table */}
+            {/* Non-Clinical Table */}
               <View style={styles.sideBySideTable}>
                 <Text style={styles.tableTitle}>Non-Clinical Participants</Text>
-                <View style={styles.separateTableHeader}>
-                  <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
+              <View style={styles.separateTableHeader}>
+                <Text style={[styles.tableHeaderText, styles.rankColumn]}>Rank</Text>
                   <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                   <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                   <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
-                  <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
+                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
+              </View>
+              
+              {getNonClinicalResults().length === 0 ? (
+                <View style={styles.emptyTableRow}>
+                  <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
                 </View>
-                
-                {getNonClinicalResults().length === 0 ? (
-                  <View style={styles.emptyTableRow}>
-                    <Text style={styles.emptyTableText}>No non-clinical participants found</Text>
-                  </View>
-                ) : (
+              ) : (
                   getNonClinicalResults().map((result, index) => renderResultRow(result, index))
                 )}
-              </View>
-            </View>
+                    </View>
+                  </View>
           </View>
         ) : (
           // All Results or Remedial - show comprehensive table
-          <View style={styles.comprehensiveTableContainer}>
-            <Text style={styles.emptyTitle}>📋 {filterStatus === 'all' ? 'All Results' : 'Remedial Status'} Table</Text>
-            <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
+          <View>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyTitle}>📋 {filterStatus === 'all' ? 'All Results' : 'Remedial Status'} Table</Text>
+              <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
+            </View>
+            
+            {/* Comprehensive Table */}
+            <View style={styles.comprehensiveTableContainer}>
+              <View style={styles.tableHeader}>
+                <Text style={[styles.tableHeaderText, styles.rankColumn]}>#</Text>
+                <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
+              </View>
+              
+              {filteredResults.length === 0 ? (
+                <View style={styles.emptyTableRow}>
+                  <Text style={styles.emptyTableText}>No results found</Text>
+                </View>
+              ) : (
+                filteredResults.map((result, index) => renderResultRow(result, index))
+              )}
+            </View>
           </View>
         )}
       </ScrollView>
