@@ -34,6 +34,11 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [showModal, setShowModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial'>('all');
 
+  // Load data on component mount
+  useEffect(() => {
+    loadResults();
+  }, []);
+
   useEffect(() => {
     if (dataLoaded) {
     filterResults();
@@ -413,9 +418,31 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           </View>
         ) : (
           // All Results or Remedial - show comprehensive table
-          <View style={styles.comprehensiveTableContainer}>
-            <Text style={styles.emptyTitle}>📋 {filterStatus === 'all' ? 'All Results' : 'Remedial Status'} Table</Text>
-            <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
+          <View>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyTitle}>📋 {filterStatus === 'all' ? 'All Results' : 'Remedial Status'} Table</Text>
+              <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
+            </View>
+            
+            {/* Comprehensive Table */}
+            <View style={styles.comprehensiveTableContainer}>
+              <View style={styles.tableHeader}>
+                <Text style={[styles.tableHeaderText, styles.rankColumn]}>#</Text>
+                <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
+                <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
+                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
+                <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
+              </View>
+              
+              {filteredResults.length === 0 ? (
+                <View style={styles.emptyTableRow}>
+                  <Text style={styles.emptyTableText}>No results found</Text>
+                </View>
+              ) : (
+                filteredResults.map((result, index) => renderResultRow(result, index))
+              )}
+            </View>
           </View>
         )}
       </ScrollView>

@@ -34,6 +34,11 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [showModal, setShowModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial'>('all');
 
+  // Load data on component mount
+  useEffect(() => {
+    loadResults();
+  }, []);
+
   useEffect(() => {
     if (dataLoaded) {
     filterResults();
@@ -417,7 +422,8 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                 <Text style={[styles.tableHeaderText, styles.rankColumn]}>#</Text>
                 <Text style={[styles.tableHeaderText, styles.nameColumn]}>Name</Text>
                 <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
-                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Category</Text>
+                <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
+                <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
                 <Text style={[styles.tableHeaderText, styles.resultColumn]}>Result</Text>
               </View>
               
