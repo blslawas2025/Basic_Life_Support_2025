@@ -47,7 +47,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedResult, setSelectedResult] = useState<MockResult | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial'>('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'pre' | 'post' | 'remedial' | 'remedial_allowed' | 'remedial_not_allowed'>('all');
 
   // Load data on component mount
   useEffect(() => {
@@ -197,6 +197,36 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         }
       });
       filtered = Array.from(participantMap.values());
+      filtered = filtered.sort((a, b) => {
+        if (a.category !== b.category) {
+          return a.category.localeCompare(b.category);
+        }
+        return a.participantName.localeCompare(b.participantName);
+      });
+    } else if (filterStatus === 'remedial_allowed') {
+      const participantMap = new Map();
+      filtered.forEach(result => {
+        if (!participantMap.has(result.participantName)) {
+          participantMap.set(result.participantName, result);
+        }
+      });
+      filtered = Array.from(participantMap.values());
+      filtered = filtered.filter(result => result.remedialAllowed === true);
+      filtered = filtered.sort((a, b) => {
+        if (a.category !== b.category) {
+          return a.category.localeCompare(b.category);
+        }
+        return a.participantName.localeCompare(b.participantName);
+      });
+    } else if (filterStatus === 'remedial_not_allowed') {
+      const participantMap = new Map();
+      filtered.forEach(result => {
+        if (!participantMap.has(result.participantName)) {
+          participantMap.set(result.participantName, result);
+        }
+      });
+      filtered = Array.from(participantMap.values());
+      filtered = filtered.filter(result => result.remedialAllowed === false);
       filtered = filtered.sort((a, b) => {
         if (a.category !== b.category) {
           return a.category.localeCompare(b.category);
@@ -403,7 +433,9 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
               { key: 'all', label: 'All Results' },
               { key: 'pre', label: 'Pre Test' },
               { key: 'post', label: 'Post Test' },
-              { key: 'remedial', label: 'Remedial (Pass/Fail)' }
+              { key: 'remedial', label: 'Remedial (Pass/Fail)' },
+              { key: 'remedial_allowed', label: 'Remedial Allowed' },
+              { key: 'remedial_not_allowed', label: 'Remedial Not Allowed' }
             ].map((filter) => (
               <TouchableOpacity
                 key={filter.key}
@@ -498,7 +530,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           // All Results or Remedial - show comprehensive table
           <View>
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>📋 {filterStatus === 'all' ? 'All Results' : 'Remedial Status'} Table</Text>
+              <Text style={styles.emptyTitle}>📋 {
+                filterStatus === 'all' ? 'All Results' : 
+                filterStatus === 'remedial' ? 'Remedial Status' :
+                filterStatus === 'remedial_allowed' ? 'Remedial Allowed' :
+                filterStatus === 'remedial_not_allowed' ? 'Remedial Not Allowed' :
+                'Results'
+              } Table</Text>
               <Text style={styles.emptySubtitle}>Comprehensive view of all participant data</Text>
             </View>
             
