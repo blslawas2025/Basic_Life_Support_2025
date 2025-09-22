@@ -220,6 +220,25 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   };
 
   const handleLogin = async () => {
+    // Allow demo super admin credentials regardless of email format
+    if (email === "blslawas2025" && password === "lawas2025") {
+      setError(null);
+      setLoading(true);
+      try {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      } catch {}
+      setLoading(false);
+      onLogin({
+        id: "demo-admin-id",
+        email,
+        isSuperAdmin: true,
+        userName: "Mr. Amri Amit",
+        roles: 'admin'
+      });
+      try { await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } catch {}
+      return;
+    }
+
     const v = validate();
     if (v) {
       setError(v);
