@@ -961,48 +961,50 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         
-        <View style={styles.headerContent}>
+        <View style={[styles.headerContent, isSmallScreen && styles.headerContentCompact]}>
           <View style={styles.headerText}>
-            <Text style={styles.headerTitle}>
+            <Text style={[styles.headerTitle, isSmallScreen && styles.headerTitleCompact]} numberOfLines={1}>
               {isReviewMode ? 'Review Mode' : (testType === 'pre' ? 'Pre Test' : 'Post Test')}
             </Text>
-            <Text style={styles.headerSubtitle}>Question {currentQuestionIndex + 1} of {displayQuestions.length}</Text>
+            <Text style={[styles.headerSubtitle, isSmallScreen && styles.headerSubtitleCompact]} numberOfLines={1}>
+              Question {currentQuestionIndex + 1} of {displayQuestions.length}
+            </Text>
           </View>
           
-          <View style={styles.headerActions}>
-            <View style={styles.timerAndStatusContainer}>
-              <View style={[styles.timerContainer, { backgroundColor: getTimeColor() + '20' }]}>
-                <Ionicons name="time" size={24} color={getTimeColor()} />
-                <Text style={[styles.timerText, { color: getTimeColor() }]}>
+          <View style={[styles.headerActions, isSmallScreen && styles.headerActionsCompact]}>
+            <View style={[styles.timerAndStatusContainer, isSmallScreen && styles.timerAndStatusContainerCompact]}>
+              <View style={[styles.timerContainer, isSmallScreen && styles.timerContainerCompact, { backgroundColor: getTimeColor() + '20' }]}>
+                <Ionicons name="time" size={isSmallScreen ? 16 : 24} color={getTimeColor()} />
+                <Text style={[styles.timerText, isSmallScreen && styles.timerTextCompact, { color: getTimeColor() }]}>
                   {formatTime(timeLeft)}
                 </Text>
               </View>
               {accessControlEnabled && !isSuperAdmin && (
-                <View style={styles.accessControlIndicator}>
-                  <Ionicons name="shield-checkmark" size={24} color="#00ff88" />
+                <View style={[styles.accessControlIndicator, isSmallScreen && styles.accessControlIndicatorCompact]}>
+                  <Ionicons name="shield-checkmark" size={isSmallScreen ? 16 : 24} color="#00ff88" />
                   <Text style={styles.accessControlText}>Access Controlled</Text>
                 </View>
               )}
               
               {/* Super Admin Indicator */}
               {isSuperAdmin && (
-                <View style={styles.superAdminIndicator}>
-                  <Ionicons name="star" size={24} color="#ffd700" />
+                <View style={[styles.superAdminIndicator, isSmallScreen && styles.superAdminIndicatorCompact]}>
+                  <Ionicons name="star" size={isSmallScreen ? 16 : 24} color="#ffd700" />
                   <Text style={styles.superAdminText}>Super Admin</Text>
                 </View>
               )}
               
               {/* Offline Status Indicator */}
               {isOffline && (
-                <View style={styles.offlineStatusContainer}>
-                  <Ionicons name="cloud-offline" size={24} color="#ff6b6b" />
+                <View style={[styles.offlineStatusContainer, isSmallScreen && styles.offlineStatusContainerCompact]}>
+                  <Ionicons name="cloud-offline" size={isSmallScreen ? 16 : 24} color="#ff6b6b" />
                   <Text style={styles.offlineStatusText}>Offline</Text>
                 </View>
               )}
               
               {/* Sync Status Indicator */}
               {isSyncing && (
-                <View style={styles.syncStatusContainer}>
+                <View style={[styles.syncStatusContainer, isSmallScreen && styles.syncStatusContainerCompact]}>
                   <ActivityIndicator size="small" color="#00d4ff" />
                   <Text style={styles.syncStatusText}>Syncing...</Text>
                 </View>
@@ -1010,7 +1012,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
             </View>
             
             {!isReviewMode && (
-              <View style={styles.questionActions}>
+              <View style={[styles.questionActions, isSmallScreen && styles.questionActionsCompact]}>
                 <TouchableOpacity
                   style={[
                     styles.actionButton, 
@@ -1025,7 +1027,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                       currentLanguage === 'secondary' ? "language" : 
                       "globe"
                     } 
-                    size={24} 
+                    size={isSmallScreen ? 16 : 24} 
                     color={
                       currentLanguage === 'primary' ? "#00d4ff" : 
                       currentLanguage === 'secondary' ? "#ffaa00" : 
@@ -1040,7 +1042,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                 >
                   <Ionicons 
                     name={flaggedQuestions.has(currentQuestion.id) ? "flag" : "flag-outline"} 
-                    size={24} 
+                    size={isSmallScreen ? 16 : 24} 
                     color={flaggedQuestions.has(currentQuestion.id) ? "#ff6b6b" : "#666"} 
                   />
                 </TouchableOpacity>
@@ -1049,7 +1051,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                   style={styles.actionButton}
                   onPress={handleSkipQuestion}
                 >
-                  <Ionicons name="play-skip-forward" size={24} color="#ffaa00" />
+                  <Ionicons name="play-skip-forward" size={isSmallScreen ? 16 : 24} color="#ffaa00" />
                 </TouchableOpacity>
               </View>
             )}
@@ -1567,14 +1569,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  headerContentCompact: {
+    flexWrap: 'wrap',
+    rowGap: 12,
+  },
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 24,
   },
+  headerActionsCompact: {
+    flexWrap: 'wrap',
+    rowGap: 12,
+  },
   questionActions: {
     flexDirection: 'row',
     gap: 24,
+  },
+  questionActionsCompact: {
+    gap: 12,
   },
   actionButton: {
     width: 24,
@@ -1607,11 +1620,17 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     letterSpacing: 1,
   },
+  headerTitleCompact: {
+    fontSize: 14,
+  },
   headerSubtitle: {
     fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginTop: 4,
+  },
+  headerSubtitleCompact: {
+    fontSize: 12,
   },
   timerContainer: {
     flexDirection: 'row',
@@ -1622,10 +1641,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
+  timerContainerCompact: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
   timerText: {
     fontSize: 16,
     fontWeight: '700',
     marginLeft: 24,
+  },
+  timerTextCompact: {
+    fontSize: 12,
+    marginLeft: 12,
   },
   scrollView: {
     flex: 1,
@@ -2270,6 +2297,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 24,
   },
+  timerAndStatusContainerCompact: {
+    gap: 12,
+  },
   offlineStatusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -2278,6 +2308,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderRadius: 24,
     gap: 24,
+  },
+  offlineStatusContainerCompact: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    gap: 12,
   },
   offlineStatusText: {
     fontSize: 16,
@@ -2292,6 +2327,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderRadius: 24,
     gap: 24,
+  },
+  syncStatusContainerCompact: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    gap: 12,
   },
   syncStatusText: {
     fontSize: 16,
@@ -2428,6 +2468,12 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     gap: 24,
   },
+  accessControlIndicatorCompact: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginLeft: 12,
+    gap: 12,
+  },
   accessControlText: {
     fontSize: 16,
     fontWeight: '600',
@@ -2443,6 +2489,12 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     marginLeft: 24,
     gap: 24,
+  },
+  superAdminIndicatorCompact: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginLeft: 12,
+    gap: 12,
   },
   superAdminText: {
     fontSize: 16,
