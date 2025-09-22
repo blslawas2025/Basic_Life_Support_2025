@@ -80,6 +80,7 @@ interface AppRouterProps {
 	onNavigateToPreTest: () => void;
 	onNavigateToPostTest: () => void;
 	onNavigateToTestSettings: () => void;
+	onNavigateToTestInterface: (testType: 'pre' | 'post') => void;
 	onShowTestResults: (results: any) => void;
 	onBackFromResults: () => void;
 	onNavigateToQuestionPools: () => void;
@@ -282,7 +283,7 @@ export default function AppRouter(props: AppRouterProps) {
 			<PreTestScreen 
 				onBack={() => props.onNavigateToManageQuestions()}
 				userName={userData.userName}
-				onStartTest={() => {}}
+				onStartTest={() => props.onNavigateToTestInterface('pre')}
 			/>
 		);
 	}
@@ -292,7 +293,7 @@ export default function AppRouter(props: AppRouterProps) {
 			<PostTestScreen 
 				onBack={() => props.onNavigateToManageQuestions()}
 				userName={userData.userName}
-				onStartTest={() => {}}
+				onStartTest={() => props.onNavigateToTestInterface('post')}
 			/>
 		);
 	}

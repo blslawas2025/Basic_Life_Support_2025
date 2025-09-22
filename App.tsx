@@ -198,6 +198,13 @@ export default function App() {
     console.log('Current screen after:', 'postTest');
   };
 
+  // Begin a test by setting type and navigating to the test interface
+  const handleNavigateToTestInterface = (testType: 'pre' | 'post') => {
+    console.log('handleNavigateToTestInterface called with:', testType);
+    setCurrentTestType(testType);
+    setCurrentScreen(ROUTES.testInterface as Screen);
+  };
+
   const handleNavigateToTestSettings = () => {
     console.log('handleNavigateToTestSettings called');
     console.log('Current screen before:', currentScreen);
@@ -330,6 +337,7 @@ export default function App() {
       onNavigateToPreTest={handleNavigateToPreTest}
       onNavigateToPostTest={handleNavigateToPostTest}
       onNavigateToTestSettings={handleNavigateToTestSettings}
+      onNavigateToTestInterface={handleNavigateToTestInterface}
       onShowTestResults={handleShowTestResults}
       onBackFromResults={handleBackFromResults}
       onNavigateToQuestionPools={handleNavigateToQuestionPools}
