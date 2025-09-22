@@ -33,7 +33,7 @@ async function run() {
     ];
 
     // Add generous safe-area padding so iOS rounded mask does not clip artwork
-    const paddingRatio = 0.20; // 20% outer margin
+    const paddingRatio = 0.08; // 8% outer margin for tighter fit
 
     for (const { file, size } of outputs) {
         const outPath = path.join(assetsDir, file);
