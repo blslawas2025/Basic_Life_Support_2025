@@ -55,6 +55,8 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [error, setError] = useState<string | null>(null);
   const [remember, setRemember] = useState(true);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [nameSuggestions, setNameSuggestions] = useState<Array<{ id: string; name: string; email: string; roles: 'admin'|'staff'|'user'; user_type: string }>>([]);
+  const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string; email: string; roles: 'admin'|'staff'|'user'; user_type: string } | null>(null);
 
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -189,16 +191,32 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
   const validate = () => {
     if (!email.trim()) return "Email is required";
-    
-    if (email === "blslawas2025") {
-      if (!password || password.length < 6) return "Password must be 6+ characters";
-      return null;
-    }
-    
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-    if (!emailOk) return "Enter a valid email";
+    if (!emailOk) return "Please select a name from search to fill email";
     if (!password || password.length < 6) return "Password must be 6+ characters";
     return null;
+  };
+
+  const handleEmailChange = async (text: string) => {
+    setEmail(text);
+    setSelectedProfile(null);
+    try {
+      if (text.trim().length < 2) {
+        setNameSuggestions([]);
+        return;
+      }
+      const results = await ProfileService.searchProfilesByName(text.trim());
+      setNameSuggestions(results);
+    } catch (e) {
+      setNameSuggestions([]);
+    }
+  };
+
+  const handleSelectSuggestion = (p: { id: string; name: string; email: string; roles: 'admin'|'staff'|'user'; user_type: string }) => {
+    setSelectedProfile(p);
+    setEmail(p.email);
+    setNameSuggestions([]);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   const handleLogin = async () => {
@@ -231,10 +249,21 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     // Try to fetch user profile from database first
     try {
-      const userProfile = await ProfileService.getProfileByEmail(email);
+      const userProfile = selectedProfile && selectedProfile.email === email
+        ? selectedProfile as any
+        : await ProfileService.getProfileByEmail(email);
       
       if (userProfile) {
-        // User exists in database, use their role
+        // Check password equals IC number
+        const fullProfile = await ProfileService.getProfileByEmail(userProfile.email);
+        const ic = (fullProfile && fullProfile.ic_number) ? String(fullProfile.ic_number) : '';
+        if (!ic || password.trim() !== ic) {
+          setLoading(false);
+          setError('Incorrect IC number');
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+          return;
+        }
+        // User exists and password matches, use their role
         setLoading(false);
         onLogin({
           id: userProfile.id,
@@ -474,7 +503,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               <Text style={styles.welcomeTitle}>Welcome Back</Text>
               <Text style={styles.welcomeSubtitle}>Access your training portal</Text>
 
-              {/* Email Input */}
+              {/* Email Input with Name Search */}
               <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>Email Address</Text>
                 <Animated.View style={[
@@ -490,10 +519,10 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     color={focusedInput === 'email' ? "#00d4ff" : "#8b9dc3"} 
                   />
                   <TextInput
-                    placeholder="Enter your email"
+                    placeholder="Type your name, then pick and we fill email"
                     placeholderTextColor="#8b9dc3"
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={handleEmailChange}
                     onFocus={() => handleInputFocus('email')}
                     onBlur={handleInputBlur}
                     keyboardType="email-address"
@@ -502,6 +531,16 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                     style={styles.textInput}
                   />
                 </Animated.View>
+                {nameSuggestions.length > 0 && (
+                  <View style={styles.suggestionsBox}>
+                    {nameSuggestions.map(s => (
+                      <TouchableOpacity key={s.id} style={styles.suggestionItem} onPress={() => handleSelectSuggestion(s)}>
+                        <Text style={styles.suggestionName}>{s.name}</Text>
+                        <Text style={styles.suggestionEmail}>{s.email}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               </View>
 
               {/* Password Input */}
@@ -1005,4 +1044,25 @@ const styles = StyleSheet.create({
     color: '#00d4ff',
     fontWeight: '700',
   },
+  suggestionsBox: {
+    marginTop: 8,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)'
+  },
+  suggestionItem: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.08)'
+  },
+  suggestionName: {
+    color: '#ffffff',
+    fontWeight: '700'
+  },
+  suggestionEmail: {
+    color: '#8b9dc3',
+    fontSize: 12
+  }
 });

@@ -200,6 +200,28 @@ export class ProfileService {
     }
   }
 
+  // Search profiles by name (case-insensitive, partial match)
+  static async searchProfilesByName(partialName: string, limit: number = 10): Promise<Pick<Profile,'id'|'name'|'email'|'roles'|'user_type'>[]> {
+    try {
+      if (!partialName || partialName.trim().length < 1) return [];
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id,name,email,roles,user_type')
+        .ilike('name', `%${partialName}%`)
+        .limit(limit);
+
+      if (error) {
+        console.error('Supabase error (searchProfilesByName):', error);
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      console.error('Error searching profiles by name:', error);
+      return [];
+    }
+  }
+
   // Get profiles by user type
   static async getProfilesByUserType(userType: string): Promise<Profile[]> {
     try {
