@@ -267,6 +267,15 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     .sort((a, b) => (b.postTestPercentage || 0) - (a.postTestPercentage || 0))
     .slice(0, 3);
 
+  // Pass counts and percentages for Pre/Post
+  const preTaken = results.filter(r => r.preTestStatus && r.preTestStatus !== 'Not Taken').length;
+  const prePassed = results.filter(r => r.preTestStatus === 'Pass').length;
+  const prePassPct = preTaken > 0 ? Math.round((prePassed / preTaken) * 100) : 0;
+
+  const postTaken = results.filter(r => r.postTestStatus && r.postTestStatus !== 'Not Taken').length;
+  const postPassed = results.filter(r => r.postTestStatus === 'Pass').length;
+  const postPassPct = postTaken > 0 ? Math.round((postPassed / postTaken) * 100) : 0;
+
   const handleResultPress = (result: MockResult) => {
     setSelectedResult(result);
     setShowModal(true);
@@ -498,27 +507,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
-      {/* Modern/Futuristic KPI Row */
+      {/* Modern KPIs: Pre/Post Passed with % */}
       <View style={styles.modernKpiRow}>
-        <View style={[styles.kpiCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
-          <Text style={styles.kpiValue}>{statistics.total}</Text>
-          <Text style={styles.kpiLabel}>Total</Text>
+        <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.35)' }]}>
+          <Text style={styles.kpiCaption}>Pre Test Passed</Text>
+          <Text style={styles.kpiValueLarge}>{prePassed} <Text style={styles.kpiSubValue}>({prePassPct}%)</Text></Text>
+          <Text style={styles.kpiLabel}>of {preTaken} taken</Text>
         </View>
-        <View style={[styles.kpiCard, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.35)' }]}>
-          <Text style={styles.kpiValue}>{statistics.passed}</Text>
-          <Text style={styles.kpiLabel}>Passed</Text>
-        </View>
-        <View style={[styles.kpiCard, { backgroundColor: 'rgba(239,68,68,0.12)', borderColor: 'rgba(239,68,68,0.35)' }]}>
-          <Text style={styles.kpiValue}>{statistics.failed}</Text>
-          <Text style={styles.kpiLabel}>Failed</Text>
-        </View>
-        <View style={[styles.kpiCard, { backgroundColor: 'rgba(249,115,22,0.12)', borderColor: 'rgba(249,115,22,0.35)' }]}>
-          <Text style={styles.kpiValue}>{statistics.certified}</Text>
-          <Text style={styles.kpiLabel}>Certified</Text>
-        </View>
-        <View style={[styles.kpiCard, { backgroundColor: 'rgba(30,41,59,0.2)', borderColor: 'rgba(30,41,59,0.35)' }]}>
-          <Text style={styles.kpiValue}>{statistics.averageScore}%</Text>
-          <Text style={styles.kpiLabel}>Average</Text>
+        <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
+          <Text style={styles.kpiCaption}>Post Test Passed</Text>
+          <Text style={styles.kpiValueLarge}>{postPassed} <Text style={styles.kpiSubValue}>({postPassPct}%)</Text></Text>
+          <Text style={styles.kpiLabel}>of {postTaken} taken</Text>
         </View>
       </View>
 
@@ -975,10 +974,34 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
   },
+  kpiWideCard: {
+    flex: 1,
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+  },
   kpiValue: {
     fontSize: 16,
     fontWeight: '800',
     color: '#0f172a',
+  },
+  kpiValueLarge: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: '#0f172a',
+  },
+  kpiSubValue: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0ea5e9',
+  },
+  kpiCaption: {
+    fontSize: 11,
+    color: '#334155',
+    fontWeight: '700',
+    marginBottom: 2,
   },
   kpiLabel: {
     fontSize: 11,
