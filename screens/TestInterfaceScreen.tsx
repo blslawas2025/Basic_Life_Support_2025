@@ -28,8 +28,8 @@ interface SessionManagementSettings {
 const { width, height } = Dimensions.get('window');
 
 // Responsive design helpers
-const isSmallScreen = width < 375;
-const isMediumScreen = width >= 375 && width < 768;
+const isSmallScreen = width < 430; // broaden to include common 390px phones
+const isMediumScreen = width >= 430 && width < 768;
 const isLargeScreen = width >= 768;
 const isTablet = width >= 768 && height >= 1024;
 
