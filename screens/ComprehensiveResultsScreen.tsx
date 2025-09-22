@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert, useWindowDimensions, Share, Platform } from 'react-native';
 import { ComprehensiveResultsService, ComprehensiveResult } from '../services/ComprehensiveResultsService';
 
 interface ComprehensiveResultsScreenProps {
@@ -57,6 +57,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
   const [showFilters, setShowFilters] = useState(false);
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [_, setDummy] = useState(0); // used to trigger UI refresh when needed
 
   // Load data on component mount
   useEffect(() => {
@@ -282,6 +283,69 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     setIsRefreshing(false);
   };
 
+  const handleViewAll = () => {
+    // Reset search and filters to show all data
+    setSearchQuery('');
+    setRemedialFilter('all');
+    setCertificationFilter('all');
+    setFilterStatus('all');
+    setDummy(v => v + 1);
+  };
+
+  const handleShareLink = async () => {
+    try {
+      const url = typeof window !== 'undefined' && window.location ? window.location.href : 'https://basic-life-support-2025.vercel.app/';
+      if (Platform.OS !== 'web') {
+        await Share.share({ message: url, url });
+      } else if (typeof navigator !== 'undefined' && (navigator as any).clipboard) {
+        await (navigator as any).clipboard.writeText(url);
+        Alert.alert('Link copied', 'The page link has been copied to your clipboard.');
+      } else {
+        Alert.alert('Share', url);
+      }
+    } catch (e) {
+      Alert.alert('Error', 'Unable to share the link.');
+    }
+  };
+
+  const handleExportCsv = () => {
+    try {
+      const rows = [
+        ['Name','IC','Job','Category','Pre %','Post %','One Man CPR','Two Man CPR','Infant CPR','Infant Choking','Adult Choking','Certified'],
+        ...filteredResults.map(r => [
+          r.participantName,
+          r.icNumber || '',
+          r.jobPosition || '',
+          r.category,
+          String(r.preTestPercentage ?? ''),
+          String(r.postTestPercentage ?? ''),
+          r.oneManCprStatus || '',
+          r.twoManCprStatus || '',
+          r.infantCprStatus || '',
+          r.infantChokingStatus || '',
+          r.adultChokingStatus || '',
+          r.certified ? 'Yes' : 'No'
+        ])
+      ];
+      const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      if (Platform.OS === 'web') {
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'comprehensive-results.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        Alert.alert('Export CSV', 'CSV export is available on the web version.');
+      }
+    } catch (e) {
+      Alert.alert('Error', 'Failed to export CSV.');
+    }
+  };
+
   const renderResultRow = (result: MockResult, index: number) => (
     <TouchableOpacity
       key={`${result.id}-${index}`}
@@ -434,7 +498,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
-      {/* Modern/Futuristic KPI Row */}
+      {/* Modern/Futuristic KPI Row */
       <View style={styles.modernKpiRow}>
         <View style={[styles.kpiCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
           <Text style={styles.kpiValue}>{statistics.total}</Text>
@@ -456,6 +520,19 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           <Text style={styles.kpiValue}>{statistics.averageScore}%</Text>
           <Text style={styles.kpiLabel}>Average</Text>
         </View>
+      </View>
+
+      {/* Quick actions */}
+      <View style={styles.quickActionsRow}>
+        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#0ea5e9' }]} onPress={handleExportCsv}>
+          <Text style={styles.quickButtonText}>Export CSV</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#10b981' }]} onPress={handleShareLink}>
+          <Text style={styles.quickButtonText}>Share Link</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#1e293b' }]} onPress={handleViewAll}>
+          <Text style={styles.quickButtonText}>View All</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Top performers */}
@@ -900,6 +977,26 @@ const styles = StyleSheet.create({
   kpiLabel: {
     fontSize: 11,
     color: '#475569',
+  },
+  quickActionsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9ecef',
+  },
+  quickButton: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  quickButtonText: {
+    color: '#ffffff',
+    fontWeight: '700',
+    fontSize: 12,
   },
   topRow: {
     flexDirection: 'row',
