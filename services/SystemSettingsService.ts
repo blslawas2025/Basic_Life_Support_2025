@@ -30,14 +30,23 @@ const DEFAULT_SETTINGS: SystemSettings = {
   },
   allowedActionsByRole: {
     staff: [
-      'manageParticipants',
-      'staffDashboard',
-      'manageQuestions',
-      'attendanceMonitoring',
-      'viewResults',
+      // Participants / Staff
+      'manageParticipants', 'viewParticipants', 'approveParticipants', 'manageStaff', 'staffDashboard',
+      // Checklist
+      'manageChecklist', 'uploadChecklist', 'viewEditDeleteChecklist', 'checklistView', 'checklistResults',
+      // Questions / Tests
+      'manageQuestions', 'uploadQuestions', 'preTest', 'postTest', 'testInterface',
+      // Results / Analytics
+      'viewResults', 'comprehensiveResults', 'importResults', 'bulkImportResults', 'resultView', 'resultAnalysis', 'resultSettings', 'certificateManagement', 'resultsAnalytics',
+      // Pools & Access Control
+      'questionPoolManagement', 'accessControlManagement',
+      // Courses
+      'createCourse', 'viewCourses', 'editCourse',
+      // Attendance
+      'attendanceMonitoring'
     ],
     user: [
-      'viewResults',
+      'preTest', 'postTest', 'testInterface', 'viewResults', 'comprehensiveResults', 'checklistView', 'checklistResults'
     ],
   },
 };
