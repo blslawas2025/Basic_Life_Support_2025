@@ -1557,8 +1557,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 24,
+    paddingTop: isSmallScreen ? 12 : 24,
+    paddingBottom: isSmallScreen ? 12 : 24,
     backgroundColor: 'rgba(0, 255, 136, 0.15)',
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(0, 255, 136, 0.4)',
@@ -1678,7 +1678,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 255, 136, 0.3)',
   },
   questionCardGradient: {
-    padding: 24,
+    padding: isSmallScreen ? 16 : 24,
   },
   questionText: {
     fontSize: isSmallScreen ? 14 : 16,
@@ -1693,12 +1693,12 @@ const styles = StyleSheet.create({
     lineHeight: isSmallScreen ? 20 : 24,
   },
   optionsContainer: {
-    marginBottom: 24,
+    marginBottom: isSmallScreen ? 16 : 24,
   },
   optionButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 24,
-    marginBottom: 24,
+    marginBottom: isSmallScreen ? 12 : 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
@@ -1750,13 +1750,13 @@ const styles = StyleSheet.create({
   navigationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: isSmallScreen ? 12 : 24,
   },
   navButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 24,
+    paddingHorizontal: isSmallScreen ? 16 : 24,
+    paddingVertical: isSmallScreen ? 14 : 24,
     borderRadius: 24,
     backgroundColor: 'rgba(0, 255, 136, 0.2)',
     borderWidth: 1,
@@ -1772,10 +1772,10 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   navButtonText: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '600',
     color: '#ffffff',
-    marginHorizontal: 24,
+    marginHorizontal: isSmallScreen ? 12 : 24,
   },
   exitReviewButton: {
     backgroundColor: 'rgba(255, 107, 107, 0.2)',
@@ -1806,11 +1806,11 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     width: '100%',
-    height: 24,
+    height: isSmallScreen ? 12 : 24,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: 24,
+    marginBottom: isSmallScreen ? 12 : 24,
   },
   progressFill: {
     height: '100%',
