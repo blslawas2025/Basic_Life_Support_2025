@@ -272,7 +272,10 @@ export default function AppRouter(props: AppRouterProps) {
 					onLogout={props.onLogout}
 					onNavigateToPreTest={props.onNavigateToPreTest}
 					onNavigateToPostTest={props.onNavigateToPostTest}
+					onNavigateToTestInterface={props.onNavigateToTestInterface}
+					onNavigateToChecklistView={props.onNavigateToChecklistView}
 					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+					allowedActions={props.allowedActions}
 				/>
 			);
 		}

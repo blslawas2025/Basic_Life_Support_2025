@@ -49,7 +49,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
       'attendanceMonitoring'
     ],
     user: [
-      'preTest', 'postTest', 'testInterface', 'viewResults', 'comprehensiveResults', 'checklistView', 'checklistResults'
+      'preTest', 'postTest', 'testInterface', 'checklistView'
     ],
   },
 };

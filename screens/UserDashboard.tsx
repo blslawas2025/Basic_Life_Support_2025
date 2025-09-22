@@ -21,10 +21,13 @@ interface UserDashboardProps {
   onLogout: () => void;
   onNavigateToPreTest: () => void;
   onNavigateToPostTest: () => void;
+  onNavigateToTestInterface: () => void;
+  onNavigateToChecklistView: () => void;
   onNavigateToComprehensiveResults: () => void;
+  allowedActions?: string[];
 }
 
-export default function UserDashboard({ userName, onLogout, onNavigateToPreTest, onNavigateToPostTest, onNavigateToComprehensiveResults }: UserDashboardProps) {
+export default function UserDashboard({ userName, onLogout, onNavigateToPreTest, onNavigateToPostTest, onNavigateToTestInterface, onNavigateToChecklistView, onNavigateToComprehensiveResults, allowedActions = [] }: UserDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const reduceMotion = useReducedMotion();
@@ -322,23 +325,37 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                 color: "#00ff88", 
                 title: "Take Pre Test", 
                 subtitle: "Complete your pre-training assessment",
-                action: "Pre Test"
+                action: "preTest"
               },
               { 
                 icon: "stopwatch-outline", 
                 color: "#5b73ff", 
                 title: "Take Post Test", 
                 subtitle: "Complete your post-training assessment",
-                action: "Post Test"
+                action: "postTest"
+              },
+              { 
+                icon: "laptop-outline", 
+                color: "#ff0080", 
+                title: "Test Interface", 
+                subtitle: "Access the main testing interface",
+                action: "testInterface"
+              },
+              { 
+                icon: "checklist-outline", 
+                color: "#ffaa00", 
+                title: "View Checklist", 
+                subtitle: "View available checklists",
+                action: "checklistView"
               },
               { 
                 icon: "list-outline", 
-                color: "#ffaa00", 
+                color: "#8b5cf6", 
                 title: "Comprehensive Results", 
                 subtitle: "View all your test results and progress",
-                action: "Comprehensive Results"
+                action: "comprehensiveResults"
               }
-            ].map((item, index) => (
+            ].filter(item => allowedActions.includes(item.action)).map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -357,11 +374,15 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                 ]}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                  if (item.action === 'Pre Test') {
+                  if (item.action === 'preTest') {
                     onNavigateToPreTest();
-                  } else if (item.action === 'Post Test') {
+                  } else if (item.action === 'postTest') {
                     onNavigateToPostTest();
-                  } else if (item.action === 'Comprehensive Results') {
+                  } else if (item.action === 'testInterface') {
+                    onNavigateToTestInterface();
+                  } else if (item.action === 'checklistView') {
+                    onNavigateToChecklistView();
+                  } else if (item.action === 'comprehensiveResults') {
                     onNavigateToComprehensiveResults();
                   }
                 }}
