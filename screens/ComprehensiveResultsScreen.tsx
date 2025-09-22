@@ -144,32 +144,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       
           setResults(convertedResults);
       
-      // Debug: Log category distribution
-      console.log('Category distribution:', {
-        total: convertedResults.length,
-        clinical: convertedResults.filter(r => r.category === 'Clinical').length,
-        nonClinical: convertedResults.filter(r => r.category === 'Non-Clinical').length,
-        categories: [...new Set(convertedResults.map(r => r.category))],
-        sampleData: convertedResults.slice(0, 3).map(r => ({ name: r.participantName, category: r.category }))
-      });
-
-      // Debug: Check ALVIN DULAMIT specifically
-      const alvinResult = convertedResults.find(r => r.participantName === 'ALVIN DULAMIT');
-      if (alvinResult) {
-        console.log('ALVIN DULAMIT debug:', {
-          name: alvinResult.participantName,
-          category: alvinResult.category,
-          icNumber: alvinResult.icNumber,
-          testType: alvinResult.testType,
-          id: alvinResult.id
-        });
-      }
-
-      // Debug: Show ALL participants and their categories
-      console.log('ALL PARTICIPANTS CATEGORIES:');
-      convertedResults.forEach((result, index) => {
-        console.log(`${index + 1}. ${result.participantName} - ${result.category} (${result.testType})`);
-      });
+      // Note: Removed verbose debugging logs to improve load performance on web/mobile
       
     } catch (error) {
       console.error('Error loading results:', error);
@@ -303,6 +278,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
       onPress={() => handleResultPress(result)}
       activeOpacity={0.7}
     >
+      <Text style={[styles.tableCellText, styles.rankColumn]}>{index + 1}</Text>
       <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2} ellipsizeMode="tail">{result.participantName}</Text>
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
       <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2} ellipsizeMode="tail">{result.jobPosition || 'N/A'}</Text>
@@ -639,7 +615,16 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
                     <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
+                    {filterStatus === 'pre' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
+                    ) : filterStatus === 'post' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
+                    ) : (
+                      <>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
+                      </>
+                    )}
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
@@ -671,7 +656,16 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
                     <Text style={[styles.tableHeaderText, styles.icColumn]}>IC</Text>
                     <Text style={[styles.tableHeaderText, styles.jobColumn]}>Job</Text>
                     <Text style={[styles.tableHeaderText, styles.categoryColumn]}>Category</Text>
-                    <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Result</Text>
+                    {filterStatus === 'pre' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
+                    ) : filterStatus === 'post' ? (
+                      <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
+                    ) : (
+                      <>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Pre Test</Text>
+                        <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Post Test</Text>
+                      </>
+                    )}
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>One Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Two Man CPR</Text>
                     <Text style={[styles.tableHeaderText, styles.assessmentColumn]}>Infant CPR</Text>
