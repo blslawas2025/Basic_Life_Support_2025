@@ -47,9 +47,10 @@ interface AdminDashboardProps {
   onNavigateToCreateCourse?: () => void;
   onNavigateToAttendanceMonitoring?: () => void;
   onNavigateToSystemSettings?: () => void;
+  allowedActions?: string[];
 }
 
-export default function AdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring, onNavigateToSystemSettings }: AdminDashboardProps) {
+export default function AdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring, onNavigateToSystemSettings, allowedActions }: AdminDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const windowDims = useWindowDimensions();
@@ -472,65 +473,71 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
                 color: "#00ff88", 
                 title: "Manage Participants", 
                 subtitle: "Add, edit and delete participants",
-                action: "Manage Participants"
+                action: "manageParticipants"
               },
               { 
                 icon: "person-outline", 
                 color: "#6366f1", 
                 title: "Manage Staff", 
                 subtitle: "Add, edit and manage staff members",
-                action: "Manage Staff"
+                action: "manageStaff"
               },
               { 
                 icon: "analytics-outline", 
                 color: "#8b5cf6", 
                 title: "Staff Dashboard", 
                 subtitle: "Monitor staff statistics and analytics",
-                action: "Staff Dashboard"
+                action: "staffDashboard"
               },
               { 
                 icon: "help-circle-outline", 
                 color: "#ff0080", 
                 title: "Manage Questions", 
                 subtitle: "Add, edit and delete questions",
-                action: "Manage Questions"
+                action: "manageQuestions"
               },
               { 
                 icon: "checklist-outline", 
                 color: "#ffaa00", 
                 title: "Manage Checklist", 
                 subtitle: "Add, edit and delete checklists",
-                action: "Manage Checklist"
+                action: "manageChecklist"
               },
               { 
                 icon: "analytics-outline", 
                 color: "#5b73ff", 
                 title: "View Reports", 
                 subtitle: "Check department analytics",
-                action: "View Result"
+                action: "viewResults"
               },
               { 
                 icon: "school-outline", 
                 color: "#8b5cf6", 
                 title: "Create Course", 
                 subtitle: "Set up new training course",
-                action: "Create Course"
+                action: "createCourse"
               },
               { 
                 icon: "people-outline", 
                 color: "#00ff88", 
                 title: "Attendance Monitor", 
                 subtitle: "Track participant attendance",
-                action: "Attendance Monitoring"
+                action: "attendanceMonitoring"
               },
               { 
                 icon: "cog-outline", 
                 color: "#00d4ff", 
                 title: "System Settings", 
                 subtitle: "Configure role landing pages",
-                action: "System Settings"
+                action: "systemSettings"
               }
-            ].map((item, index) => (
+            ]
+            .filter(item => {
+              if (item.action === 'systemSettings') return true;
+              if (!allowedActions || allowedActions.length === 0) return true;
+              return allowedActions.includes(item.action);
+            })
+            .map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -549,19 +556,19 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
                   }
                 ]}
                 onPress={() => {
-                  if (item.action === 'Manage Participants') {
+                  if (item.action === 'manageParticipants') {
                     onNavigateToManageParticipant();
-                  } else if (item.action === 'Manage Staff' && onNavigateToManageStaff) {
+                  } else if (item.action === 'manageStaff' && onNavigateToManageStaff) {
                     onNavigateToManageStaff();
-                  } else if (item.action === 'Staff Dashboard' && onNavigateToStaffDashboard) {
+                  } else if (item.action === 'staffDashboard' && onNavigateToStaffDashboard) {
                     onNavigateToStaffDashboard();
-                  } else if (item.action === 'Manage Questions' && onNavigateToManageQuestions) {
+                  } else if (item.action === 'manageQuestions' && onNavigateToManageQuestions) {
                     onNavigateToManageQuestions();
-                  } else if (item.action === 'Create Course' && onNavigateToCreateCourse) {
+                  } else if (item.action === 'createCourse' && onNavigateToCreateCourse) {
                     onNavigateToCreateCourse();
-                  } else if (item.action === 'Attendance Monitoring' && onNavigateToAttendanceMonitoring) {
+                  } else if (item.action === 'attendanceMonitoring' && onNavigateToAttendanceMonitoring) {
                     onNavigateToAttendanceMonitoring();
-                  } else if (item.action === 'System Settings' && onNavigateToSystemSettings) {
+                  } else if (item.action === 'systemSettings' && onNavigateToSystemSettings) {
                     onNavigateToSystemSettings();
                   } else {
                     }

@@ -65,6 +65,7 @@ export default function App() {
   const [currentTestType, setCurrentTestType] = useState<'pre' | 'post'>('pre');
   const [currentChecklistType, setCurrentChecklistType] = useState<string>('');
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [allowedActions, setAllowedActions] = useState<string[] | undefined>(undefined);
 
   // Initialize synchronization service
   useEffect(() => {
@@ -92,6 +93,14 @@ export default function App() {
     // Route based on role and system settings
     try {
       const settings = await SystemSettingsService.getSettings();
+      // Compute allowed actions for this role
+      if (loginData.roles === 'staff') {
+        setAllowedActions(settings.allowedActionsByRole.staff);
+      } else if (loginData.roles === 'user') {
+        setAllowedActions(settings.allowedActionsByRole.user);
+      } else {
+        setAllowedActions(undefined);
+      }
       if (loginData.roles === 'admin' || loginData.isSuperAdmin) {
         setCurrentScreen(ROUTES.dashboard as ScreenWithSettings);
       } else if (loginData.roles === 'staff') {
@@ -339,6 +348,7 @@ export default function App() {
       currentTestType={currentTestType}
       currentChecklistType={currentChecklistType}
       selectedCourse={selectedCourse}
+      allowedActions={allowedActions}
       onLogin={handleLogin}
       onLogout={handleLogout}
       onBackToDashboard={handleBackToDashboard}

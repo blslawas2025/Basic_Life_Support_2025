@@ -17,6 +17,7 @@ export type ScreenKey =
 export interface SystemSettings {
   version: number;
   landingByRole: Record<RoleName, ScreenKey>;
+  allowedActionsByRole: Record<RoleName, string[]>; // list of action keys the role can access in dashboards
 }
 
 const LOCAL_STORAGE_KEY = 'bls_system_settings_v1';
@@ -26,6 +27,18 @@ const DEFAULT_SETTINGS: SystemSettings = {
   landingByRole: {
     staff: 'staffDashboard',
     user: 'dashboard',
+  },
+  allowedActionsByRole: {
+    staff: [
+      'manageParticipants',
+      'staffDashboard',
+      'manageQuestions',
+      'attendanceMonitoring',
+      'viewResults',
+    ],
+    user: [
+      'viewResults',
+    ],
   },
 };
 
@@ -100,6 +113,29 @@ export const SystemSettingsService = {
     saveToLocal(updated);
 
     return updated;
+  },
+
+  async setAllowedActionsForRole(role: RoleName, actions: string[]): Promise<SystemSettings> {
+    const current = await this.getSettings();
+    const updated: SystemSettings = {
+      ...current,
+      allowedActionsByRole: { ...current.allowedActionsByRole, [role]: actions },
+    };
+    await saveToSupabase(updated);
+    saveToLocal(updated);
+    return updated;
+  },
+
+  async setSettings(settings: SystemSettings): Promise<SystemSettings> {
+    const merged: SystemSettings = {
+      ...DEFAULT_SETTINGS,
+      ...settings,
+      landingByRole: { ...DEFAULT_SETTINGS.landingByRole, ...settings.landingByRole },
+      allowedActionsByRole: { ...DEFAULT_SETTINGS.allowedActionsByRole, ...settings.allowedActionsByRole },
+    };
+    await saveToSupabase(merged);
+    saveToLocal(merged);
+    return merged;
   },
 };
 

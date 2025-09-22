@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Picker, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Picker, Platform, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { SystemSettingsService, SystemSettings, RoleName, ScreenKey } from "../services/SystemSettingsService";
@@ -26,22 +26,47 @@ const userOptions: ScreenKey[] = [
 export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenProps) {
   const [settings, setSettings] = useState<SystemSettings | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
+  const [draftSettings, setDraftSettings] = useState<SystemSettings | null>(null);
 
   useEffect(() => {
     (async () => {
       const s = await SystemSettingsService.getSettings();
       setSettings(s);
+      setDraftSettings(s);
     })();
   }, []);
 
   const updateLanding = async (role: RoleName, screen: ScreenKey) => {
-    setSaving(true);
-    const updated = await SystemSettingsService.setLandingForRole(role, screen);
-    setSettings(updated);
-    setSaving(false);
+    if (!draftSettings) return;
+    setDraftSettings({ ...draftSettings, landingByRole: { ...draftSettings.landingByRole, [role]: screen } });
   };
 
-  if (!settings) {
+  const toggleAction = (role: RoleName, action: string) => {
+    if (!draftSettings) return;
+    const current = new Set(draftSettings.allowedActionsByRole[role] || []);
+    if (current.has(action)) current.delete(action); else current.add(action);
+    setDraftSettings({
+      ...draftSettings,
+      allowedActionsByRole: { ...draftSettings.allowedActionsByRole, [role]: Array.from(current) },
+    });
+  };
+
+  const handleSave = async () => {
+    if (!draftSettings) return;
+    try {
+      setSaving(true);
+      const updated = await SystemSettingsService.setSettings(draftSettings);
+      setSettings(updated);
+      setDraftSettings(updated);
+      Alert.alert('Saved', 'System settings updated successfully.');
+    } catch (e) {
+      Alert.alert('Error', 'Failed to save system settings.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!draftSettings) {
     return (
       <View style={styles.container}> 
         <Text style={styles.title}>Loading settings...</Text>
@@ -65,7 +90,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
           <Text style={styles.label}>Staff landing</Text>
           {Platform.OS === 'web' ? (
             <select
-              value={settings.landingByRole.staff}
+              value={draftSettings.landingByRole.staff}
               onChange={(e) => updateLanding('staff', e.target.value as ScreenKey)}
               style={styles.select as any}
             >
@@ -75,7 +100,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
             </select>
           ) : (
             <Picker
-              selectedValue={settings.landingByRole.staff}
+              selectedValue={draftSettings.landingByRole.staff}
               onValueChange={(val) => updateLanding('staff', val as ScreenKey)}
               style={styles.picker}
             >
@@ -90,7 +115,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
           <Text style={styles.label}>User landing</Text>
           {Platform.OS === 'web' ? (
             <select
-              value={settings.landingByRole.user}
+              value={draftSettings.landingByRole.user}
               onChange={(e) => updateLanding('user', e.target.value as ScreenKey)}
               style={styles.select as any}
             >
@@ -100,7 +125,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
             </select>
           ) : (
             <Picker
-              selectedValue={settings.landingByRole.user}
+              selectedValue={draftSettings.landingByRole.user}
               onValueChange={(val) => updateLanding('user', val as ScreenKey)}
               style={styles.picker}
             >
@@ -111,7 +136,35 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
           )}
         </View>
 
-        <Text style={styles.hint}>{saving ? 'Saving...' : 'Changes are saved automatically.'}</Text>
+        <Text style={styles.hint}>{saving ? 'Saving...' : 'Press Save to apply changes.'}</Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Allowed actions per role</Text>
+
+        <Text style={styles.roleLabel}>Staff can access</Text>
+        <View style={styles.chipsRow}>
+          {['manageParticipants','manageStaff','staffDashboard','manageQuestions','manageChecklist','viewResults','createCourse','attendanceMonitoring'].map(key => (
+            <TouchableOpacity key={key} style={[styles.chip, draftSettings.allowedActionsByRole.staff?.includes(key) ? styles.chipOn : styles.chipOff]} onPress={() => toggleAction('staff', key)}>
+              <Text style={styles.chipText}>{key}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <Text style={styles.roleLabel}>User can access</Text>
+        <View style={styles.chipsRow}>
+          {['viewResults','checklistView'].map(key => (
+            <TouchableOpacity key={key} style={[styles.chip, draftSettings.allowedActionsByRole.user?.includes(key) ? styles.chipOn : styles.chipOff]} onPress={() => toggleAction('user', key)}>
+              <Text style={styles.chipText}>{key}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={handleSave} disabled={saving} style={[styles.saveBtn, saving ? { opacity: 0.6 } : null ]}>
+          <Text style={styles.saveText}>{saving ? 'Saving...' : 'Save'}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -169,6 +222,48 @@ const styles = StyleSheet.create({
   hint: {
     color: '#888',
     marginTop: 8,
+  },
+  chipsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 12,
+  },
+  chip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+  },
+  chipOn: {
+    backgroundColor: 'rgba(0,255,136,0.12)',
+    borderColor: 'rgba(0,255,136,0.5)'
+  },
+  chipOff: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: 'rgba(255,255,255,0.15)'
+  },
+  chipText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  roleLabel: {
+    color: '#ccc',
+    marginBottom: 6,
+  },
+  footer: {
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+  },
+  saveBtn: {
+    backgroundColor: '#00ff88',
+    borderRadius: 10,
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  saveText: {
+    color: '#0a0a0a',
+    fontWeight: '800',
   }
 });
 

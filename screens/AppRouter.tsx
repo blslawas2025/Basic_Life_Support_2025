@@ -56,6 +56,7 @@ interface AppRouterProps {
 	currentScreen: Screen;
 	isLoggedIn: boolean;
 	userData: UserData | null;
+	allowedActions?: string[];
 	testResults: any;
 	currentTestType: 'pre' | 'post';
 	currentChecklistType: string;
@@ -260,6 +261,7 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
 					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
 					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
+					allowedActions={props.allowedActions}
 				/>
 			);
 		} else {
@@ -274,6 +276,7 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
 					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
 					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
+					allowedActions={props.allowedActions}
 				/>
 			);
 		}
