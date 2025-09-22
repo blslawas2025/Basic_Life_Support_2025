@@ -1,4 +1,7 @@
 import { supabase } from './supabase';
+// Feature flag: enable DB persistence only if the table exists and env allows.
+// Default to false to avoid 404s when table is not created yet.
+const ENABLE_DB_PERSISTENCE = (typeof process !== 'undefined' && process.env && (process.env.EXPO_PUBLIC_ENABLE_DB_SETTINGS === '1' || process.env.EXPO_PUBLIC_ENABLE_DB_SETTINGS === 'true'));
 
 export type RoleName = 'staff' | 'user';
 export type ScreenKey =
@@ -52,6 +55,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
 };
 
 async function loadFromSupabase(): Promise<SystemSettings | null> {
+  if (!ENABLE_DB_PERSISTENCE) return null;
   try {
     const { data, error } = await supabase
       .from('system_settings')
@@ -68,6 +72,7 @@ async function loadFromSupabase(): Promise<SystemSettings | null> {
 }
 
 async function saveToSupabase(settings: SystemSettings): Promise<boolean> {
+  if (!ENABLE_DB_PERSISTENCE) return false;
   try {
     const { error } = await supabase
       .from('system_settings')

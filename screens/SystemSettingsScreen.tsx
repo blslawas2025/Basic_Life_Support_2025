@@ -67,6 +67,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
   const [settings, setSettings] = useState<SystemSettings | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [draftSettings, setDraftSettings] = useState<SystemSettings | null>(null);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -98,9 +99,21 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
       const updated = await SystemSettingsService.setSettings(draftSettings);
       setSettings(updated);
       setDraftSettings(updated);
-      Alert.alert('Saved', 'System settings updated successfully.');
+      if (Platform.OS === 'web') {
+        try { (window as any).alert?.('System settings updated successfully.'); } catch {}
+      } else {
+        Alert.alert('Saved', 'System settings updated successfully.');
+      }
+      setFeedback({ type: 'success', message: 'System settings updated successfully.' });
+      setTimeout(() => setFeedback(null), 2500);
     } catch (e) {
-      Alert.alert('Error', 'Failed to save system settings.');
+      if (Platform.OS === 'web') {
+        try { (window as any).alert?.('Failed to save system settings.'); } catch {}
+      } else {
+        Alert.alert('Error', 'Failed to save system settings.');
+      }
+      setFeedback({ type: 'error', message: 'Failed to save system settings.' });
+      setTimeout(() => setFeedback(null), 3000);
     } finally {
       setSaving(false);
     }
@@ -116,6 +129,11 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
 
   return (
     <View style={styles.container}>
+      {feedback && (
+        <View style={[styles.feedbackBar, feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError]}>
+          <Text style={styles.feedbackText}>{feedback.message}</Text>
+        </View>
+      )}
       <LinearGradient colors={["#0a0a0a", "#101020"]} style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={22} color="#fff" />
@@ -314,6 +332,20 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 16,
     paddingBottom: 20,
+  },
+  feedbackBar: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  feedbackSuccess: {
+    backgroundColor: 'rgba(0, 255, 136, 0.15)',
+  },
+  feedbackError: {
+    backgroundColor: 'rgba(255, 0, 128, 0.18)',
+  },
+  feedbackText: {
+    color: '#ffffff',
+    fontWeight: '700',
   },
   saveBtn: {
     backgroundColor: '#00ff88',
