@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert, ActivityIndicator, Modal, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert, ActivityIndicator, Modal, TextInput, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
@@ -937,6 +937,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
   }
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>
       <StatusBar style="light" />
       
@@ -1186,6 +1187,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
       {/* Content */}
       <Animated.ScrollView 
         style={styles.scrollView}
+        contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.content,
@@ -1196,7 +1198,8 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                 inputRange: [0, 1],
                 outputRange: [60, 0]
               }) }
-            ]
+            ],
+            paddingBottom: isSmallScreen ? 96 : 64
           }
         ]}
       >
@@ -1530,10 +1533,15 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a0a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#0a0a0a',

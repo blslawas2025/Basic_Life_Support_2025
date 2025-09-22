@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, ScrollView, Alert, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
@@ -107,6 +107,7 @@ export default function PreTestScreen({ onBack, userName, onStartTest }: PreTest
   };
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>
       <StatusBar style="light" />
       
@@ -263,10 +264,15 @@ export default function PreTestScreen({ onBack, userName, onStartTest }: PreTest
         </View>
       </Animated.ScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a0a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#0a0a0a',
