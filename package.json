@@ -8,8 +8,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "prebuild-icons": "node scripts/generate-icons.js",
-    "build": "npm run prebuild-icons && expo export --platform web && node scripts/postbuild-apple-icon.js",
-    "vercel-build": "npm run prebuild-icons && expo export --platform web && node scripts/postbuild-apple-icon.js"
+    "make-source-icon": "node scripts/create-source-icon.js",
+    "build": "npm run make-source-icon && npm run prebuild-icons && expo export --platform web && node scripts/postbuild-apple-icon.js",
+    "vercel-build": "npm run make-source-icon && npm run prebuild-icons && expo export --platform web && node scripts/postbuild-apple-icon.js"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
