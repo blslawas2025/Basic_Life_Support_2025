@@ -37,6 +37,7 @@ export const ROUTES = {
 	viewCourses: 'viewCourses',
 	editCourse: 'editCourse',
 	attendanceMonitoring: 'attendanceMonitoring',
+	systemSettings: 'systemSettings',
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

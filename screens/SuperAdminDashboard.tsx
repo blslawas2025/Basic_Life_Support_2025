@@ -51,9 +51,10 @@ interface SuperAdminDashboardProps {
   onNavigateToComprehensiveResults?: () => void;
   onNavigateToCreateCourse?: () => void;
   onNavigateToAttendanceMonitoring?: () => void;
+  onNavigateToSystemSettings?: () => void;
 }
 
-export default function SuperAdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToManageChecklist, onNavigateToComprehensiveResults, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring }: SuperAdminDashboardProps) {
+export default function SuperAdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToManageChecklist, onNavigateToComprehensiveResults, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring, onNavigateToSystemSettings }: SuperAdminDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const reduceMotion = useReducedMotion();
@@ -544,8 +545,8 @@ export default function SuperAdminDashboard({ userName, onLogout, onNavigateToMa
                 icon: "cog-outline", 
                 color: "#8b5cf6", 
                 title: "System Settings", 
-                subtitle: "Configure system options",
-                action: "Edit Profile"
+                subtitle: "Configure role landing pages",
+                action: "System Settings"
               }
             ].map((item, index) => (
               <TouchableOpacity
@@ -581,6 +582,8 @@ export default function SuperAdminDashboard({ userName, onLogout, onNavigateToMa
                     onNavigateToCreateCourse();
                   } else if (item.action === 'Attendance Monitoring' && onNavigateToAttendanceMonitoring) {
                     onNavigateToAttendanceMonitoring();
+                  } else if (item.action === 'System Settings' && onNavigateToSystemSettings) {
+                    onNavigateToSystemSettings();
                   } else {
                     }
                 }}

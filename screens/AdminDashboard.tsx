@@ -46,9 +46,10 @@ interface AdminDashboardProps {
   onNavigateToManageQuestions?: () => void;
   onNavigateToCreateCourse?: () => void;
   onNavigateToAttendanceMonitoring?: () => void;
+  onNavigateToSystemSettings?: () => void;
 }
 
-export default function AdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring }: AdminDashboardProps) {
+export default function AdminDashboard({ userName, onLogout, onNavigateToManageParticipant, onNavigateToApproveParticipants, onNavigateToManageStaff, onNavigateToStaffDashboard, onNavigateToManageQuestions, onNavigateToCreateCourse, onNavigateToAttendanceMonitoring, onNavigateToSystemSettings }: AdminDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const windowDims = useWindowDimensions();
@@ -525,9 +526,9 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
               { 
                 icon: "cog-outline", 
                 color: "#00d4ff", 
-                title: "Profile Settings", 
-                subtitle: "Update your profile",
-                action: "Edit Profile"
+                title: "System Settings", 
+                subtitle: "Configure role landing pages",
+                action: "System Settings"
               }
             ].map((item, index) => (
               <TouchableOpacity
@@ -560,6 +561,8 @@ export default function AdminDashboard({ userName, onLogout, onNavigateToManageP
                     onNavigateToCreateCourse();
                   } else if (item.action === 'Attendance Monitoring' && onNavigateToAttendanceMonitoring) {
                     onNavigateToAttendanceMonitoring();
+                  } else if (item.action === 'System Settings' && onNavigateToSystemSettings) {
+                    onNavigateToSystemSettings();
                   } else {
                     }
                 }}

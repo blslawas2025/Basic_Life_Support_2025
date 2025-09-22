@@ -43,6 +43,7 @@ import EditCourseScreen from "./screens/EditCourseScreen";
 import AttendanceMonitoringScreen from "./screens/AttendanceMonitoringScreen";
 import AppRouter from "./screens/AppRouter";
 import { ROUTES } from "./routes/routeMap";
+import { SystemSettingsService } from "./services/SystemSettingsService";
 
 interface UserData {
   id: string; // UUID from profiles table
@@ -53,11 +54,13 @@ interface UserData {
 }
 
 type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
+// Add systemSettings route to local Screen type union
+type ScreenWithSettings = Screen | 'systemSettings';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [currentScreen, setCurrentScreen] = useState<Screen>(ROUTES.login as Screen);
+  const [currentScreen, setCurrentScreen] = useState<ScreenWithSettings>(ROUTES.login as ScreenWithSettings);
   const [testResults, setTestResults] = useState<any>(null);
   const [currentTestType, setCurrentTestType] = useState<'pre' | 'post'>('pre');
   const [currentChecklistType, setCurrentChecklistType] = useState<string>('');
@@ -83,10 +86,24 @@ export default function App() {
     };
   }, []);
 
-  const handleLogin = (loginData: UserData) => {
+  const handleLogin = async (loginData: UserData) => {
     setUserData(loginData);
     setIsLoggedIn(true);
-    setCurrentScreen(ROUTES.dashboard as Screen);
+    // Route based on role and system settings
+    try {
+      const settings = await SystemSettingsService.getSettings();
+      if (loginData.roles === 'admin' || loginData.isSuperAdmin) {
+        setCurrentScreen(ROUTES.dashboard as ScreenWithSettings);
+      } else if (loginData.roles === 'staff') {
+        const dest = settings.landingByRole.staff;
+        setCurrentScreen((ROUTES as any)[dest] as ScreenWithSettings);
+      } else {
+        const dest = settings.landingByRole.user;
+        setCurrentScreen((ROUTES as any)[dest] as ScreenWithSettings);
+      }
+    } catch (e) {
+      setCurrentScreen(ROUTES.dashboard as ScreenWithSettings);
+    }
   };
 
   const handleLogout = () => {
@@ -307,6 +324,10 @@ export default function App() {
     setCurrentScreen('manageChecklist');
   };
 
+  const handleNavigateToSystemSettings = () => {
+    setCurrentScreen(ROUTES.systemSettings as ScreenWithSettings);
+  };
+
   // Render via AppRouter to keep file short and maintainable (logic unchanged)
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0a0a0a' }}>
@@ -362,6 +383,7 @@ export default function App() {
       onNavigateToViewCourses={handleNavigateToViewCourses}
       onEditCourse={handleEditCourse}
       onBackFromEditCourse={handleBackFromEditCourse}
+      onNavigateToSystemSettings={handleNavigateToSystemSettings}
     />
     </SafeAreaView>
   );

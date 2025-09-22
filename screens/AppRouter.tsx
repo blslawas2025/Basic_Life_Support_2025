@@ -28,6 +28,7 @@ import TestResultsScreen from "./TestResultsScreen";
 import QuestionPoolManagementScreen from "./QuestionPoolManagementScreen";
 import AccessControlManagementScreen from "./AccessControlManagementScreen";
 import ResultsAnalyticsScreen from "./ResultsAnalyticsScreen";
+import SystemSettingsScreen from "./SystemSettingsScreen";
 import ImportResultsScreen from "./ImportResultsScreen";
 import BulkImportResultsScreen from "./BulkImportResultsScreen";
 import ResultViewScreen from "./ResultViewScreen";
@@ -104,6 +105,7 @@ interface AppRouterProps {
 	onNavigateToViewCourses: () => void;
 	onEditCourse: (course: any) => void;
 	onBackFromEditCourse: () => void;
+  onNavigateToSystemSettings: () => void;
 }
 
 export default function AppRouter(props: AppRouterProps) {
@@ -242,6 +244,7 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
 					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
 					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
 				/>
 			);
 		} else if (userData.roles === 'staff') {
@@ -256,6 +259,7 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
 					onNavigateToCreateCourse={props.onNavigateToCreateCourse}
 					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
 				/>
 			);
 		} else {
@@ -269,9 +273,14 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
 					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
 					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
+					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
 				/>
 			);
 		}
+	}
+
+	if (currentScreen === 'systemSettings' && isLoggedIn && userData) {
+		return <SystemSettingsScreen onBack={props.onBackToDashboard} />;
 	}
 
 	if (currentScreen === 'testSettings' && isLoggedIn && userData) {
