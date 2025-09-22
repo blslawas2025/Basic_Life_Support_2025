@@ -507,35 +507,34 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
-      {/* Modern KPIs: Pre/Post Passed with % */}
-      <View style={styles.modernKpiRow}>
-        <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.35)' }]}>
-          <Text style={styles.kpiCaption}>Pre Test Passed</Text>
-          <Text style={styles.kpiValueLarge}>{prePassed} <Text style={styles.kpiSubValue}>({prePassPct}%)</Text></Text>
-          <Text style={styles.kpiLabel}>of {preTaken} taken</Text>
+      {/* Everything below scrolls together */}
+      <ScrollView style={styles.resultsContainer} showsVerticalScrollIndicator={false}>
+        {/* Modern KPIs: Pre/Post Passed with % */}
+        <View style={styles.modernKpiRow}>
+          <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.35)' }]}>
+            <Text style={styles.kpiCaption}>Pre Test Passed</Text>
+            <Text style={styles.kpiValueLarge}>{prePassed} <Text style={styles.kpiSubValue}>({prePassPct}%)</Text></Text>
+            <Text style={styles.kpiLabel}>of {preTaken} taken</Text>
+          </View>
+          <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
+            <Text style={styles.kpiCaption}>Post Test Passed</Text>
+            <Text style={styles.kpiValueLarge}>{postPassed} <Text style={styles.kpiSubValue}>({postPassPct}%)</Text></Text>
+            <Text style={styles.kpiLabel}>of {postTaken} taken</Text>
+          </View>
         </View>
-        <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
-          <Text style={styles.kpiCaption}>Post Test Passed</Text>
-          <Text style={styles.kpiValueLarge}>{postPassed} <Text style={styles.kpiSubValue}>({postPassPct}%)</Text></Text>
-          <Text style={styles.kpiLabel}>of {postTaken} taken</Text>
+
+        {/* Quick actions */}
+        <View style={styles.quickActionsRow}>
+          <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#0ea5e9' }]} onPress={handleExportCsv}>
+            <Text style={styles.quickButtonText}>Export CSV</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#10b981' }]} onPress={handleShareLink}>
+            <Text style={styles.quickButtonText}>Share Link</Text>
+          </TouchableOpacity>
         </View>
-      </View>
 
-      {/* Quick actions */}
-      <View style={styles.quickActionsRow}>
-        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#0ea5e9' }]} onPress={handleExportCsv}>
-          <Text style={styles.quickButtonText}>Export CSV</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#10b981' }]} onPress={handleShareLink}>
-          <Text style={styles.quickButtonText}>Share Link</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#1e293b' }]} onPress={handleViewAll}>
-          <Text style={styles.quickButtonText}>View All</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Top performers */}
-      <View style={styles.topRow}>
+        {/* Top performers */}
+        <View style={styles.topRow}>
         <View style={styles.topCard}>
           <Text style={styles.topTitle}>Top 3 Pre Test</Text>
           {topPre.length === 0 ? (
@@ -566,7 +565,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             </View>
           ))}
         </View>
-      </View>
+        </View>
 
       {/* Filters */}
       <View style={styles.filterContainer}>
@@ -578,12 +577,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             onChangeText={setSearchQuery}
             placeholderTextColor="#999"
           />
-          <TouchableOpacity 
-            style={[styles.refreshButton, { backgroundColor: '#0ea5e9' }]}
-            onPress={handleExportCsv}
-          >
-            <Text style={styles.refreshButtonText}>Export</Text>
-          </TouchableOpacity>
+          {/* Removed extra Export button to reduce clutter */}
           <TouchableOpacity 
             style={styles.refreshButton} 
             onPress={handleRefresh}
@@ -707,8 +701,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         </View>
       </View>
 
-      {/* Results */}
-      <ScrollView style={styles.resultsContainer} showsVerticalScrollIndicator={false}>
+        {/* Results */}
         {!dataLoaded ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyTitle}>📋 Loading data...</Text>
