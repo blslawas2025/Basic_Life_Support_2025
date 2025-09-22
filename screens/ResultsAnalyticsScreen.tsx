@@ -1883,13 +1883,13 @@ const styles = StyleSheet.create({
   
   // Hero Header
   heroHeader: {
-    paddingTop: 60,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 12,
+    paddingHorizontal: 16,
   },
   heroGradient: {
-    borderRadius: 20,
-    padding: 24,
+    borderRadius: 12,
+    padding: 12,
     ...Platform.select({
       ios: {
         shadowColor: 'rgba(0, 245, 255, 0.3)',
@@ -1925,7 +1925,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heroTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700' as const,
     color: COLORS.text.primary,
     marginBottom: 8,
@@ -1934,7 +1934,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   heroSubtitle: {
-    fontSize: 16,
+    fontSize: 12,
     color: COLORS.text.secondary,
     fontWeight: '500' as const,
   },
@@ -1962,7 +1962,7 @@ const styles = StyleSheet.create({
   // Main Content
   mainContent: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   scrollContent: {
     flex: 1,
@@ -1970,7 +1970,7 @@ const styles = StyleSheet.create({
   
   // Compact Dashboard Layout
   dashboardContainer: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   compactStatsRow: {
     flexDirection: 'row',
@@ -2048,8 +2048,8 @@ const styles = StyleSheet.create({
   resultsHeader: {
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
+    padding: 10,
+    marginBottom: 8,
     ...Platform.select({
       ios: {
         shadowColor: 'rgba(0, 0, 0, 0.2)',
@@ -2069,17 +2069,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   resultsTitle: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: '700' as const,
     color: COLORS.text.primary,
   },
   resultsStats: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 6,
   },
   resultsCountText: {
-    fontSize: 14,
+    fontSize: 12,
     color: COLORS.text.secondary,
     fontWeight: '500' as const,
   },
@@ -2087,15 +2087,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 245, 255, 0.1)',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: 'rgba(0, 245, 255, 0.3)',
     gap: 6,
   },
   filterToggleText: {
-    fontSize: 12,
+    fontSize: 11,
     color: COLORS.primary,
     fontWeight: '600' as const,
   },
@@ -2104,8 +2104,8 @@ const styles = StyleSheet.create({
   advancedFiltersContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 8,
-    padding: 16,
-    marginTop: 8,
+    padding: 10,
+    marginTop: 6,
   },
   searchBar: {
     flexDirection: 'row',
