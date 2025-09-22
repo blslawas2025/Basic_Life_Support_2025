@@ -255,6 +255,17 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
     averageScore: dataLoaded && results.length > 0 ? Math.round(results.reduce((sum, r) => sum + r.score, 0) / results.length) : 0
   };
 
+  // Top performers (important only)
+  const topPre = [...results]
+    .filter(r => typeof r.preTestPercentage === 'number')
+    .sort((a, b) => (b.preTestPercentage || 0) - (a.preTestPercentage || 0))
+    .slice(0, 3);
+
+  const topPost = [...results]
+    .filter(r => typeof r.postTestPercentage === 'number')
+    .sort((a, b) => (b.postTestPercentage || 0) - (a.postTestPercentage || 0))
+    .slice(0, 3);
+
   const handleResultPress = (result: MockResult) => {
     setSelectedResult(result);
     setShowModal(true);
@@ -423,35 +434,63 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
         <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
-      {/* Statistics */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsScrollView}>
-        <View style={styles.statsContainer}>
-          <View style={[styles.statCard, { backgroundColor: '#3498db' }]}>
-            <Text style={styles.statNumber}>{statistics.total}</Text>
-            <Text style={styles.statLabel}>Total</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#27ae60' }]}>
-            <Text style={styles.statNumber}>{statistics.passed}</Text>
-            <Text style={styles.statLabel}>Passed</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#e74c3c' }]}>
-            <Text style={styles.statNumber}>{statistics.failed}</Text>
-            <Text style={styles.statLabel}>Failed</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#f39c12' }]}>
-            <Text style={styles.statNumber}>{statistics.pending}</Text>
-            <Text style={styles.statLabel}>Pending</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#9b59b6' }]}>
-            <Text style={styles.statNumber}>{statistics.certified}</Text>
-            <Text style={styles.statLabel}>Certified</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#34495e' }]}>
-            <Text style={styles.statNumber}>{statistics.averageScore}%</Text>
-            <Text style={styles.statLabel}>Average</Text>
-          </View>
+      {/* Modern/Futuristic KPI Row */}
+      <View style={styles.modernKpiRow}>
+        <View style={[styles.kpiCard, { backgroundColor: 'rgba(59,130,246,0.12)', borderColor: 'rgba(59,130,246,0.35)' }]}>
+          <Text style={styles.kpiValue}>{statistics.total}</Text>
+          <Text style={styles.kpiLabel}>Total</Text>
         </View>
-      </ScrollView>
+        <View style={[styles.kpiCard, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.35)' }]}>
+          <Text style={styles.kpiValue}>{statistics.passed}</Text>
+          <Text style={styles.kpiLabel}>Passed</Text>
+        </View>
+        <View style={[styles.kpiCard, { backgroundColor: 'rgba(239,68,68,0.12)', borderColor: 'rgba(239,68,68,0.35)' }]}>
+          <Text style={styles.kpiValue}>{statistics.failed}</Text>
+          <Text style={styles.kpiLabel}>Failed</Text>
+        </View>
+        <View style={[styles.kpiCard, { backgroundColor: 'rgba(249,115,22,0.12)', borderColor: 'rgba(249,115,22,0.35)' }]}>
+          <Text style={styles.kpiValue}>{statistics.certified}</Text>
+          <Text style={styles.kpiLabel}>Certified</Text>
+        </View>
+        <View style={[styles.kpiCard, { backgroundColor: 'rgba(30,41,59,0.2)', borderColor: 'rgba(30,41,59,0.35)' }]}>
+          <Text style={styles.kpiValue}>{statistics.averageScore}%</Text>
+          <Text style={styles.kpiLabel}>Average</Text>
+        </View>
+      </View>
+
+      {/* Top performers */}
+      <View style={styles.topRow}>
+        <View style={styles.topCard}>
+          <Text style={styles.topTitle}>Top 3 Pre Test</Text>
+          {topPre.length === 0 ? (
+            <Text style={styles.topEmpty}>No data</Text>
+          ) : topPre.map((p, i) => (
+            <View key={`pre-${p.id}-${i}`} style={styles.topItem}>
+              <Text style={styles.topRank}>{i + 1}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.topName} numberOfLines={1}>{p.participantName}</Text>
+                <Text style={styles.topMeta}>{p.category}</Text>
+              </View>
+              <Text style={styles.topScore}>{p.preTestPercentage}%</Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.topCard}>
+          <Text style={styles.topTitle}>Top 3 Post Test</Text>
+          {topPost.length === 0 ? (
+            <Text style={styles.topEmpty}>No data</Text>
+          ) : topPost.map((p, i) => (
+            <View key={`post-${p.id}-${i}`} style={styles.topItem}>
+              <Text style={styles.topRank}>{i + 1}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.topName} numberOfLines={1}>{p.participantName}</Text>
+                <Text style={styles.topMeta}>{p.category}</Text>
+              </View>
+              <Text style={styles.topScore}>{p.postTestPercentage}%</Text>
+            </View>
+          ))}
+        </View>
+      </View>
 
       {/* Filters */}
       <View style={styles.filterContainer}>
@@ -835,6 +874,84 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#fff',
     textAlign: 'center',
+  },
+  // Modern KPI styles
+  modernKpiRow: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9ecef',
+  },
+  kpiCard: {
+    flex: 1,
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  kpiValue: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0f172a',
+  },
+  kpiLabel: {
+    fontSize: 11,
+    color: '#475569',
+  },
+  topRow: {
+    flexDirection: 'row',
+    gap: 12,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  topCard: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    padding: 12,
+  },
+  topTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1e293b',
+    marginBottom: 8,
+  },
+  topEmpty: {
+    fontSize: 12,
+    color: '#64748b',
+  },
+  topItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 6,
+  },
+  topRank: {
+    width: 20,
+    textAlign: 'center',
+    fontWeight: '800',
+    color: '#334155',
+  },
+  topName: {
+    fontSize: 12,
+    color: '#0f172a',
+    fontWeight: '600',
+  },
+  topMeta: {
+    fontSize: 10,
+    color: '#64748b',
+  },
+  topScore: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#0ea5e9',
+    minWidth: 36,
+    textAlign: 'right',
   },
   filterContainer: {
     backgroundColor: '#fff',
