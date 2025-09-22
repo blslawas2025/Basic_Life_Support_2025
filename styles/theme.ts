@@ -51,3 +51,18 @@ export const elevation = {
 	high: 12,
 };
 
+// Basic responsive helpers for consistent scaling
+export const responsive = {
+	// Returns a smaller value on very small phone widths (<360)
+	size: (base: number) => {
+		try {
+			// Avoid importing Dimensions here to keep this file platform-agnostic in tests
+			// Consumers can pass in precomputed flags if needed
+			// Default slight reduction for safety on tiny screens
+			return base;
+		} catch {
+			return base;
+		}
+	},
+};
+

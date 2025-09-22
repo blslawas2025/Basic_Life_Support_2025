@@ -1673,16 +1673,16 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   questionText: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '600',
     color: '#ffffff',
-    lineHeight: 16,
+    lineHeight: isSmallScreen ? 20 : 24,
   },
   dualLanguageQuestionText: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '600',
     color: '#ffffff',
-    lineHeight: 16,
+    lineHeight: isSmallScreen ? 20 : 24,
   },
   optionsContainer: {
     marginBottom: 24,
@@ -1701,7 +1701,7 @@ const styles = StyleSheet.create({
   optionContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 24,
+    padding: isSmallScreen ? 16 : 24,
   },
   optionLetter: {
     width: 24,
@@ -1725,15 +1725,15 @@ const styles = StyleSheet.create({
   },
   optionText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: 16,
+    lineHeight: isSmallScreen ? 20 : 24,
   },
   dualLanguageOptionText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: 16,
+    lineHeight: isSmallScreen ? 20 : 24,
   },
   selectedOptionText: {
     color: '#ffffff',
