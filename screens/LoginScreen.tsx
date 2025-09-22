@@ -256,8 +256,10 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       if (userProfile) {
         // Check password equals IC number
         const fullProfile = await ProfileService.getProfileByEmail(userProfile.email);
-        const ic = (fullProfile && fullProfile.ic_number) ? String(fullProfile.ic_number) : '';
-        if (!ic || password.trim() !== ic) {
+        const icRaw = (fullProfile && fullProfile.ic_number) ? String(fullProfile.ic_number) : '';
+        const ic = icRaw.replace(/\D/g, '');
+        const pass = String(password || '').replace(/\D/g, '');
+        if (!ic || pass !== ic) {
           setLoading(false);
           setError('Incorrect IC number');
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
