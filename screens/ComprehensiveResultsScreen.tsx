@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert, useWindowDimensions } from 'react-native';
 import { ComprehensiveResultsService, ComprehensiveResult } from '../services/ComprehensiveResultsService';
 
 interface ComprehensiveResultsScreenProps {
@@ -40,6 +40,8 @@ interface MockResult {
 }
 
 export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResultsScreenProps) {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 900;
   const [results, setResults] = useState<MockResult[]>([]);
   const [filteredResults, setFilteredResults] = useState<MockResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -621,10 +623,13 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             <Text style={styles.emptySubtitle}>Try adjusting your search or filter</Text>
           </View>
         ) : (
-          // Side by Side Tables - Clinical and Non-Clinical
-          <View style={styles.sideBySideContainer}>
+          // Side by Side (desktop) or Stacked (mobile) Tables - Clinical and Non-Clinical
+          <View style={[
+            styles.sideBySideContainer,
+            isSmallScreen && { flexDirection: 'column' }
+          ]}>
             {/* Clinical Participants Table */}
-            <View style={styles.tableContainer}>
+            <View style={[styles.tableContainer, isSmallScreen && { marginBottom: 16 }]}>
               <Text style={styles.tableTitle}>Clinical Participants</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                 <View style={styles.table}>
