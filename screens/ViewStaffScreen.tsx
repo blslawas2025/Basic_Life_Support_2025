@@ -973,7 +973,6 @@ const styles = StyleSheet.create({
   // Edit form styles
   editForm: {
     padding: 24,
-    maxHeight: 24,
   },
   inputGroup: {
     marginBottom: 24,
@@ -995,7 +994,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   textArea: {
-    height: 24,
+    height: 120,
     textAlignVertical: 'top',
   },
   confirmButtonContainer: {
