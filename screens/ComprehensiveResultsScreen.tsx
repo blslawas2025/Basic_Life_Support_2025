@@ -580,6 +580,12 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
             placeholderTextColor="#999"
           />
           <TouchableOpacity 
+            style={[styles.refreshButton, { backgroundColor: '#0ea5e9' }]}
+            onPress={handleExportCsv}
+          >
+            <Text style={styles.refreshButtonText}>Export</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
             style={styles.refreshButton} 
             onPress={handleRefresh}
             disabled={isRefreshing}
