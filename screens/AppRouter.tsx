@@ -13,6 +13,7 @@ import ManageStaffScreen from "./ManageStaffScreen";
 import RegisterStaffScreen from "./RegisterStaffScreen";
 import ViewStaffScreen from "./ViewStaffScreen";
 import StaffDashboard from "./StaffDashboard";
+import UserDashboard from "./UserDashboard";
 import ManageQuestionScreen from "./ManageQuestionScreen";
 import UploadQuestionsScreen from "./UploadQuestionsScreen";
 import ManageChecklistScreen from "./ManageChecklistScreen";
@@ -266,17 +267,12 @@ export default function AppRouter(props: AppRouterProps) {
 			);
 		} else {
 			return (
-				<AdminDashboard 
+				<UserDashboard 
 					userName={userData.userName}
 					onLogout={props.onLogout}
-					onNavigateToManageParticipant={props.onNavigateToManageParticipant}
-					onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
-					onNavigateToManageStaff={props.onNavigateToManageStaff}
-					onNavigateToStaffDashboard={props.onNavigateToStaffDashboard}
-					onNavigateToManageQuestions={props.onNavigateToManageQuestions}
-					onNavigateToAttendanceMonitoring={props.onNavigateToAttendanceMonitoring}
-					onNavigateToSystemSettings={props.onNavigateToSystemSettings}
-					allowedActions={props.allowedActions}
+					onNavigateToPreTest={props.onNavigateToPreTest}
+					onNavigateToPostTest={props.onNavigateToPostTest}
+					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
 				/>
 			);
 		}
