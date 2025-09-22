@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-native";
+import { Alert, SafeAreaView } from "react-native";
 import { synchronizationService } from "./services/SynchronizationService";
 import LoginScreen from "./screens/LoginScreen";
 import SuperAdminDashboard from "./screens/SuperAdminDashboard";
@@ -309,6 +309,7 @@ export default function App() {
 
   // Render via AppRouter to keep file short and maintainable (logic unchanged)
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0a0a0a' }}>
     <AppRouter
       currentScreen={currentScreen}
       isLoggedIn={isLoggedIn}
@@ -362,5 +363,6 @@ export default function App() {
       onEditCourse={handleEditCourse}
       onBackFromEditCourse={handleBackFromEditCourse}
     />
+    </SafeAreaView>
   );
 }
