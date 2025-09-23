@@ -120,10 +120,10 @@ export class ComprehensiveResultsService {
   }
 
   // Get all comprehensive results directly from test_submissions and checklist_result tables
-  static async getAllComprehensiveResults(): Promise<ComprehensiveResult[]> {
+  static async getAllComprehensiveResults(courseSessionId?: string): Promise<ComprehensiveResult[]> {
     try {
       // Fetch participants first
-      const { data: participants, error: participantsError } = await supabase
+      let participantsQuery = supabase
         .from('profiles')
         .select(`
           id,
@@ -137,6 +137,9 @@ export class ComprehensiveResultsService {
         .eq('user_type', 'participant')
         .eq('status', 'approved')
         .eq('roles', 'user');
+      // If courseSessionId is provided and profiles have session relation (optional)
+      // you can join or filter here when schema supports it.
+      const { data: participants, error: participantsError } = await participantsQuery;
 
       if (participantsError) {
         console.error('Error fetching participants:', participantsError);
@@ -150,10 +153,12 @@ export class ComprehensiveResultsService {
       const participantIds = participants.map(p => p.id);
 
       // Fetch test submissions for these participants
-      const { data: testSubmissions, error: testError } = await supabase
+      let testQuery = supabase
         .from('test_submissions')
-        .select('*')
+        .select('user_id,test_type,total_questions,correct_answers,submitted_at,job_category,course_session_id')
         .in('user_id', participantIds);
+      if (courseSessionId) testQuery = testQuery.eq('course_session_id', courseSessionId);
+      const { data: testSubmissions, error: testError } = await testQuery;
 
       if (testError) {
         console.error('Error fetching test submissions:', testError);
@@ -161,10 +166,12 @@ export class ComprehensiveResultsService {
       }
 
       // Fetch checklist results for these participants
-      const { data: checklistResults, error: checklistError } = await supabase
+      let checklistQuery = supabase
         .from('checklist_result')
-        .select('*')
+        .select('participant_id,checklist_type,status,completion_percentage,submitted_at,course_session_id')
         .in('participant_id', participantIds);
+      if (courseSessionId) checklistQuery = checklistQuery.eq('course_session_id', courseSessionId);
+      const { data: checklistResults, error: checklistError } = await checklistQuery;
 
       if (checklistError) {
         console.error('Error fetching checklist results:', checklistError);

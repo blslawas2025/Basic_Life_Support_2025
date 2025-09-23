@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+// build-tag: results-v36
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert, useWindowDimensions, Share, Platform } from 'react-native';
 import { ComprehensiveResultsService, ComprehensiveResult } from '../services/ComprehensiveResultsService';
 
 interface ComprehensiveResultsScreenProps {
   onBack: () => void;
-  participantId?: string;
+  participantId?: string; // mode=participant
+  courseSessionId?: string; // mode=session
 }
 
 interface MockResult {
@@ -40,7 +42,7 @@ interface MockResult {
   adultChokingStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
 }
 
-export default function ComprehensiveResultsScreen({ onBack, participantId }: ComprehensiveResultsScreenProps) {
+export default function ComprehensiveResultsScreen({ onBack, participantId, courseSessionId }: ComprehensiveResultsScreenProps) {
   const { width } = useWindowDimensions();
   const isSmallScreen = width < 900;
   const [results, setResults] = useState<MockResult[]>([]);
@@ -86,7 +88,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId }: Co
       setLoading(true);
       
       // Load actual data from Supabase
-      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults();
+      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults(courseSessionId);
       
       // Convert to MockResult format for compatibility - group by participant
           const convertedResults: MockResult[] = [];
