@@ -565,15 +565,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
           {/* Removed Your Scores card as requested */}
         </View>
 
-        {/* Quick actions */}
-        <View style={styles.quickActionsRow}>
-          <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#0ea5e9' }]} onPress={handleExportCsv}>
-            <Text style={styles.quickButtonText}>Export CSV</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.quickButton, { backgroundColor: '#10b981' }]} onPress={handleShareLink}>
-            <Text style={styles.quickButtonText}>Share Link</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Removed action buttons for My Results */}
 
         {/* Top performers */}
         <View style={styles.topRow}>
@@ -609,139 +601,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
         </View>
         </View>
 
-      {/* Filters */}
-      <View style={styles.filterContainer}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="🔍 Search participants..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#999"
-          />
-          {/* Removed extra Export button to reduce clutter */}
-          <TouchableOpacity 
-            style={styles.refreshButton} 
-            onPress={handleRefresh}
-            disabled={isRefreshing}
-          >
-            <Text style={styles.refreshButtonText}>
-              {isRefreshing ? '⟳' : '↻'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        
-        {/* Collapsible Filter Section */}
-        <View style={styles.collapsibleFilterContainer}>
-          <TouchableOpacity 
-            style={styles.filterToggleButton}
-            onPress={() => setShowFilters(!showFilters)}
-          >
-            <Text style={styles.filterToggleText}>Filters</Text>
-            <Text style={styles.filterToggleIcon}>{showFilters ? '−' : '+'}</Text>
-          </TouchableOpacity>
-          
-          {showFilters && (
-            <View style={styles.filterContent}>
-              <View style={styles.filterSection}>
-                <Text style={styles.filterLabel}>Status</Text>
-                <View style={styles.filterRow}>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      remedialFilter === 'all' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setRemedialFilter('all')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      remedialFilter === 'all' && styles.modernFilterTextActive
-                    ]}>
-                      All
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      remedialFilter === 'allowed' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setRemedialFilter('allowed')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      remedialFilter === 'allowed' && styles.modernFilterTextActive
-                    ]}>
-                      Remedial
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      remedialFilter === 'not_allowed' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setRemedialFilter('not_allowed')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      remedialFilter === 'not_allowed' && styles.modernFilterTextActive
-                    ]}>
-                      Passed
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              
-              <View style={styles.filterSection}>
-                <Text style={styles.filterLabel}>Certification</Text>
-                <View style={styles.filterRow}>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      certificationFilter === 'all' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setCertificationFilter('all')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      certificationFilter === 'all' && styles.modernFilterTextActive
-                    ]}>
-                      All
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      certificationFilter === 'allowed' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setCertificationFilter('allowed')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      certificationFilter === 'allowed' && styles.modernFilterTextActive
-                    ]}>
-                      Certified
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.modernFilterButton,
-                      certificationFilter === 'not_allowed' && styles.modernFilterButtonActive
-                    ]}
-                    onPress={() => setCertificationFilter('not_allowed')}
-                  >
-                    <Text style={[
-                      styles.modernFilterText,
-                      certificationFilter === 'not_allowed' && styles.modernFilterTextActive
-                    ]}>
-                      Not Certified
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          )}
-        </View>
-      </View>
+        {/* Removed search and filters for My Results */}
 
         {/* Results */}
         {!dataLoaded ? (
