@@ -331,7 +331,7 @@ export default function AppRouter(props: AppRouterProps) {
 					onNavigateToPreTest={props.onNavigateToPreTest}
 					onNavigateToPostTest={props.onNavigateToPostTest}
 					onNavigateToTestInterface={props.onNavigateToTestInterface}
-					onNavigateToChecklistView={props.onNavigateToChecklistView}
+					onNavigateToChecklistBrowse={props.onNavigateToChecklistBrowse}
 					onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
 					allowedActions={props.allowedActions}
 				/>
