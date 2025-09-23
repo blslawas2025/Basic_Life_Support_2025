@@ -174,26 +174,72 @@ export default function AppRouter(props: AppRouterProps) {
 		);
 	}
 
-	if (currentScreen === 'manageQuestions' && userData) {
-		return (
-			<ManageQuestionScreen 
-				onBack={props.onBackToDashboard}
-				onNavigateToUploadQuestions={props.onNavigateToUploadQuestions}
-				onNavigateToPreTest={props.onNavigateToPreTest}
-				onNavigateToPostTest={props.onNavigateToPostTest}
-				onNavigateToTestSettings={props.onNavigateToTestSettings}
-				onNavigateToQuestionPools={props.onNavigateToQuestionPools}
-				onNavigateToAccessControl={props.onNavigateToAccessControl}
-				onNavigateToResults={props.onNavigateToResults}
-			/>
-		);
-	}
+    // Guard: management pages restricted to admin/staff/superAdmin
+    const isPrivileged = !!userData && (userData.isSuperAdmin || userData.roles === 'admin' || userData.roles === 'staff');
 
-	if (currentScreen === 'uploadQuestions' && userData) {
-		return <UploadQuestionsScreen onBack={props.onNavigateToManageQuestions} />;
-	}
+    if (currentScreen === 'manageQuestions' && userData) {
+        if (!isPrivileged) {
+            // Fallback to proper dashboard based on role
+            return (
+                <UserDashboard 
+                    userName={userData.userName}
+                    onLogout={props.onLogout}
+                    onNavigateToPreTest={props.onNavigateToPreTest}
+                    onNavigateToPostTest={props.onNavigateToPostTest}
+                    onNavigateToTestInterface={props.onNavigateToTestInterface}
+                    onNavigateToChecklistView={props.onNavigateToChecklistView}
+                    onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+                    allowedActions={props.allowedActions}
+                />
+            );
+        }
+        return (
+            <ManageQuestionScreen 
+                onBack={props.onBackToDashboard}
+                onNavigateToUploadQuestions={props.onNavigateToUploadQuestions}
+                onNavigateToPreTest={props.onNavigateToPreTest}
+                onNavigateToPostTest={props.onNavigateToPostTest}
+                onNavigateToTestSettings={props.onNavigateToTestSettings}
+                onNavigateToQuestionPools={props.onNavigateToQuestionPools}
+                onNavigateToAccessControl={props.onNavigateToAccessControl}
+                onNavigateToResults={props.onNavigateToResults}
+            />
+        );
+    }
 
-	if (currentScreen === 'manageChecklist' && userData) {
+    if (currentScreen === 'uploadQuestions' && userData) {
+        if (!isPrivileged) {
+            return (
+                <UserDashboard 
+                    userName={userData.userName}
+                    onLogout={props.onLogout}
+                    onNavigateToPreTest={props.onNavigateToPreTest}
+                    onNavigateToPostTest={props.onNavigateToPostTest}
+                    onNavigateToTestInterface={props.onNavigateToTestInterface}
+                    onNavigateToChecklistView={props.onNavigateToChecklistView}
+                    onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+                    allowedActions={props.allowedActions}
+                />
+            );
+        }
+        return <UploadQuestionsScreen onBack={props.onNavigateToManageQuestions} />;
+    }
+
+    if (currentScreen === 'manageChecklist' && userData) {
+        if (!isPrivileged) {
+            return (
+                <UserDashboard 
+                    userName={userData.userName}
+                    onLogout={props.onLogout}
+                    onNavigateToPreTest={props.onNavigateToPreTest}
+                    onNavigateToPostTest={props.onNavigateToPostTest}
+                    onNavigateToTestInterface={props.onNavigateToTestInterface}
+                    onNavigateToChecklistView={props.onNavigateToChecklistView}
+                    onNavigateToComprehensiveResults={props.onNavigateToComprehensiveResults}
+                    allowedActions={props.allowedActions}
+                />
+            );
+        }
 		return (
 			<ManageChecklistScreen 
 				onBack={props.onBackToDashboardFromChecklist}
