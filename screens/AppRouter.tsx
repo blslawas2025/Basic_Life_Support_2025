@@ -253,6 +253,15 @@ export default function AppRouter(props: AppRouterProps) {
 		);
 	}
 
+    if (currentScreen === 'checklistBrowse' && userData) {
+        return (
+            <ChecklistBrowseScreen 
+                onBack={props.onBackToDashboardFromChecklist}
+                onOpenChecklist={(type) => props.onNavigateToChecklistView(type)}
+            />
+        );
+    }
+
     if (currentScreen === 'checklistView' && currentChecklistType) {
 		return (
 			<ChecklistViewScreen 
