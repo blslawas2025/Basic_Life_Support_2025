@@ -97,7 +97,11 @@ export default function App() {
       if (loginData.roles === 'staff') {
         setAllowedActions(settings.allowedActionsByRole.staff);
       } else if (loginData.roles === 'user') {
-        setAllowedActions(settings.allowedActionsByRole.user);
+        const raw = settings.allowedActionsByRole.user;
+        // Map legacy 'testInterface' permission to 'myResults' for participants
+        const mapped = raw.map(a => (a === 'testInterface' ? 'myResults' : a));
+        if (!mapped.includes('myResults')) mapped.push('myResults');
+        setAllowedActions(mapped);
       } else {
         setAllowedActions(undefined);
       }

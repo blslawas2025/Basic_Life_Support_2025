@@ -446,7 +446,7 @@ export default function AppRouter(props: AppRouterProps) {
 	}
 
     if ((currentScreen === 'comprehensiveResults' || currentScreen === 'myResults') && isLoggedIn && userData) {
-        return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
+        return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} participantId={currentScreen === 'myResults' ? userData.id : undefined} />;
     }
 
 	if (currentScreen === 'createCourse' && isLoggedIn && userData) {

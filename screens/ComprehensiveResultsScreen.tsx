@@ -4,6 +4,7 @@ import { ComprehensiveResultsService, ComprehensiveResult } from '../services/Co
 
 interface ComprehensiveResultsScreenProps {
   onBack: () => void;
+  participantId?: string;
 }
 
 interface MockResult {
@@ -39,7 +40,7 @@ interface MockResult {
   adultChokingStatus?: 'Pass' | 'Fail' | 'Incomplete' | 'Not Taken';
 }
 
-export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResultsScreenProps) {
+export default function ComprehensiveResultsScreen({ onBack, participantId }: ComprehensiveResultsScreenProps) {
   const { width } = useWindowDimensions();
   const isSmallScreen = width < 900;
   const [results, setResults] = useState<MockResult[]>([]);
@@ -92,6 +93,7 @@ export default function ComprehensiveResultsScreen({ onBack }: ComprehensiveResu
           
       // Create single entry per participant with both pre and post test data
       comprehensiveResults.forEach((result, index) => {
+        if (participantId && result.participant_id !== participantId) return; // filter to own results
         const participantResult: MockResult = {
           id: result.participant_id,
           participantName: result.participant_name || 'Unknown',
