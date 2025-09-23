@@ -324,8 +324,7 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
               const mapped = new Set(allowedActions.map(a => (a === 'testInterface' ? 'myResults' : a)));
               mapped.delete('testInterface');
               const isAllowed = (action: string) => mapped.size === 0 ? true : mapped.has(action);
-              return (
-            {[
+              return [
               { 
                 icon: "play-circle-outline", 
                 color: "#00ff88", 
@@ -413,8 +412,7 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                   </View>
                 </LinearGradient>
               </TouchableOpacity>
-            ))}
-              );
+            ));
             })()}
           </View>
         </Animated.View>
