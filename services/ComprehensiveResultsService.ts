@@ -137,8 +137,9 @@ export class ComprehensiveResultsService {
         .eq('user_type', 'participant')
         .eq('status', 'approved')
         .eq('roles', 'user');
-      // If courseSessionId is provided and profiles have session relation (optional)
-      // you can join or filter here when schema supports it.
+      if (courseSessionId) {
+        participantsQuery = participantsQuery.eq('course_session_id', courseSessionId);
+      }
       const { data: participants, error: participantsError } = await participantsQuery;
 
       if (participantsError) {
@@ -157,7 +158,6 @@ export class ComprehensiveResultsService {
         .from('test_submissions')
         .select('user_id,test_type,total_questions,correct_answers,submitted_at,job_category,course_session_id')
         .in('user_id', participantIds);
-      if (courseSessionId) testQuery = testQuery.eq('course_session_id', courseSessionId);
       const { data: testSubmissions, error: testError } = await testQuery;
 
       if (testError) {
@@ -170,7 +170,6 @@ export class ComprehensiveResultsService {
         .from('checklist_result')
         .select('participant_id,checklist_type,status,completion_percentage,submitted_at,course_session_id')
         .in('participant_id', participantIds);
-      if (courseSessionId) checklistQuery = checklistQuery.eq('course_session_id', courseSessionId);
       const { data: checklistResults, error: checklistError } = await checklistQuery;
 
       if (checklistError) {
