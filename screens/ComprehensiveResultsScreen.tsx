@@ -260,23 +260,23 @@ export default function ComprehensiveResultsScreen({ onBack, participantId }: Co
   };
 
   // Top performers (important only)
-  const topPre = [...results]
+  const topPre = [...activeSet]
     .filter(r => typeof r.preTestPercentage === 'number')
     .sort((a, b) => (b.preTestPercentage || 0) - (a.preTestPercentage || 0))
     .slice(0, 3);
 
-  const topPost = [...results]
+  const topPost = [...activeSet]
     .filter(r => typeof r.postTestPercentage === 'number')
     .sort((a, b) => (b.postTestPercentage || 0) - (a.postTestPercentage || 0))
     .slice(0, 3);
 
   // Pass counts and percentages for Pre/Post
-  const preTaken = results.filter(r => r.preTestStatus && r.preTestStatus !== 'Not Taken').length;
-  const prePassed = results.filter(r => r.preTestStatus === 'Pass').length;
+  const preTaken = activeSet.filter(r => r.preTestStatus && r.preTestStatus !== 'Not Taken').length;
+  const prePassed = activeSet.filter(r => r.preTestStatus === 'Pass').length;
   const prePassPct = preTaken > 0 ? Math.round((prePassed / preTaken) * 100) : 0;
 
-  const postTaken = results.filter(r => r.postTestStatus && r.postTestStatus !== 'Not Taken').length;
-  const postPassed = results.filter(r => r.postTestStatus === 'Pass').length;
+  const postTaken = activeSet.filter(r => r.postTestStatus && r.postTestStatus !== 'Not Taken').length;
+  const postPassed = activeSet.filter(r => r.postTestStatus === 'Pass').length;
   const postPassPct = postTaken > 0 ? Math.round((postPassed / postTaken) * 100) : 0;
 
   const handleResultPress = (result: MockResult) => {
