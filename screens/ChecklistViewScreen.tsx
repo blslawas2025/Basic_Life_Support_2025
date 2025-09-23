@@ -27,6 +27,7 @@ interface ChecklistViewScreenProps {
   onBack: () => void;
   checklistType: string;
   onRefresh?: () => void;
+  readOnly?: boolean;
 }
 
 interface ChecklistSection {
@@ -34,7 +35,7 @@ interface ChecklistSection {
   items: (ChecklistItemData & { completed: boolean })[];
 }
 
-export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }: ChecklistViewScreenProps) {
+export default function ChecklistViewScreen({ onBack, checklistType, onRefresh, readOnly = false }: ChecklistViewScreenProps) {
   const [error, setError] = useState<string | null>(null);
   const [participants, setParticipants] = useState<Profile[]>([]);
   const [selectedParticipant, setSelectedParticipant] = useState<Profile | null>(null);
@@ -129,6 +130,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
   );
 
   const toggleItem = (itemId: string) => {
+    if (readOnly) return;
     const newCompletedItems = new Set(completedItems);
     if (newCompletedItems.has(itemId)) {
       newCompletedItems.delete(itemId);
@@ -179,6 +181,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
   };
 
   const handleSubmit = async () => {
+    if (readOnly) return;
     if (!selectedParticipant) {
       alert('Please select a participant first');
       return;
@@ -337,7 +340,8 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
 
       {/* SCROLLABLE CONTENT - EVERYTHING INSIDE */}
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Participant Selector - NOW SCROLLS WITH CONTENT */}
+        {/* Participant Selector - hidden in read-only mode */}
+        {!readOnly && (
         <View style={styles.participantSection}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
@@ -461,6 +465,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
             )}
           </LinearGradient>
         </View>
+        )}
 
         {/* Checklist Sections - NOW PROPERLY SCROLLABLE */}
         {sections.map((section, sectionIndex) => {
@@ -543,7 +548,8 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
           );
         })}
 
-        {/* Comments Section */}
+        {/* Comments Section - hidden in read-only mode */}
+        {!readOnly && (
         <View style={styles.commentsSection}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
@@ -561,8 +567,10 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
             />
           </LinearGradient>
         </View>
+        )}
 
-        {/* Submit Section */}
+        {/* Submit Section - hidden in read-only mode */}
+        {!readOnly && (
         <View style={styles.submitSection}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.8)']}
@@ -614,6 +622,7 @@ export default function ChecklistViewScreen({ onBack, checklistType, onRefresh }
             )}
           </LinearGradient>
         </View>
+        )}
 
         {/* Bottom spacing */}
         <View style={styles.bottomSpacing} />

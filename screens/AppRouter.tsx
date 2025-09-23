@@ -251,12 +251,13 @@ export default function AppRouter(props: AppRouterProps) {
 		);
 	}
 
-	if (currentScreen === 'checklistView' && currentChecklistType) {
+    if (currentScreen === 'checklistView' && currentChecklistType) {
 		return (
 			<ChecklistViewScreen 
-				onBack={() => props.onNavigateToManageChecklist()}
-				checklistType={currentChecklistType}
-				onRefresh={() => {}}
+                onBack={() => props.onNavigateToManageChecklist()}
+                checklistType={currentChecklistType}
+                onRefresh={() => {}}
+                readOnly={!isPrivileged}
 			/>
 		);
 	}
