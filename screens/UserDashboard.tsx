@@ -319,6 +319,12 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
           </View>
           
           <View style={styles.sectionGrid}>
+            {/** Map legacy 'testInterface' to 'myResults' to avoid stale settings and hide 'testInterface' */}
+            {(() => {
+              const mapped = new Set(allowedActions.map(a => (a === 'testInterface' ? 'myResults' : a)));
+              mapped.delete('testInterface');
+              const isAllowed = (action: string) => mapped.size === 0 ? true : mapped.has(action);
+              return (
             {[
               { 
                 icon: "play-circle-outline", 
@@ -355,7 +361,7 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                 subtitle: "View all your test results and progress",
                 action: "comprehensiveResults"
               }
-            ].filter(item => allowedActions.includes(item.action)).map((item, index) => (
+            ].filter(item => isAllowed(item.action)).map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -408,6 +414,8 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                 </LinearGradient>
               </TouchableOpacity>
             ))}
+              );
+            })()}
           </View>
         </Animated.View>
       </Animated.ScrollView>
