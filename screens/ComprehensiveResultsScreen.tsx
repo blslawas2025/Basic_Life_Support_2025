@@ -236,6 +236,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
   const getClinicalResults = () => {
     return filteredResults
       .filter(result => result.category === 'Clinical')
+      .filter(result => (participantId ? result.id === participantId : true))
       .sort((a, b) => {
         const nameA = a.participantName || '';
         const nameB = b.participantName || '';
@@ -246,6 +247,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
   const getNonClinicalResults = () => {
     return filteredResults
       .filter(result => result.category === 'Non-Clinical')
+      .filter(result => (participantId ? result.id === participantId : true))
       .sort((a, b) => {
         const nameA = a.participantName || '';
         const nameB = b.participantName || '';
