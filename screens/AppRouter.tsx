@@ -45,6 +45,7 @@ import EditCourseScreen from "./EditCourseScreen";
 import AttendanceMonitoringScreen from "./AttendanceMonitoringScreen";
 
 export type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistBrowse' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
+export type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistBrowse' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'myResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
 
 interface UserData {
 	id: string;
@@ -444,9 +445,9 @@ export default function AppRouter(props: AppRouterProps) {
 		return <CertificateManagementScreen onBack={() => props.onNavigateToResults()} />;
 	}
 
-	if (currentScreen === 'comprehensiveResults' && isLoggedIn && userData) {
-		return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
-	}
+    if ((currentScreen === 'comprehensiveResults' || currentScreen === 'myResults') && isLoggedIn && userData) {
+        return <ComprehensiveResultsScreen onBack={props.onBackToDashboard} />;
+    }
 
 	if (currentScreen === 'createCourse' && isLoggedIn && userData) {
 		return <CreateCourseScreen onBack={props.onBackToDashboard} onViewCourses={props.onNavigateToViewCourses} />;

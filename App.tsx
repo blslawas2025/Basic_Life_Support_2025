@@ -299,7 +299,7 @@ export default function App() {
 
   const handleNavigateToComprehensiveResults = () => {
     console.log('handleNavigateToComprehensiveResults called');
-    setCurrentScreen(ROUTES.comprehensiveResults as Screen);
+    setCurrentScreen(ROUTES.myResults as Screen);
   };
 
   const handleNavigateToCreateCourse = () => {

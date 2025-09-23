@@ -335,11 +335,11 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                 action: "postTest"
               },
               { 
-                icon: "laptop-outline", 
+                icon: "bar-chart-outline", 
                 color: "#ff0080", 
-                title: "Test Interface", 
-                subtitle: "Access the main testing interface",
-                action: "testInterface"
+                title: "My Results", 
+                subtitle: "View my test and checklist results",
+                action: "myResults"
               },
               { 
                 icon: "checklist-outline", 
@@ -378,14 +378,12 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                     onNavigateToPreTest();
                   } else if (item.action === 'postTest') {
                     onNavigateToPostTest();
-                  } else if (item.action === 'testInterface') {
-                    onNavigateToTestInterface();
+                  } else if (item.action === 'myResults') {
+                    onNavigateToComprehensiveResults();
                   } else if (item.action === 'checklistView') {
                     if (onNavigateToChecklistBrowse) {
                       onNavigateToChecklistBrowse();
                     }
-                  } else if (item.action === 'comprehensiveResults') {
-                    onNavigateToComprehensiveResults();
                   }
                 }}
                 activeOpacity={0.8}

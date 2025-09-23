@@ -14,6 +14,7 @@ export const ROUTES = {
 	uploadQuestions: 'uploadQuestions',
 	manageChecklist: 'manageChecklist',
 	checklistBrowse: 'checklistBrowse',
+	myResults: 'myResults',
 	checklistView: 'checklistView',
 	checklistResults: 'checklistResults',
 	uploadChecklist: 'uploadChecklist',
