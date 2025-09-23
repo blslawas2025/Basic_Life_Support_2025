@@ -560,13 +560,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
             <Text style={styles.kpiValueLarge}>{postPassed} <Text style={styles.kpiSubValue}>({postPassPct}%)</Text></Text>
             <Text style={styles.kpiLabel}>of {postTaken} taken</Text>
           </View>
-          {isMyResults && myResult && (
-            <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(14,165,233,0.12)', borderColor: 'rgba(14,165,233,0.35)' }]}>
-              <Text style={styles.kpiCaption}>Your Scores</Text>
-              <Text style={styles.kpiValue}>Pre: {typeof myResult.preTestPercentage === 'number' ? `${myResult.preTestPercentage}%` : 'N/A'}</Text>
-              <Text style={styles.kpiValue}>Post: {typeof myResult.postTestPercentage === 'number' ? `${myResult.postTestPercentage}%` : 'N/A'}</Text>
-            </View>
-          )}
+          {/* Removed Your Scores card as requested */}
         </View>
 
         {/* Quick actions */}

@@ -123,6 +123,7 @@ export class ComprehensiveResultsService {
   static async getAllComprehensiveResults(courseSessionId?: string, participantId?: string): Promise<ComprehensiveResult[]> {
     try {
       // Fetch participants first
+      // Base: only approved participants
       let participantsQuery = supabase
         .from('profiles')
         .select(`
@@ -132,27 +133,22 @@ export class ComprehensiveResultsService {
           job_position_name,
           user_type,
           status,
-          roles
-        `);
+          roles,
+          course_session_id
+        `)
+        .eq('user_type', 'participant')
+        .eq('status', 'approved');
 
-      // If a specific participant is requested (My Results), fetch them regardless of status/role
-      if (participantId) {
-        // Guard: only treat as specific user if it looks like a UUID; otherwise, fall back to general query
+      // Cohort logic:
+      // - If courseSessionId is provided (My Results resolved session or admin view), fetch the entire cohort for that session
+      // - Else if only participantId is provided, fetch only that participant
+      if (courseSessionId) {
+        participantsQuery = participantsQuery.eq('course_session_id', courseSessionId);
+      } else if (participantId) {
         const uuidLike = /^[0-9a-fA-F-]{36}$/.test(participantId);
         if (uuidLike) {
           participantsQuery = participantsQuery.eq('id', participantId);
-        } else {
-          participantsQuery = participantsQuery
-            .eq('user_type', 'participant')
-            .eq('status', 'approved');
         }
-      } else {
-        participantsQuery = participantsQuery
-          .eq('user_type', 'participant')
-          .eq('status', 'approved');
-      }
-      if (courseSessionId) {
-        participantsQuery = participantsQuery.eq('course_session_id', courseSessionId);
       }
       const { data: participants, error: participantsError } = await participantsQuery;
 
