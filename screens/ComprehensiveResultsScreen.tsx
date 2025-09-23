@@ -249,13 +249,14 @@ export default function ComprehensiveResultsScreen({ onBack, participantId }: Co
     );
   };
 
+  const activeSet = participantId ? filteredResults : results;
   const statistics = {
-    total: dataLoaded ? results.length : 0,
-    passed: dataLoaded ? results.filter(r => r.status === 'Pass').length : 0,
-    failed: dataLoaded ? results.filter(r => r.status === 'Fail').length : 0,
-    pending: dataLoaded ? results.filter(r => r.status === 'Pending').length : 0,
-    certified: dataLoaded ? results.filter(r => r.certified).length : 0,
-    averageScore: dataLoaded && results.length > 0 ? Math.round(results.reduce((sum, r) => sum + r.score, 0) / results.length) : 0
+    total: dataLoaded ? activeSet.length : 0,
+    passed: dataLoaded ? activeSet.filter(r => r.status === 'Pass').length : 0,
+    failed: dataLoaded ? activeSet.filter(r => r.status === 'Fail').length : 0,
+    pending: dataLoaded ? activeSet.filter(r => r.status === 'Pending').length : 0,
+    certified: dataLoaded ? activeSet.filter(r => r.certified).length : 0,
+    averageScore: dataLoaded && activeSet.length > 0 ? Math.round(activeSet.reduce((sum, r) => sum + r.score, 0) / activeSet.length) : 0
   };
 
   // Top performers (important only)
