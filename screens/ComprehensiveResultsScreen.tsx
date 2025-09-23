@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // build-tag: results-v36
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Modal, Alert, useWindowDimensions, Share, Platform } from 'react-native';
 import { ComprehensiveResultsService, ComprehensiveResult } from '../services/ComprehensiveResultsService';
+import { supabase } from '../services/supabase';
 
 interface ComprehensiveResultsScreenProps {
   onBack: () => void;
@@ -61,12 +62,32 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [_, setDummy] = useState(0); // used to trigger UI refresh when needed
+  const [resolvedSessionId, setResolvedSessionId] = useState<string | undefined>(undefined);
 
-  // Load data on component mount
+  // Resolve session id for participant mode if not provided
+  useEffect(() => {
+    const resolve = async () => {
+      try {
+        if (!courseSessionId && participantId) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('course_session_id')
+            .eq('id', participantId)
+            .single();
+          if (!error && data?.course_session_id) {
+            setResolvedSessionId(data.course_session_id as string);
+          }
+        }
+      } catch {}
+    };
+    resolve();
+  }, [participantId, courseSessionId]);
+
+  // Load data on component mount or when session id resolves
   useEffect(() => {
     loadResults();
     setDataLoaded(true); // Auto-load data instead of waiting for tab click
-  }, []);
+  }, [resolvedSessionId]);
 
   useEffect(() => {
     if (dataLoaded) {
@@ -87,15 +108,17 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
 
       setLoading(true);
       
-      // Load actual data from Supabase
-      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults(courseSessionId);
+      // Load actual data from Supabase (prefer resolved session for participant mode)
+      const sessionId = courseSessionId || resolvedSessionId;
+      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults(sessionId);
       
       // Convert to MockResult format for compatibility - group by participant
           const convertedResults: MockResult[] = [];
           
       // Create single entry per participant with both pre and post test data
       comprehensiveResults.forEach((result, index) => {
-        if (participantId && result.participant_id !== participantId) return; // filter to own results
+        // If no session context but participant mode, only keep the participant
+        if (!sessionId && participantId && result.participant_id !== participantId) return;
         const participantResult: MockResult = {
           id: result.participant_id,
           participantName: result.participant_name || 'Unknown',
