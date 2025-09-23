@@ -263,15 +263,21 @@ export default function AppRouter(props: AppRouterProps) {
     }
 
     if (currentScreen === 'checklistView' && currentChecklistType) {
-		return (
-			<ChecklistViewScreen 
-                onBack={() => props.onNavigateToManageChecklist()}
+        return (
+            <ChecklistViewScreen 
+                onBack={() => {
+                    if (!isPrivileged && props.onNavigateToChecklistBrowse) {
+                        props.onNavigateToChecklistBrowse();
+                    } else {
+                        props.onNavigateToManageChecklist();
+                    }
+                }}
                 checklistType={currentChecklistType}
                 onRefresh={() => {}}
                 readOnly={!isPrivileged}
-			/>
-		);
-	}
+            />
+        );
+    }
 
 	if (currentScreen === 'checklistResults' && userData) {
 		return <ChecklistResultsScreen onBack={() => props.onNavigateToManageChecklist()} />;
