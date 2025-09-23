@@ -22,7 +22,7 @@ interface UserDashboardProps {
   onNavigateToPreTest: () => void;
   onNavigateToPostTest: () => void;
   onNavigateToTestInterface: () => void;
-  onNavigateToChecklistView: () => void;
+  onNavigateToChecklistView: (checklistType: string) => void;
   onNavigateToComprehensiveResults: () => void;
   allowedActions?: string[];
 }
@@ -381,7 +381,8 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                   } else if (item.action === 'testInterface') {
                     onNavigateToTestInterface();
                   } else if (item.action === 'checklistView') {
-                    onNavigateToChecklistView();
+                    // Default checklist type for quick access
+                    onNavigateToChecklistView('one man cpr');
                   } else if (item.action === 'comprehensiveResults') {
                     onNavigateToComprehensiveResults();
                   }
