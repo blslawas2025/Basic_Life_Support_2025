@@ -18,6 +18,7 @@ import ManageQuestionScreen from "./ManageQuestionScreen";
 import UploadQuestionsScreen from "./UploadQuestionsScreen";
 import ManageChecklistScreen from "./ManageChecklistScreen";
 import ChecklistViewScreen from "./ChecklistViewScreen";
+import ChecklistBrowseScreen from "./ChecklistBrowseScreen";
 import ChecklistResultsScreen from "./ChecklistResultsScreen";
 import UploadChecklistScreen from "./UploadChecklistScreen";
 import ViewEditDeleteChecklistScreen from "./ViewEditDeleteChecklistScreen";
@@ -43,7 +44,7 @@ import ViewCoursesScreen from "./ViewCoursesScreen";
 import EditCourseScreen from "./EditCourseScreen";
 import AttendanceMonitoringScreen from "./AttendanceMonitoringScreen";
 
-export type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
+export type Screen = 'login' | 'dashboard' | 'manageParticipant' | 'registerParticipant' | 'bulkImport' | 'approveParticipants' | 'viewParticipants' | 'manageStaff' | 'registerStaff' | 'viewStaff' | 'staffDashboard' | 'manageQuestions' | 'uploadQuestions' | 'manageChecklist' | 'checklistBrowse' | 'checklistView' | 'checklistResults' | 'uploadChecklist' | 'viewEditDeleteChecklist' | 'checklistSettings' | 'preTest' | 'postTest' | 'testSettings' | 'testInterface' | 'testResults' | 'questionPoolManagement' | 'accessControlManagement' | 'resultsAnalytics' | 'importResults' | 'bulkImportResults' | 'resultView' | 'resultAnalysis' | 'resultSettings' | 'certificateManagement' | 'comprehensiveResults' | 'createCourse' | 'viewCourses' | 'editCourse' | 'attendanceMonitoring';
 
 interface UserData {
 	id: string;
@@ -102,6 +103,7 @@ interface AppRouterProps {
 	onNavigateToChecklistSettings: () => void;
 	onNavigateToChecklistView: (checklistType: string) => void;
 	onNavigateToChecklistResults: () => void;
+  onNavigateToChecklistBrowse?: () => void;
 	onNavigateToCreateCourse: () => void;
 	onNavigateToAttendanceMonitoring: () => void;
 	onNavigateToViewCourses: () => void;

@@ -13,6 +13,7 @@ export const ROUTES = {
 	manageQuestions: 'manageQuestions',
 	uploadQuestions: 'uploadQuestions',
 	manageChecklist: 'manageChecklist',
+	checklistBrowse: 'checklistBrowse',
 	checklistView: 'checklistView',
 	checklistResults: 'checklistResults',
 	uploadChecklist: 'uploadChecklist',
