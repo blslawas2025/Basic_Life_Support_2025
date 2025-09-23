@@ -120,7 +120,7 @@ export class ComprehensiveResultsService {
   }
 
   // Get all comprehensive results directly from test_submissions and checklist_result tables
-  static async getAllComprehensiveResults(courseSessionId?: string): Promise<ComprehensiveResult[]> {
+  static async getAllComprehensiveResults(courseSessionId?: string, participantId?: string): Promise<ComprehensiveResult[]> {
     try {
       // Fetch participants first
       let participantsQuery = supabase
@@ -133,10 +133,24 @@ export class ComprehensiveResultsService {
           user_type,
           status,
           roles
-        `)
-        .eq('user_type', 'participant')
-        .eq('status', 'approved')
-        .eq('roles', 'user');
+        `);
+
+      // If a specific participant is requested (My Results), fetch them regardless of status/role
+      if (participantId) {
+        // Guard: only treat as specific user if it looks like a UUID; otherwise, fall back to general query
+        const uuidLike = /^[0-9a-fA-F-]{36}$/.test(participantId);
+        if (uuidLike) {
+          participantsQuery = participantsQuery.eq('id', participantId);
+        } else {
+          participantsQuery = participantsQuery
+            .eq('user_type', 'participant')
+            .eq('status', 'approved');
+        }
+      } else {
+        participantsQuery = participantsQuery
+          .eq('user_type', 'participant')
+          .eq('status', 'approved');
+      }
       if (courseSessionId) {
         participantsQuery = participantsQuery.eq('course_session_id', courseSessionId);
       }
@@ -156,7 +170,7 @@ export class ComprehensiveResultsService {
       // Fetch test submissions for these participants
       let testQuery = supabase
         .from('test_submissions')
-        .select('user_id,test_type,total_questions,correct_answers,submitted_at,job_category,course_session_id')
+        .select('user_id,test_type,total_questions,correct_answers,submitted_at,job_category')
         .in('user_id', participantIds);
       const { data: testSubmissions, error: testError } = await testQuery;
 
@@ -168,7 +182,7 @@ export class ComprehensiveResultsService {
       // Fetch checklist results for these participants
       let checklistQuery = supabase
         .from('checklist_result')
-        .select('participant_id,checklist_type,status,completion_percentage,submitted_at,course_session_id')
+        .select('participant_id,checklist_type,status,completion_percentage,submitted_at')
         .in('participant_id', participantIds);
       const { data: checklistResults, error: checklistError } = await checklistQuery;
 
@@ -241,9 +255,8 @@ export class ComprehensiveResultsService {
           const jobCategory = submission.job_category;
           const passThreshold = jobCategory === 'Clinical' ? 25 : 20;
           const passed = submission.correct_answers >= passThreshold;
-
-          // Debug logging for specific participants
-          if (profile.name === 'AMANDA BULAN SIGAR' || profile.name === 'METHDIOUSE AK SILAN') {
+          
+          if (profile.name === 'ALVIN DULAMIT') {
           }
 
           return {
@@ -345,18 +358,6 @@ export class ComprehensiveResultsService {
           const preTestSubmission = testSubmissions['pre_test'];
           const postTestSubmission = testSubmissions['post_test'];
           
-          // Debug: Log ALVIN DULAMIT's data specifically
-          if (profile.name === 'ALVIN DULAMIT') {
-            console.log('ALVIN DULAMIT service debug:', {
-              profileName: profile.name,
-              profileUserType: profile.user_type,
-              preTestJobCategory: preTestSubmission?.job_category,
-              postTestJobCategory: postTestSubmission?.job_category,
-              preTestSubmission: preTestSubmission,
-              postTestSubmission: postTestSubmission
-            });
-          }
-          
           if (preTestSubmission?.job_category) {
             return preTestSubmission.job_category;
           }
@@ -384,6 +385,18 @@ export class ComprehensiveResultsService {
           remedial: getRemedialStatus(),
           certified: getCertifiedStatus()
         };
+      }).filter(result => {
+        // Keep only participants who have at least one taken assessment
+        const tookPre = result.pre_test.status !== 'NOT_TAKEN';
+        const tookPost = result.post_test.status !== 'NOT_TAKEN';
+        const anyChecklistTaken = [
+          result.one_man_cpr.status,
+          result.two_man_cpr.status,
+          result.infant_cpr.status,
+          result.infant_choking.status,
+          result.adult_choking.status
+        ].some(status => status !== 'NOT_TAKEN');
+        return tookPre || tookPost || anyChecklistTaken;
       });
 
       // Sort by participant name

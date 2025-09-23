@@ -46,6 +46,7 @@ interface MockResult {
 export default function ComprehensiveResultsScreen({ onBack, participantId, courseSessionId }: ComprehensiveResultsScreenProps) {
   const { width } = useWindowDimensions();
   const isSmallScreen = width < 900;
+  const isMyResults = !!participantId;
   const [results, setResults] = useState<MockResult[]>([]);
   const [filteredResults, setFilteredResults] = useState<MockResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -110,7 +111,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
       
       // Load actual data from Supabase (prefer resolved session for participant mode)
       const sessionId = courseSessionId || resolvedSessionId;
-      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults(sessionId);
+      const comprehensiveResults = await ComprehensiveResultsService.getAllComprehensiveResults(sessionId, participantId);
       
       // Convert to MockResult format for compatibility - group by participant
           const convertedResults: MockResult[] = [];
@@ -236,8 +237,8 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
     return filteredResults
       .filter(result => result.category === 'Clinical')
       .sort((a, b) => {
-        const nameA = a.participant_name || '';
-        const nameB = b.participant_name || '';
+        const nameA = a.participantName || '';
+        const nameB = b.participantName || '';
         return nameA.localeCompare(nameB);
       });
   };
@@ -246,8 +247,8 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
     return filteredResults
       .filter(result => result.category === 'Non-Clinical')
       .sort((a, b) => {
-        const nameA = a.participant_name || '';
-        const nameB = b.participant_name || '';
+        const nameA = a.participantName || '';
+        const nameB = b.participantName || '';
         return nameA.localeCompare(nameB);
       });
   };
@@ -274,35 +275,41 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
     );
   };
 
-  const activeSet = participantId ? filteredResults : results;
+  // Data sets
+  const activeSet = participantId ? filteredResults : results; // used for table view (respects filters)
+  const kpiSet = participantId ? results : activeSet; // KPIs/top lists in My Results should use full cohort
+
   const statistics = {
-    total: dataLoaded ? activeSet.length : 0,
-    passed: dataLoaded ? activeSet.filter(r => r.status === 'Pass').length : 0,
-    failed: dataLoaded ? activeSet.filter(r => r.status === 'Fail').length : 0,
-    pending: dataLoaded ? activeSet.filter(r => r.status === 'Pending').length : 0,
-    certified: dataLoaded ? activeSet.filter(r => r.certified).length : 0,
-    averageScore: dataLoaded && activeSet.length > 0 ? Math.round(activeSet.reduce((sum, r) => sum + r.score, 0) / activeSet.length) : 0
+    total: dataLoaded ? kpiSet.length : 0,
+    passed: dataLoaded ? kpiSet.filter(r => r.status === 'Pass').length : 0,
+    failed: dataLoaded ? kpiSet.filter(r => r.status === 'Fail').length : 0,
+    pending: dataLoaded ? kpiSet.filter(r => r.status === 'Pending').length : 0,
+    certified: dataLoaded ? kpiSet.filter(r => r.certified).length : 0,
+    averageScore: dataLoaded && kpiSet.length > 0 ? Math.round(kpiSet.reduce((sum, r) => sum + r.score, 0) / kpiSet.length) : 0
   };
 
   // Top performers (important only)
-  const topPre = [...activeSet]
+  const topPre = [...kpiSet]
     .filter(r => typeof r.preTestPercentage === 'number')
     .sort((a, b) => (b.preTestPercentage || 0) - (a.preTestPercentage || 0))
     .slice(0, 3);
 
-  const topPost = [...activeSet]
+  const topPost = [...kpiSet]
     .filter(r => typeof r.postTestPercentage === 'number')
     .sort((a, b) => (b.postTestPercentage || 0) - (a.postTestPercentage || 0))
     .slice(0, 3);
 
   // Pass counts and percentages for Pre/Post
-  const preTaken = activeSet.filter(r => r.preTestStatus && r.preTestStatus !== 'Not Taken').length;
-  const prePassed = activeSet.filter(r => r.preTestStatus === 'Pass').length;
+  const preTaken = kpiSet.filter(r => r.preTestStatus && r.preTestStatus !== 'Not Taken').length;
+  const prePassed = kpiSet.filter(r => r.preTestStatus === 'Pass').length;
   const prePassPct = preTaken > 0 ? Math.round((prePassed / preTaken) * 100) : 0;
 
-  const postTaken = activeSet.filter(r => r.postTestStatus && r.postTestStatus !== 'Not Taken').length;
-  const postPassed = activeSet.filter(r => r.postTestStatus === 'Pass').length;
+  const postTaken = kpiSet.filter(r => r.postTestStatus && r.postTestStatus !== 'Not Taken').length;
+  const postPassed = kpiSet.filter(r => r.postTestStatus === 'Pass').length;
   const postPassPct = postTaken > 0 ? Math.round((postPassed / postTaken) * 100) : 0;
+
+  // Current participant summary (My Results mode)
+  const myResult = participantId ? results.find(r => r.id === participantId) || null : null;
 
   const handleResultPress = (result: MockResult) => {
     setSelectedResult(result);
@@ -370,7 +377,7 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'comprehensive-results.csv';
+        a.download = isMyResults ? 'my-results.csv' : 'comprehensive-results.csv';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -386,12 +393,16 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
   const renderResultRow = (result: MockResult, index: number) => (
     <TouchableOpacity
       key={`${result.id}-${index}`}
-      style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]}
+      style={[
+        styles.tableRow,
+        index % 2 === 0 ? styles.evenRow : styles.oddRow,
+        participantId && result.id === participantId ? styles.highlightRow : null
+      ]}
       onPress={() => handleResultPress(result)}
       activeOpacity={0.7}
     >
       <Text style={[styles.tableCellText, styles.rankColumn]}>{index + 1}</Text>
-      <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2} ellipsizeMode="tail">{result.participantName}</Text>
+      <Text style={[styles.tableCellText, styles.nameColumn]} numberOfLines={2} ellipsizeMode="tail">{participantId && result.id === participantId ? `${result.participantName} (You)` : result.participantName}</Text>
       <Text style={[styles.tableCellText, styles.icColumn]}>{result.icNumber}</Text>
       <Text style={[styles.tableCellText, styles.jobColumn]} numberOfLines={2} ellipsizeMode="tail">{result.jobPosition || 'N/A'}</Text>
       <Text style={[styles.tableCellText, styles.categoryColumn]}>{result.category}</Text>
@@ -525,13 +536,13 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} testID={isMyResults ? 'my-results-screen' : 'comprehensive-results-screen'} accessibilityLabel={isMyResults ? 'my-results-screen' : 'comprehensive-results-screen'}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <Text style={styles.backButtonText}>← Back to Dashboard</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>📊 Comprehensive Results</Text>
+        <Text style={styles.title}>{isMyResults ? '📊 My Results' : '📊 Comprehensive Results'}</Text>
         <Text style={styles.subtitle}>Test Results and Performance Analytics</Text>
       </View>
 
@@ -549,6 +560,13 @@ export default function ComprehensiveResultsScreen({ onBack, participantId, cour
             <Text style={styles.kpiValueLarge}>{postPassed} <Text style={styles.kpiSubValue}>({postPassPct}%)</Text></Text>
             <Text style={styles.kpiLabel}>of {postTaken} taken</Text>
           </View>
+          {isMyResults && myResult && (
+            <View style={[styles.kpiWideCard, { backgroundColor: 'rgba(14,165,233,0.12)', borderColor: 'rgba(14,165,233,0.35)' }]}>
+              <Text style={styles.kpiCaption}>Your Scores</Text>
+              <Text style={styles.kpiValue}>Pre: {typeof myResult.preTestPercentage === 'number' ? `${myResult.preTestPercentage}%` : 'N/A'}</Text>
+              <Text style={styles.kpiValue}>Post: {typeof myResult.postTestPercentage === 'number' ? `${myResult.postTestPercentage}%` : 'N/A'}</Text>
+            </View>
+          )}
         </View>
 
         {/* Quick actions */}
@@ -1343,6 +1361,11 @@ const styles = StyleSheet.create({
   },
   oddRow: {
     backgroundColor: '#fff',
+  },
+  highlightRow: {
+    borderWidth: 1,
+    borderColor: '#0ea5e9',
+    backgroundColor: '#eff6ff',
   },
   tableCellText: {
     fontSize: 11,

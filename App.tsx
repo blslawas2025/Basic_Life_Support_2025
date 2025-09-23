@@ -303,7 +303,13 @@ export default function App() {
 
   const handleNavigateToComprehensiveResults = () => {
     console.log('handleNavigateToComprehensiveResults called');
-    setCurrentScreen(ROUTES.myResults as Screen);
+    // Only route to My Results for normal users. Admin/Staff should see full Comprehensive Results
+    const role = userData?.roles;
+    if (role === 'user') {
+      setCurrentScreen(ROUTES.myResults as Screen);
+    } else {
+      setCurrentScreen(ROUTES.comprehensiveResults as Screen);
+    }
   };
 
   const handleNavigateToCreateCourse = () => {
