@@ -22,12 +22,12 @@ interface UserDashboardProps {
   onNavigateToPreTest: () => void;
   onNavigateToPostTest: () => void;
   onNavigateToTestInterface: () => void;
-  onNavigateToChecklistView: (checklistType: string) => void;
+  onNavigateToChecklistBrowse?: () => void;
   onNavigateToComprehensiveResults: () => void;
   allowedActions?: string[];
 }
 
-export default function UserDashboard({ userName, onLogout, onNavigateToPreTest, onNavigateToPostTest, onNavigateToTestInterface, onNavigateToChecklistView, onNavigateToComprehensiveResults, allowedActions = [] }: UserDashboardProps) {
+export default function UserDashboard({ userName, onLogout, onNavigateToPreTest, onNavigateToPostTest, onNavigateToTestInterface, onNavigateToChecklistBrowse, onNavigateToComprehensiveResults, allowedActions = [] }: UserDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
   const reduceMotion = useReducedMotion();
@@ -381,8 +381,9 @@ export default function UserDashboard({ userName, onLogout, onNavigateToPreTest,
                   } else if (item.action === 'testInterface') {
                     onNavigateToTestInterface();
                   } else if (item.action === 'checklistView') {
-                    // Default checklist type for quick access
-                    onNavigateToChecklistView('one man cpr');
+                    if (onNavigateToChecklistBrowse) {
+                      onNavigateToChecklistBrowse();
+                    }
                   } else if (item.action === 'comprehensiveResults') {
                     onNavigateToComprehensiveResults();
                   }

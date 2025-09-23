@@ -391,6 +391,7 @@ export default function App() {
       onNavigateToViewEditDeleteChecklist={handleNavigateToViewEditDeleteChecklist}
       onNavigateToChecklistSettings={handleNavigateToChecklistSettings}
       onNavigateToChecklistView={handleNavigateToChecklistView}
+      onNavigateToChecklistBrowse={handleNavigateToChecklistBrowse}
       onNavigateToChecklistResults={handleNavigateToChecklistResults}
       onNavigateToCreateCourse={handleNavigateToCreateCourse}
       onNavigateToAttendanceMonitoring={handleNavigateToAttendanceMonitoring}
