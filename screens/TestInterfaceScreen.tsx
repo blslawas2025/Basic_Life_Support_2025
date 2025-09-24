@@ -891,12 +891,67 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                 <Text style={styles.retryButtonText}>Retry</Text>
               </TouchableOpacity>
             )}
+            {!isNoPoolError && (
+              <TouchableOpacity 
+                style={[styles.retryButton, styles.requestAccessButton]} 
+                onPress={() => setShowAccessRequest(true)}
+              >
+                <Ionicons name="shield-checkmark" size={20} color="#667eea" />
+                <Text style={styles.requestAccessButtonText}>Request Access</Text>
+              </TouchableOpacity>
+            )}
             
             <TouchableOpacity style={styles.backButton} onPress={onBack}>
               <Text style={styles.backButtonText}>Go Back</Text>
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Access Request Modal from error state */}
+        <Modal
+          visible={showAccessRequest}
+          transparent={true}
+          animationType="fade"
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.accessRequestModal}>
+              <View style={styles.accessRequestHeader}>
+                <Ionicons name="shield-checkmark" size={24} color="#667eea" />
+                <Text style={styles.accessRequestTitle}>Request Test Access</Text>
+              </View>
+              <Text style={styles.accessRequestMessage}>
+                This test requires approval-based access control. Please provide a reason for requesting access to this test.
+              </Text>
+              <TextInput
+                style={styles.accessRequestInput}
+                placeholder="Enter reason for test access..."
+                placeholderTextColor="rgba(0, 0, 0, 0.5)"
+                value={requestReason}
+                onChangeText={setRequestReason}
+                multiline
+                numberOfLines={3}
+              />
+              <View style={styles.accessRequestButtons}>
+                <TouchableOpacity
+                  style={[styles.accessRequestButton, styles.cancelAccessButton]}
+                  onPress={() => {
+                    setShowAccessRequest(false);
+                    setRequestReason('');
+                  }}
+                >
+                  <Text style={styles.cancelAccessButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.accessRequestButton, styles.submitAccessButton]}
+                  onPress={handleRequestAccess}
+                >
+                  <Ionicons name="send" size={24} color="#ffffff" />
+                  <Text style={styles.submitAccessButtonText}>Request Access</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -1917,6 +1972,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#00ff88',
+  },
+  requestAccessButton: {
+    backgroundColor: 'rgba(102, 126, 234, 0.15)',
+    borderColor: 'rgba(102, 126, 234, 0.4)',
+  },
+  requestAccessButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#667eea',
+    marginLeft: 12,
   },
   errorBackButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
