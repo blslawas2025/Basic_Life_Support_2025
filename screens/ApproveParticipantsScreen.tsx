@@ -30,6 +30,7 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
   const [loading, setLoading] = useState<boolean>(true);
   const [processingIds, setProcessingIds] = useState<Set<string>>(new Set());
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
   const [confirmAction, setConfirmAction] = useState<{
     type: 'approve' | 'reject' | 'paid' | 'bulk_approve';
     participant: Profile | null;
@@ -88,65 +89,53 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
       return;
     }
     
-    console.log('About to show confirmation alert for participant:', participant.name);
+    console.log('About to show confirmation modal for participant:', participant.name);
     
+    // Set the participant for the modal and show it
+    setConfirmAction({
+      type: 'paid',
+      participant: participant
+    });
+    setShowPaymentModal(true);
+  };
+
+  const handleConfirmPayment = async () => {
+    const participant = confirmAction.participant;
+    if (!participant) return;
+
     try {
-      Alert.alert(
-        'Confirm Payment',
-        `Mark ${participant?.name}'s payment as completed?\n\nThis will enable the approve button.`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-            onPress: () => {
-              console.log('User cancelled payment confirmation');
-            }
-          },
-          {
-            text: 'Mark as Paid',
-            style: 'default',
-            onPress: async () => {
-              console.log('User confirmed payment, starting update process');
-            try {
-              console.log('Starting payment update for participant:', participantId);
-              setProcessingIds(prev => new Set(prev).add(participantId));
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              
-              console.log('Calling ProfileService.updateProfile...');
-              const result = await ProfileService.updateProfile(participantId, { 
-                payment_status: 'paid'
-              });
-              console.log('ProfileService.updateProfile result:', result);
-              
-              // Update local state
-              setPendingParticipants(prev => 
-                prev.map(p => 
-                  p.id === participantId 
-                    ? { ...p, payment_status: 'paid' }
-                    : p
-                )
-              );
-              
-              console.log('Payment status updated successfully');
-              Alert.alert('Success', `${participant?.name}'s payment has been marked as completed`);
-            } catch (error) {
-              console.error('Error updating payment status:', error);
-              console.error('Error details:', JSON.stringify(error, null, 2));
-              Alert.alert('Error', `Failed to update payment status: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            } finally {
-              setProcessingIds(prev => {
-                const newSet = new Set(prev);
-                newSet.delete(participantId);
-                return newSet;
-              });
-            }
-          }
-        }
-      ]
-    );
+      console.log('Starting payment update for participant:', participant.id);
+      setProcessingIds(prev => new Set(prev).add(participant.id));
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      
+      console.log('Calling ProfileService.updateProfile...');
+      const result = await ProfileService.updateProfile(participant.id, { 
+        payment_status: 'paid'
+      });
+      console.log('ProfileService.updateProfile result:', result);
+      
+      // Update local state
+      setPendingParticipants(prev => 
+        prev.map(p => 
+          p.id === participant.id 
+            ? { ...p, payment_status: 'paid' }
+            : p
+        )
+      );
+      
+      console.log('Payment status updated successfully');
+      setShowPaymentModal(false);
+      Alert.alert('Success', `${participant.name}'s payment has been marked as completed`);
     } catch (error) {
-      console.error('Error showing confirmation alert:', error);
-      Alert.alert('Error', 'Failed to show confirmation dialog');
+      console.error('Error updating payment status:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+      Alert.alert('Error', `Failed to update payment status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setProcessingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(participant.id);
+        return newSet;
+      });
     }
   };
 
@@ -647,6 +636,53 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
               >
                 <Text style={styles.confirmButtonText}>
                   {confirmAction.type === 'bulk_approve' ? 'Approve All' : 'Approve'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Payment Confirmation Modal */}
+      <Modal
+        visible={showPaymentModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowPaymentModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Ionicons 
+                name="card-outline" 
+                size={32} 
+                color="#FF9800" 
+              />
+              <Text style={styles.modalTitle}>Confirm Payment</Text>
+            </View>
+            
+            <Text style={styles.modalMessage}>
+              Mark {confirmAction.participant?.name}'s payment as completed?
+            </Text>
+            <Text style={styles.modalWarning}>
+              This will enable the approve button for this participant.
+            </Text>
+            
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.cancelButton]}
+                onPress={() => setShowPaymentModal(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[styles.modalButton, styles.confirmButton]}
+                onPress={handleConfirmPayment}
+                disabled={processingIds.has(confirmAction.participant?.id || '')}
+              >
+                <Text style={styles.confirmButtonText}>
+                  {processingIds.has(confirmAction.participant?.id || '') ? 'Processing...' : 'Mark as Paid'}
                 </Text>
               </TouchableOpacity>
             </View>
