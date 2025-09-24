@@ -75,7 +75,17 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
   };
 
   const handleMarkAsPaid = async (participantId: string) => {
+    console.log('=== handleMarkAsPaid called ===');
+    console.log('participantId:', participantId);
+    console.log('pendingParticipants:', pendingParticipants);
+    
     const participant = pendingParticipants.find(p => p.id === participantId);
+    console.log('Found participant:', participant);
+    
+    if (!participant) {
+      Alert.alert('Error', 'Participant not found');
+      return;
+    }
     
     Alert.alert(
       'Confirm Payment',
@@ -90,12 +100,15 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
           style: 'default',
           onPress: async () => {
             try {
+              console.log('Starting payment update for participant:', participantId);
               setProcessingIds(prev => new Set(prev).add(participantId));
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               
+              console.log('Calling ProfileService.updateProfile...');
               const result = await ProfileService.updateProfile(participantId, { 
                 payment_status: 'paid'
               });
+              console.log('ProfileService.updateProfile result:', result);
               
               // Update local state
               setPendingParticipants(prev => 
@@ -106,9 +119,11 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
                 )
               );
               
+              console.log('Payment status updated successfully');
               Alert.alert('Success', `${participant?.name}'s payment has been marked as completed`);
             } catch (error) {
               console.error('Error updating payment status:', error);
+              console.error('Error details:', JSON.stringify(error, null, 2));
               Alert.alert('Error', `Failed to update payment status: ${error instanceof Error ? error.message : 'Unknown error'}`);
             } finally {
               setProcessingIds(prev => {
