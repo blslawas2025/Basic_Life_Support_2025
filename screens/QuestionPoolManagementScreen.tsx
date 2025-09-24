@@ -75,19 +75,34 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
 
   const loadCurrentPoolAssignments = async () => {
     try {
+      console.log('=== Loading Current Pool Assignments ===');
+      
       // Load current pre-test pool assignment
+      console.log('Loading pre-test pool assignment...');
       const preTestPool = await QuestionPoolService.getAssignedPool('pre_test');
       if (preTestPool) {
+        console.log('Found pre-test pool:', preTestPool.name, preTestPool.id);
         setPreTestPoolId(preTestPool.id);
+      } else {
+        console.log('No pre-test pool assigned');
+        setPreTestPoolId(null);
       }
       
       // Load current post-test pool assignment
+      console.log('Loading post-test pool assignment...');
       const postTestPool = await QuestionPoolService.getAssignedPool('post_test');
       if (postTestPool) {
+        console.log('Found post-test pool:', postTestPool.name, postTestPool.id);
         setPostTestPoolId(postTestPool.id);
+      } else {
+        console.log('No post-test pool assigned');
+        setPostTestPoolId(null);
       }
+      
+      console.log('Pool assignments loaded successfully');
     } catch (error) {
       console.error('Error loading current pool assignments:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
     }
   };
 
@@ -457,14 +472,37 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
 
   const handleSavePoolSettings = async () => {
     try {
+      console.log('=== Saving Pool Settings ===');
+      console.log('Pre Test Pool ID:', preTestPoolId);
+      console.log('Post Test Pool ID:', postTestPoolId);
+      
+      let successCount = 0;
+      let errorCount = 0;
+      
       // Save pre-test pool assignment
       if (preTestPoolId) {
-        await QuestionPoolService.assignPoolToTest('pre_test', preTestPoolId);
+        console.log('Saving pre-test pool assignment...');
+        const preTestResult = await QuestionPoolService.assignPoolToTest('pre_test', preTestPoolId);
+        if (preTestResult) {
+          console.log('Pre-test pool assignment saved successfully');
+          successCount++;
+        } else {
+          console.error('Failed to save pre-test pool assignment');
+          errorCount++;
+        }
       }
       
       // Save post-test pool assignment
       if (postTestPoolId) {
-        await QuestionPoolService.assignPoolToTest('post_test', postTestPoolId);
+        console.log('Saving post-test pool assignment...');
+        const postTestResult = await QuestionPoolService.assignPoolToTest('post_test', postTestPoolId);
+        if (postTestResult) {
+          console.log('Post-test pool assignment saved successfully');
+          successCount++;
+        } else {
+          console.error('Failed to save post-test pool assignment');
+          errorCount++;
+        }
       }
       
       // Update local state
@@ -473,11 +511,34 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
         postTest: postTestPoolId,
       });
       
-      Alert.alert('Success', 'Pool settings saved successfully!');
-      setShowPoolSettings(false);
+      console.log(`Save completed: ${successCount} successful, ${errorCount} failed`);
+      
+      if (errorCount === 0) {
+        Alert.alert(
+          '✅ Success', 
+          `Pool settings saved successfully!\n\nPre-test: ${preTestPoolId ? 'Assigned' : 'Not assigned'}\nPost-test: ${postTestPoolId ? 'Assigned' : 'Not assigned'}`,
+          [{ text: 'OK', onPress: () => setShowPoolSettings(false) }]
+        );
+      } else if (successCount > 0) {
+        Alert.alert(
+          '⚠️ Partial Success', 
+          `Some pool settings were saved, but ${errorCount} failed. Please try again.`,
+          [{ text: 'OK' }]
+        );
+      } else {
+        Alert.alert(
+          '❌ Error', 
+          'Failed to save pool settings. Please check your database connection and try again.',
+          [{ text: 'OK' }]
+        );
+      }
     } catch (error) {
       console.error('Error saving pool settings:', error);
-      Alert.alert('Error', 'Failed to save pool settings. Please try again.');
+      Alert.alert(
+        '❌ Error', 
+        `Failed to save pool settings: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        [{ text: 'OK' }]
+      );
     }
   };
 
