@@ -381,7 +381,7 @@ export class AccessControlService {
           admin_notes: adminNotes || null,
           expires_at: new Date(Date.now() + settings.expirySettings.defaultExpiryHours * 60 * 60 * 1000).toISOString()
         })
-        .eq('id', requestId);
+        .filter('id', 'eq', requestId);
 
       if (error) {
         // Fallback local update
@@ -413,7 +413,7 @@ export class AccessControlService {
       const { error } = await supabase
         .from('access_requests')
         .update({ status: 'rejected', approved_by: rejectedBy, admin_notes: reason || null })
-        .eq('id', requestId);
+        .filter('id', 'eq', requestId);
 
       if (error) {
         const allRequests = await this.getAllAccessRequests();
@@ -456,7 +456,7 @@ export class AccessControlService {
         const { error: updErr } = await supabase
           .from('access_requests')
           .update({ expires_at: newExpiry, extensions: currentExtensions + 1 })
-          .eq('id', requestId);
+          .filter('id', 'eq', requestId);
         if (!updErr) return { success: true, message: 'Access extended successfully' };
       }
 
