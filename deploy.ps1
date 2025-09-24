@@ -17,7 +17,7 @@ Write-Host "➕ Adding all changes..." -ForegroundColor Yellow
 git add .
 
 # Step 3: Commit with message
-Write-Host "💾 Committing changes with message: '$Message'" -ForegroundColor Yellow
+Write-Host "💾 Committing changes with message: $Message" -ForegroundColor Yellow
 git commit -m $Message
 
 # Step 4: Push to GitHub
