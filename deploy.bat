@@ -24,7 +24,8 @@ git commit -m "%~1"
 
 REM Step 4: Push to GitHub
 echo 📤 Pushing to GitHub...
-git push origin master
+REM Push to 'main' (default in this repo)
+git push origin main
 
 REM Step 5: Confirm deployment
 echo ✅ Changes pushed to GitHub!

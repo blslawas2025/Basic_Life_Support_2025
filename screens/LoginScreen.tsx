@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Linking, Animated, Dimensions } from "react-native";
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Linking, Animated, Dimensions, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors, gradients } from "../styles/theme";
 import { StatusBar } from "expo-status-bar";
@@ -282,6 +282,18 @@ export default function LoginScreen({ onLogin, onNavigateToRegisterParticipant }
         if (!ic || pass !== ic) {
           setLoading(false);
           setError('Incorrect IC number');
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+          return;
+        }
+        // Block login if profile not approved yet
+        const status = (fullProfile && (fullProfile as any).status) ? String((fullProfile as any).status) : null;
+        if (status !== 'approved') {
+          setLoading(false);
+          const message = status === 'pending' 
+            ? 'Your registration is pending approval. Please wait for admin approval.'
+            : 'Your account is not approved yet. Please contact the administrator.';
+          setError(message);
+          try { Alert.alert('Awaiting Approval', message); } catch {}
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
           return;
         }
