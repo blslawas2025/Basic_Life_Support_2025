@@ -102,9 +102,24 @@ export class ProfileService {
         throw new Error('Email and name are required fields');
       }
       
-      // Handle job_position_id - if it's a string number, convert to null to avoid UUID error
+      // Handle job_position_id - check if it exists in the jobs table
       let jobPositionId = profileData.job_position_id;
-      if (jobPositionId && !this.isValidUUID(jobPositionId)) {
+      if (jobPositionId && this.isValidUUID(jobPositionId)) {
+        // Check if the job position exists in the database
+        console.log('Checking if job position exists in database:', jobPositionId);
+        const { data: jobData, error: jobError } = await supabase
+          .from('jobs')
+          .select('id')
+          .eq('id', jobPositionId)
+          .single();
+        
+        if (jobError || !jobData) {
+          console.log('Job position not found in database, setting job_position_id to null:', jobPositionId);
+          jobPositionId = null;
+        } else {
+          console.log('Job position found in database:', jobPositionId);
+        }
+      } else if (jobPositionId && !this.isValidUUID(jobPositionId)) {
         console.log('Invalid UUID for job_position_id, setting to null:', jobPositionId);
         jobPositionId = null;
       }
