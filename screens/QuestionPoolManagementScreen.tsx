@@ -566,9 +566,9 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                          pool.description.toLowerCase().includes(searchQuery.toLowerCase());
     let matchesFilter = true;
     if (filterType === 'pre_test') {
-      matchesFilter = pool.testType === 'pre_test' || (pool.testType === 'both' && /pre/i.test(pool.name));
+      matchesFilter = pool.testType === 'pre_test';
     } else if (filterType === 'post_test') {
-      matchesFilter = pool.testType === 'post_test' || (pool.testType === 'both' && /post/i.test(pool.name));
+      matchesFilter = pool.testType === 'post_test';
     }
     return matchesSearch && matchesFilter;
   });
