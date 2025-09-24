@@ -123,10 +123,13 @@ export class JobService {
             
             console.log(`Original: "${jobPosition}" -> Base: "${baseName}"`);
             
-            if (!jobMap.has(baseName)) {
-              jobMap.set(baseName, {
+            // Use lowercase for grouping to handle case-insensitive duplicates
+            const groupKey = baseName.toLowerCase();
+            
+            if (!jobMap.has(groupKey)) {
+              jobMap.set(groupKey, {
                 id: job.id,
-                name: baseName,
+                name: baseName, // Keep original case for display
                 code_prefix: job.code_prefix,
                 grades: job.grades,
                 category: job.category,
@@ -181,10 +184,13 @@ export class JobService {
           
           console.log(`Original: "${jobPosition}" -> Base: "${baseName}"`);
           
-          if (!jobMap.has(baseName)) {
-            jobMap.set(baseName, {
+          // Use lowercase for grouping to handle case-insensitive duplicates
+          const groupKey = baseName.toLowerCase();
+          
+          if (!jobMap.has(groupKey)) {
+            jobMap.set(groupKey, {
               id: job.id,
-              name: baseName,
+              name: baseName, // Keep original case for display
               code_prefix: job.code_prefix,
               grades: job.grades,
               category: job.category,
