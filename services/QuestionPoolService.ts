@@ -570,12 +570,35 @@ export class QuestionPoolService {
       // Import QuestionService to fetch the actual questions
       const { QuestionService } = await import('./QuestionService');
       
-      // Get all questions and filter by the pool's question IDs
+      // Get all questions
       const allQuestions = await QuestionService.getAllQuestions();
-      const poolQuestions = allQuestions.filter(question => 
-        assignedPool.questionIds.includes(question.id)
-      );
-      
+
+      // If the pool id follows the canonical `pool_pre_test_set_a` / `pool_post_test_set_b` format,
+      // construct the set filters explicitly to ensure we mirror Supabase naming exactly
+      const match = assignedPool.id.match(/^pool_(pre|post)_test_set_([abc])$/);
+      if (match) {
+        const type: 'pre_test' | 'post_test' = match[1] === 'pre' ? 'pre_test' : 'post_test';
+        const setLetter = match[2].toUpperCase(); // A/B/C
+        const acceptedSetNames = [
+          `Set ${setLetter}`,
+          `${type}_set_${setLetter.toLowerCase()}`,
+          `${type}_set_${setLetter}`,
+          `${type}_${setLetter.toLowerCase()}`,
+        ];
+        const filtered = allQuestions
+          .filter(q => q.test_type === type && acceptedSetNames.map(s => s.toLowerCase()).includes((q.question_set || '').toLowerCase()))
+          // Stable order by question number if present
+          .sort((a, b) => {
+            const an = (a as any).question_number ?? 0;
+            const bn = (b as any).question_number ?? 0;
+            return an - bn;
+          })
+          .slice(0, 30);
+        return filtered;
+      }
+
+      // Default: filter by the pool's question IDs
+      const poolQuestions = allQuestions.filter(question => assignedPool.questionIds.includes(question.id));
       return poolQuestions;
     } catch (error) {
       console.error('Error getting questions from assigned pool:', error);
