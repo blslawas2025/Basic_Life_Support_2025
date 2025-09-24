@@ -561,14 +561,14 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
             <Text style={styles.statsTitle}>Overall Statistics</Text>
           </View>
           
-          <View style={styles.statsGrid}>
-            {stats.map((stat, index) => (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.statsGridScrollContent}>
+            {stats.map((stat) => (
               <View key={stat.checklist_type} style={styles.statItem}>
                 <LinearGradient
                   colors={[getChecklistTypeColor(stat.checklist_type) + '20', getChecklistTypeColor(stat.checklist_type) + '10']}
                   style={styles.statCard}
                 >
-                  <Text style={styles.statLabel}>{getChecklistTypeLabel(stat.checklist_type)}</Text>
+                  <Text numberOfLines={1} style={styles.statLabel}>{getChecklistTypeLabel(stat.checklist_type)}</Text>
                   <View style={styles.statRow}>
                     <Text style={styles.statNumber}>{stat.total_assessments}</Text>
                     <Text style={styles.statSubtext}>assessments</Text>
@@ -590,7 +590,7 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
                 </LinearGradient>
               </View>
             ))}
-          </View>
+          </ScrollView>
         </LinearGradient>
       </Animated.View>
     );
@@ -1156,10 +1156,12 @@ export default function ChecklistResultsScreen({ onBack }: ChecklistResultsScree
 
           {groupedResults.length > 0 ? (
             <View style={styles.tableContainer}>
-              <View style={styles.table}>
-                {renderTableHeader()}
-                {groupedResults.map(renderTableRow)}
-              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.table}>
+                  {renderTableHeader()}
+                  {groupedResults.map(renderTableRow)}
+                </View>
+              </ScrollView>
             </View>
           ) : (
             <View style={styles.emptyState}>
@@ -1386,38 +1388,42 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 24,
+    gap: 12,
+  },
+  statsGridScrollContent: {
+    paddingRight: 20,
+    gap: 12,
   },
   statItem: {
-    flex: 1,
-    minWidth: '18%',
+    width: 180,
+    marginRight: 8,
   },
   statCard: {
-    padding: 24,
-    borderRadius: 24,
+    padding: 16,
+    borderRadius: 16,
     alignItems: 'center',
-    minHeight: 24,
+    minHeight: 120,
   },
   statLabel: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '600',
     color: '#1a1a1a',
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: 8,
   },
   statRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginBottom: 24,
+    marginBottom: 8,
   },
   statNumber: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: '#1a1a1a',
-    marginRight: 24,
+    marginRight: 6,
   },
   statSubtext: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#6b7280',
     textAlign: 'center',
   },
@@ -1425,17 +1431,17 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   statProgressBar: {
-    height: 24,
+    height: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    borderRadius: 24,
-    marginBottom: 24,
+    borderRadius: 12,
+    marginBottom: 6,
   },
   statProgressFill: {
     height: '100%',
-    borderRadius: 24,
+    borderRadius: 12,
   },
   statProgressText: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#6b7280',
     textAlign: 'center',
   },
@@ -1589,28 +1595,28 @@ const styles = StyleSheet.create({
   tableHeader: {
     flexDirection: 'row',
     backgroundColor: '#667eea',
-    paddingVertical: 24,
-    paddingHorizontal: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
   },
   tableHeaderCell: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 8,
   },
   tableRow: {
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
-    paddingVertical: 24,
-    paddingHorizontal: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
   },
   tableCell: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#1a1a1a',
-    paddingHorizontal: 24,
+    paddingHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1618,22 +1624,22 @@ const styles = StyleSheet.create({
   nameColumn: {
     flex: 2,
     textAlign: 'left',
-    minWidth: 100,
+    minWidth: 140,
   },
   icColumn: {
     flex: 1.5,
     textAlign: 'center',
-    minWidth: 80,
+    minWidth: 120,
   },
   jobColumn: {
     flex: 2,
     textAlign: 'left',
-    minWidth: 100,
+    minWidth: 160,
   },
   assessmentColumn: {
     flex: 1,
     textAlign: 'center',
-    minWidth: 70,
+    minWidth: 120,
   },
   // Assessment cell styles
   assessmentCell: {
@@ -1641,18 +1647,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusIndicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginBottom: 24,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginBottom: 4,
   },
   statusText: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '600',
-    marginBottom: 24,
+    marginBottom: 2,
   },
   percentageText: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#6b7280',
   },
   noDataText: {

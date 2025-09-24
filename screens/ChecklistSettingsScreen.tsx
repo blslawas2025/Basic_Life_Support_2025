@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
+import { TestSettingsService, GlobalTestSettings } from "../services/TestSettingsService";
 
 const { width, height } = Dimensions.get('window');
 
@@ -507,7 +508,27 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
 
   React.useEffect(() => {
     startAnimations();
+    loadFromSupabase();
   }, []);
+
+  const loadFromSupabase = async () => {
+    try {
+      const remote = await TestSettingsService.getGlobalSettings();
+      if (remote) {
+        if (remote.generalSettings) setSettings(prev => ({ ...prev, ...remote.generalSettings }));
+        if (remote.notificationSettings) setSettings(prev => ({ ...prev, notifications: remote.notificationSettings.notifications, autoBackup: remote.notificationSettings.autoBackup }));
+        if (remote.syncSettings) setSettings(prev => ({ ...prev, syncWithCloud: remote.syncSettings.syncWithCloud, enableSharing: remote.syncSettings.enableSharing }));
+        if (remote.timerSettings) setTimerSettings(remote.timerSettings as any);
+        if (remote.submissionSettings) setSubmissionSettings(remote.submissionSettings as any);
+        if (remote.sessionSettings) setSessionSettings(remote.sessionSettings as any);
+        if (remote.languageSettings) setLanguageSettings(remote.languageSettings as any);
+        if (remote.offlineSettings) setOfflineSettings(remote.offlineSettings as any);
+        if (remote.questionPoolSettings) setQuestionPoolSettings(remote.questionPoolSettings as any);
+      }
+    } catch (e) {
+      console.error('Failed to load test settings from Supabase', e);
+    }
+  };
 
   const startAnimations = () => {
     Animated.parallel([
@@ -579,9 +600,36 @@ export default function ChecklistSettingsScreen({ onBack }: ChecklistSettingsScr
     );
   };
 
-  const handleSaveSettings = () => {
+  const handleSaveSettings = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Alert.alert('Settings Saved', 'Your checklist settings have been saved successfully!');
+    const payload: GlobalTestSettings = {
+      settings_version: 1,
+      generalSettings: {
+        autoSave: settings.autoSave,
+        showProgress: settings.showProgress,
+        requireConfirmation: settings.requireConfirmation,
+      },
+      notificationSettings: {
+        notifications: settings.notifications,
+        autoBackup: settings.autoBackup,
+      },
+      syncSettings: {
+        syncWithCloud: settings.syncWithCloud,
+        enableSharing: settings.enableSharing,
+      },
+      timerSettings,
+      submissionSettings,
+      sessionSettings,
+      languageSettings,
+      offlineSettings,
+      questionPoolSettings,
+    } as any;
+    const ok = await TestSettingsService.upsertGlobalSettings(payload);
+    if (ok) {
+      Alert.alert('Settings Saved', 'Test settings have been saved to Supabase.');
+    } else {
+      Alert.alert('Save Failed', 'Could not save settings. Please try again.');
+    }
   };
 
   const updateTimerSetting = (key: keyof TimerSettings, value: any) => {

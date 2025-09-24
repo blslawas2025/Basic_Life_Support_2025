@@ -11,6 +11,7 @@ import { CertificateService } from "../services/CertificateService";
 import { AnalyticsService } from "../services/AnalyticsService";
 import { QuestionPoolService } from "../services/QuestionPoolService";
 import { AccessControlService } from "../services/AccessControlService";
+import { TestSettingsService } from "../services/TestSettingsService";
 import { Question } from "../types/Question";
 
 interface SessionManagementSettings {
@@ -69,7 +70,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [answers, setAnswers] = useState<{[key: string]: string}>({});
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(30 * 60);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -232,19 +233,14 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
       const online = await OfflineService.isOnline();
       setIsOffline(!online);
       
-      // Load session management settings (for now, using default settings)
-      const defaultSessionSettings: SessionManagementSettings = {
-        randomQuestionSelection: true,
-        questionShuffling: true,
-        progressSaving: true,
-        sessionRecovery: true,
-        autoSaveInterval: 2,
-        maxIncompleteSessions: 3,
-        sessionTimeout: 24,
-        allowResumeFromAnywhere: true,
-        clearProgressOnRetake: false,
-      };
-      setSessionSettings(defaultSessionSettings);
+      // Load global settings from Supabase
+      const global = await TestSettingsService.getGlobalSettings();
+      if (global?.sessionSettings) {
+        setSessionSettings(global.sessionSettings as SessionManagementSettings);
+      }
+      if (global?.timerSettings?.overallTestTimer) {
+        setTimeLeft(global.timerSettings.overallTestTimer * 60);
+      }
       
       const testTypeForAPI = testType === 'pre' ? 'pre_test' : 'post_test';
       
@@ -257,20 +253,9 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           const hasTaken = await SubmissionService.hasUserTakenTest(validUserId, testTypeForAPI, courseSessionId);
           setHasAlreadyTaken(hasTaken);
           
-      // Load submission settings (for now, using default settings)
-      const defaultSettings: SubmissionSettings = {
-        enableOneTimeSubmission: true,
-        singleAttempt: true,
-        submissionLock: true,
-        progressTracking: true,
-        resultsLock: true,
-        showResultsAfterSubmission: false,
-        adminControlledRetake: true,
-        allowRetake: false,
-        maxRetakeAttempts: 1,
-        retakeCooldownHours: 24,
-      };
-      setSubmissionSettings(defaultSettings);
+      if (global?.submissionSettings) {
+        setSubmissionSettings(global.submissionSettings as SubmissionSettings);
+      }
 
       // Load submission UI settings
       const defaultSubmissionUISettings = {
@@ -286,7 +271,19 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           
           // If user has already taken the test, check retake eligibility
           if (hasTaken) {
-            const retakeCheck = await SubmissionService.canUserRetake(validUserId, testTypeForAPI, defaultSettings, courseSessionId);
+            const effectiveSubmissionSettings = (await TestSettingsService.getGlobalSettings())?.submissionSettings || {
+              enableOneTimeSubmission: true,
+              singleAttempt: true,
+              submissionLock: true,
+              progressTracking: true,
+              resultsLock: true,
+              showResultsAfterSubmission: false,
+              adminControlledRetake: true,
+              allowRetake: false,
+              maxRetakeAttempts: 1,
+              retakeCooldownHours: 24,
+            } as SubmissionSettings;
+            const retakeCheck = await SubmissionService.canUserRetake(validUserId, testTypeForAPI, effectiveSubmissionSettings, courseSessionId);
             setCanRetake(retakeCheck.canRetake);
             setRetakeReason(retakeCheck.reason || null);
             
@@ -330,20 +327,30 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
             setHasAccess(true);
           }
           
-          // Get questions from assigned pool only (or all questions for super admin)
+          // Get questions honoring pool settings (or all for super admin)
           if (isSuperAdmin) {
             // Super admin can access all questions regardless of pool assignment
             const { QuestionService } = await import('../services/QuestionService');
             fetchedQuestions = await QuestionService.getQuestionsByTestType(testTypeForAPI);
           } else {
-            const poolQuestions = await QuestionPoolService.getQuestionsFromAssignedPool(testTypeForAPI);
+            const global = await TestSettingsService.getGlobalSettings();
+            const poolCfg = global?.questionPoolSettings;
+            const { QuestionService } = await import('../services/QuestionService');
             
-            if (poolQuestions.length > 0) {
-              fetchedQuestions = poolQuestions;
+            if (poolCfg?.enableQuestionPools) {
+              const poolQuestions = await QuestionPoolService.getQuestionsFromAssignedPool(testTypeForAPI);
+              if (poolQuestions.length > 0) {
+                fetchedQuestions = poolQuestions;
+              } else if (poolCfg?.poolAssignmentRules?.fallbackToAll) {
+                fetchedQuestions = await QuestionService.getQuestionsByTestType(testTypeForAPI);
+              } else {
+                // No pool assigned - enforce requirement
+                setError(`No question pool assigned for ${testType} test. Please assign a pool first.`);
+                return;
+              }
             } else {
-              // No pool assigned - show error message
-              setError(`No question pool assigned for ${testType} test. Please assign a pool first.`);
-              return;
+              // Pools disabled -> use all questions
+              fetchedQuestions = await QuestionService.getQuestionsByTestType(testTypeForAPI);
             }
           }
           
