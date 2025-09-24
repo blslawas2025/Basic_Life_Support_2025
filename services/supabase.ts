@@ -84,77 +84,63 @@ export class JobService {
   // Get all jobs from Supabase
   static async getAllJobs(): Promise<Job[]> {
     try {
-      // First, let's check what tables exist and what the actual structure is
-      const { data: tableInfo, error: tableError } = await supabase
-        .from('information_schema.tables')
-        .select('table_name')
-        .eq('table_schema', 'public')
-        .like('table_name', '%job%');
+      console.log('=== JobService.getAllJobs called ===');
       
-      // Try a simple count query first
-      const { count, error: countError } = await supabase
-        .from('jobs')
-        .select('*', { count: 'exact', head: true });
-      
-      // Query the jobs table with correct column names
-      const { data: allData, error: allError } = await supabase
-        .from('jobs')
-        .select('*')
-        .order('name');
-
-      // Try without ordering to see if that's the issue
-      const { data: simpleData, error: simpleError } = await supabase
-        .from('jobs')
-        .select('*');
-
-      // Try with admin client to bypass RLS if available
-      let adminData = null;
+      // Try with admin client first to bypass RLS if available
       if (supabaseAdmin) {
-        const { data: adminDataResult, error: adminError } = await supabaseAdmin
+        console.log('Trying with admin client to bypass RLS...');
+        const { data: adminData, error: adminError } = await supabaseAdmin
           .from('jobs')
-          .select('*');
+          .select('*')
+          .order('name');
         
-        adminData = adminDataResult;
+        if (adminData && adminData.length > 0) {
+          console.log('Successfully fetched jobs with admin client:', adminData.length, 'jobs');
+          const transformedData = adminData.map((job: any): Job => ({
+            id: job.id,
+            name: job.job_position || job.name, // Handle both possible column names
+            code_prefix: job.code_prefix,
+            grades: job.grades,
+            category: job.category,
+            notes: job.notes,
+            is_active: job.is_active,
+            created_at: job.created_at,
+            updated_at: job.updated_at
+          }));
+          return transformedData;
         }
-
-      // Now try with the is_active filter
-      const { data: activeData, error: activeError } = await supabase
+      }
+      
+      // Try with regular client
+      console.log('Trying with regular client...');
+      const { data: regularData, error: regularError } = await supabase
         .from('jobs')
         .select('*')
-        .eq('is_active', true)
         .order('name');
 
-      // If we have data from any query, use it (prioritize admin data if available)
-      const finalData = adminData || allData || simpleData || activeData;
-      const finalError = allError || simpleError || activeError;
-
-      if (finalError) {
-        console.error('Error fetching jobs from Supabase:', finalError);
-        // Fallback to sample data if Supabase fails
-        const sampleJobs = this.getSampleJobs();
-        return sampleJobs;
+      if (regularError) {
+        console.error('Error fetching jobs with regular client:', regularError);
+      } else if (regularData && regularData.length > 0) {
+        console.log('Successfully fetched jobs with regular client:', regularData.length, 'jobs');
+        const transformedData = regularData.map((job: any): Job => ({
+          id: job.id,
+          name: job.job_position || job.name, // Handle both possible column names
+          code_prefix: job.code_prefix,
+          grades: job.grades,
+          category: job.category,
+          notes: job.notes,
+          is_active: job.is_active,
+          created_at: job.created_at,
+          updated_at: job.updated_at
+        }));
+        return transformedData;
       }
 
-      // If no data returned (likely due to RLS), use sample data
-      if (!finalData || finalData.length === 0) {
-        const sampleJobs = this.getSampleJobs();
-        return sampleJobs;
-      }
-
-      // Transform the data to match the expected Job interface
-      const transformedData = (finalData || []).map((job: any): Job => ({
-        id: job.id,
-        name: job.name, // Use name directly from database
-        code_prefix: job.code_prefix,
-        grades: job.grades,
-        category: job.category,
-        notes: job.notes,
-        is_active: job.is_active,
-        created_at: job.created_at,
-        updated_at: job.updated_at
-      }));
-
-      return transformedData;
+      // If we get here, neither method worked
+      console.log('No data returned from either client, falling back to sample data');
+      const sampleJobs = this.getSampleJobs();
+      return sampleJobs;
+      
     } catch (error) {
       console.error('Error in getAllJobs:', error);
       // Fallback to sample data if there's any error
