@@ -907,7 +907,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           </View>
         </View>
 
-        {/* Access Request Modal from error state */}
+        {/* Access Request Modal from error state - modern */}
         <Modal
           visible={showAccessRequest}
           transparent={true}
@@ -915,38 +915,40 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
         >
           <View style={styles.modalOverlay}>
             <View style={styles.accessRequestModal}>
-              <View style={styles.accessRequestHeader}>
-                <Ionicons name="shield-checkmark" size={24} color="#667eea" />
-                <Text style={styles.accessRequestTitle}>Request Test Access</Text>
-              </View>
-              <Text style={styles.accessRequestMessage}>
-                This test requires approval-based access control. Please provide a reason for requesting access to this test.
-              </Text>
-              <TextInput
-                style={styles.accessRequestInput}
-                placeholder="Enter reason for test access..."
-                placeholderTextColor="rgba(0, 0, 0, 0.5)"
-                value={requestReason}
-                onChangeText={setRequestReason}
-                multiline
-                numberOfLines={3}
-              />
-              <View style={styles.accessRequestButtons}>
+              <LinearGradient
+                colors={["rgba(37,99,235,0.25)", "rgba(14,165,233,0.25)"]}
+                style={styles.accessHero}
+              >
+                <View style={styles.accessHeroBadge}>
+                  <Ionicons name="shield-checkmark" size={28} color="#0ea5e9" />
+                </View>
+                <Text style={styles.accessHeroTitle}>Access Required</Text>
+                <Text style={styles.accessHeroSubtitle}>Tap below to send a request</Text>
+              </LinearGradient>
+
+              <View style={styles.accessBody}>
+                <Text style={styles.accessBodyText}>
+                  Your administrator reviews requests quickly. You’ll get notified once approved.
+                </Text>
+
                 <TouchableOpacity
-                  style={[styles.accessRequestButton, styles.cancelAccessButton]}
+                  style={styles.primaryCTA}
+                  onPress={handleRequestAccess}
+                  activeOpacity={0.9}
+                >
+                  <Ionicons name="paper-plane" size={20} color="#0f172a" />
+                  <Text style={styles.primaryCTAText}>Request Access</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryCTA}
                   onPress={() => {
                     setShowAccessRequest(false);
                     setRequestReason('');
                   }}
+                  activeOpacity={0.9}
                 >
-                  <Text style={styles.cancelAccessButtonText}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.accessRequestButton, styles.submitAccessButton]}
-                  onPress={handleRequestAccess}
-                >
-                  <Ionicons name="send" size={24} color="#ffffff" />
-                  <Text style={styles.submitAccessButtonText}>Request Access</Text>
+                  <Text style={styles.secondaryCTAText}>Not now</Text>
                 </TouchableOpacity>
               </View>
             </View>
