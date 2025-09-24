@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 import { AccessControlService, AccessRequest, AccessControlSettings } from "../services/AccessControlService";
+import { supabase } from "../config/supabase";
 
 const { width, height } = Dimensions.get('window');
 
@@ -52,6 +53,7 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
   const [extendHours, setExtendHours] = useState('24');
   const [isEditingSettings, setIsEditingSettings] = useState(false);
   const [editedSettings, setEditedSettings] = useState<AccessControlSettings | null>(null);
+  const [profileMap, setProfileMap] = useState<Record<string, { name?: string; email?: string; ic?: string }>>({});
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
@@ -85,6 +87,20 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
       ]);
       setAccessRequests(requests);
       setSettings(settingsData);
+
+      // Load participant profiles for requesters to show human-friendly details
+      const ids = Array.from(new Set(requests.map(r => r.userId))).filter(Boolean);
+      if (ids.length > 0) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('id,name,email,ic_number')
+          .in('id', ids as any);
+        const map: Record<string, { name?: string; email?: string; ic?: string }> = {};
+        (data || []).forEach((p: any) => {
+          map[p.id] = { name: p.name, email: p.email, ic: p.ic_number };
+        });
+        setProfileMap(map);
+      }
     } catch (error) {
       console.error('Error loading access control data:', error);
       Alert.alert('Error', 'Failed to load access control data');
@@ -250,56 +266,47 @@ export default function AccessControlManagementScreen({ onBack, userRole = 'user
       ]}
     >
       <LinearGradient
-        colors={['rgba(102, 126, 234, 0.1)', 'rgba(118, 75, 162, 0.1)']}
+        colors={["rgba(37,99,235,0.12)", "rgba(14,165,233,0.12)"]}
         style={styles.requestCardGradient}
       >
-        <View style={styles.requestHeader}>
-          <View style={styles.requestInfo}>
-            <Text style={styles.requestId}>#{request.id.slice(-8)}</Text>
-            <View style={styles.statusContainer}>
-              <Ionicons 
-                name={getStatusIcon(request.status)} 
-                size={24} 
-                color={getStatusColor(request.status)} 
-              />
-              <Text style={[styles.statusText, { color: getStatusColor(request.status) }]}>
-                {request.status.toUpperCase()}
-              </Text>
+        <View style={styles.cardTopRow}>
+          <View style={styles.personBlock}>
+            <View style={styles.personBadge}>
+              <Ionicons name="person" size={18} color="#38bdf8" />
+            </View>
+            <View style={styles.personText}>
+              <Text style={styles.personName}>{profileMap[request.userId]?.name || 'Unknown user'}</Text>
+              <Text style={styles.personMeta} numberOfLines={1}>{profileMap[request.userId]?.email || request.userId}</Text>
+              {profileMap[request.userId]?.ic && (
+                <Text style={styles.personMeta}>IC: {profileMap[request.userId]?.ic}</Text>
+              )}
             </View>
           </View>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => {
-              setSelectedRequest(request);
-              setShowRequestDetails(true);
-            }}
-          >
-            <Ionicons name="eye" size={24} color="#00d4ff" />
-          </TouchableOpacity>
+          <View style={styles.statusPill}>
+            <Ionicons name={getStatusIcon(request.status)} size={16} color={getStatusColor(request.status)} />
+            <Text style={[styles.statusPillText, { color: getStatusColor(request.status) }]}>{request.status.toUpperCase()}</Text>
+          </View>
         </View>
-        
-        <View style={styles.requestDetails}>
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>User:</Text> {request.userId}
-          </Text>
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Test:</Text> {request.testType.replace('_', ' ').toUpperCase()}
-          </Text>
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Pool:</Text> {request.poolId}
-          </Text>
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Usage:</Text> {request.usageCount}/{request.maxUsage}
-          </Text>
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Requested:</Text> {new Date(request.requestedAt).toLocaleDateString()}
-          </Text>
-          {request.expiresAt && (
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Expires:</Text> {new Date(request.expiresAt).toLocaleDateString()}
-            </Text>
-          )}
+
+        <View style={styles.metaRow}>
+          <Text style={styles.metaItem}>Test: <Text style={styles.metaValue}>{request.testType.replace('_',' ').toUpperCase()}</Text></Text>
+          <Text style={styles.metaItem}>Pool: <Text style={styles.metaValue}>{request.poolId}</Text></Text>
+          <Text style={styles.metaItem}>Usage: <Text style={styles.metaValue}>{request.usageCount}/{request.maxUsage}</Text></Text>
+          <Text style={styles.metaItem}>Requested: <Text style={styles.metaValue}>{new Date(request.requestedAt).toLocaleDateString()}</Text></Text>
         </View>
+
+        {request.status === 'pending' && (
+          <View style={styles.inlineActions}>
+            <TouchableOpacity style={[styles.inlineBtn, styles.inlineApprove]} onPress={() => handleApproveRequest(request)}>
+              <Ionicons name="checkmark" size={18} color="#0f172a" />
+              <Text style={styles.inlineApproveText}>Approve</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.inlineBtn, styles.inlineReject]} onPress={() => handleRejectRequest(request)}>
+              <Ionicons name="close" size={18} color="#ffffff" />
+              <Text style={styles.inlineRejectText}>Reject</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </LinearGradient>
     </Animated.View>
   );
@@ -893,6 +900,93 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
+  },
+  cardTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  personBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 24,
+    flex: 1,
+  },
+  personBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(56,189,248,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(56,189,248,0.35)'
+  },
+  personText: { flex: 1 },
+  personName: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  personMeta: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  statusPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.06)'
+  },
+  statusPillText: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  metaRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 24,
+  },
+  metaItem: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  metaValue: {
+    color: '#ffffff',
+    fontWeight: '600'
+  },
+  inlineActions: {
+    flexDirection: 'row',
+    gap: 24,
+    marginTop: 24,
+  },
+  inlineBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 999,
+  },
+  inlineApprove: {
+    backgroundColor: '#34d399',
+  },
+  inlineReject: {
+    backgroundColor: 'rgba(239,68,68,0.9)'
+  },
+  inlineApproveText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0f172a',
+  },
+  inlineRejectText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
   },
   requestInfo: {
     flex: 1,
