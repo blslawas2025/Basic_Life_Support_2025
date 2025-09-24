@@ -56,6 +56,11 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
   const [showPostTestPoolSelector, setShowPostTestPoolSelector] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [poolToDelete, setPoolToDelete] = useState<QuestionPool | null>(null);
+  // Save result modal
+  const [showSaveResult, setShowSaveResult] = useState(false);
+  const [saveResultTitle, setSaveResultTitle] = useState('');
+  const [saveResultMessage, setSaveResultMessage] = useState('');
+  const [saveResultType, setSaveResultType] = useState<'success' | 'warning' | 'error'>('success');
   const [assignedPools, setAssignedPools] = useState<{
     preTest: string | null;
     postTest: string | null;
@@ -514,31 +519,32 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       console.log(`Save completed: ${successCount} successful, ${errorCount} failed`);
       
       if (errorCount === 0) {
-        Alert.alert(
-          '✅ Success', 
-          `Pool settings saved successfully!\n\nPre-test: ${preTestPoolId ? 'Assigned' : 'Not assigned'}\nPost-test: ${postTestPoolId ? 'Assigned' : 'Not assigned'}`,
-          [{ text: 'OK', onPress: () => setShowPoolSettings(false) }]
-        );
+        setSaveResultType('success');
+        setSaveResultTitle('Success');
+        setSaveResultMessage(`Pool settings saved successfully!\n\nPre-test: ${preTestPoolId ? 'Assigned' : 'Not assigned'}\nPost-test: ${postTestPoolId ? 'Assigned' : 'Not assigned'}`);
+        setShowSaveResult(true);
+        setShowPoolSettings(false);
+        try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); } catch {}
       } else if (successCount > 0) {
-        Alert.alert(
-          '⚠️ Partial Success', 
-          `Some pool settings were saved, but ${errorCount} failed. Please try again.`,
-          [{ text: 'OK' }]
-        );
+        setSaveResultType('warning');
+        setSaveResultTitle('Partial Success');
+        setSaveResultMessage(`Some pool settings were saved, but ${errorCount} failed. Please try again.`);
+        setShowSaveResult(true);
+        try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); } catch {}
       } else {
-        Alert.alert(
-          '❌ Error', 
-          'Failed to save pool settings. Please check your database connection and try again.',
-          [{ text: 'OK' }]
-        );
+        setSaveResultType('error');
+        setSaveResultTitle('Error');
+        setSaveResultMessage('Failed to save pool settings. Please check your database connection and try again.');
+        setShowSaveResult(true);
+        try { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); } catch {}
       }
     } catch (error) {
       console.error('Error saving pool settings:', error);
-      Alert.alert(
-        '❌ Error', 
-        `Failed to save pool settings: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        [{ text: 'OK' }]
-      );
+      setSaveResultType('error');
+      setSaveResultTitle('Error');
+      setSaveResultMessage(`Failed to save pool settings: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setShowSaveResult(true);
+      try { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); } catch {}
     }
   };
 
@@ -891,6 +897,36 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
                 {editingPool ? 'Update Pool' : 'Create Pool'}
               </Text>
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Save Result Modal (web-safe) */}
+      <Modal
+        visible={showSaveResult}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowSaveResult(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.resultModal, 
+            saveResultType === 'success' ? styles.resultSuccess : 
+            saveResultType === 'warning' ? styles.resultWarning : styles.resultError]}
+          >
+            <View style={styles.resultHeader}>
+              <Ionicons 
+                name={saveResultType === 'success' ? 'checkmark-circle' : saveResultType === 'warning' ? 'alert-circle' : 'close-circle'}
+                size={24}
+                color={saveResultType === 'success' ? '#10b981' : saveResultType === 'warning' ? '#f59e0b' : '#ef4444'}
+              />
+              <Text style={styles.resultTitle}>{saveResultTitle}</Text>
+            </View>
+            <Text style={styles.resultMessage}>{saveResultMessage}</Text>
+            <View style={styles.resultActions}>
+              <TouchableOpacity style={styles.resultButton} onPress={() => setShowSaveResult(false)}>
+                <Text style={styles.resultButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -1953,5 +1989,56 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  // Save result modal styles
+  resultModal: {
+    backgroundColor: '#111827',
+    borderRadius: 16,
+    padding: 24,
+    width: '90%',
+    maxWidth: 420,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)'
+  },
+  resultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 12,
+  },
+  resultTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#fff'
+  },
+  resultMessage: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.85)',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  resultActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  resultButton: {
+    backgroundColor: '#667eea',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  resultButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  resultSuccess: {
+    borderColor: 'rgba(16,185,129,0.35)'
+  },
+  resultWarning: {
+    borderColor: 'rgba(245,158,11,0.35)'
+  },
+  resultError: {
+    borderColor: 'rgba(239,68,68,0.35)'
   },
 });
