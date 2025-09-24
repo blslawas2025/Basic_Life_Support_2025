@@ -102,6 +102,7 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [countdown, setCountdown] = useState(3);
 
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -453,6 +454,21 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
       // Show success modal with approval waiting message
       setModalMessage(`🎉 Registration Successful!\n\nParticipant "${formData.name}" has been registered successfully!\n\n⏳ Your account is now pending approval from an administrator. You will be notified once your account is approved and you can access the training portal.`);
       setShowSuccessModal(true);
+      
+      // Start countdown and auto-close
+      setCountdown(3);
+      const countdownInterval = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownInterval);
+            setShowSuccessModal(false);
+            resetForm();
+            onBack(); // Navigate back to login screen
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
     } catch (error: any) {
       console.error('=== Registration error occurred ===');
       console.error('Error details:', error);
@@ -1373,9 +1389,12 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
                 onPress={() => {
                   setShowSuccessModal(false);
                   resetForm(); // Reset form after successful registration
+                  onBack(); // Navigate back to login screen
                 }}
               >
-                <Text style={[styles.modalButtonText, { color: '#10b981' }]}>OK</Text>
+                <Text style={[styles.modalButtonText, { color: '#10b981' }]}>
+                  OK ({countdown}s)
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
