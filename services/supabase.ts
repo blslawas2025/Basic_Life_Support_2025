@@ -100,20 +100,23 @@ export class JobService {
           const jobMap = new Map();
           adminData.forEach((job: any) => {
             const jobPosition = job.job_position || job.name;
-            // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
+            // Extract base job name by removing grade suffix
             // Try multiple patterns to catch different formats
             let baseName = jobPosition;
             
-            // Pattern 1: Remove " U 5", " U 6", etc.
-            baseName = baseName.replace(/\s+U\s+\d+$/, '');
+            // Pattern 1: Remove " UG 10", " UD 9", etc. (two letters, space, digits)
+            baseName = baseName.replace(/\s+[A-Z]{2}\s+\d+$/, '');
             
-            // Pattern 2: Remove " U5", " U6", etc.
-            baseName = baseName.replace(/\s+U\d+$/, '');
+            // Pattern 2: Remove " U 5", " U 6", etc. (single letter, space, digits)
+            baseName = baseName.replace(/\s+[A-Z]\s+\d+$/, '');
             
-            // Pattern 3: Remove any single letter followed by digits at the end
+            // Pattern 3: Remove " U5", " U6", etc. (single letter, no space, digits)
             baseName = baseName.replace(/\s+[A-Z]\d+$/, '');
             
-            // Pattern 4: Remove any grade-like pattern at the end
+            // Pattern 4: Remove " UF9", " UF10", etc. (two letters, no space, digits)
+            baseName = baseName.replace(/\s+[A-Z]{2}\d+$/, '');
+            
+            // Pattern 5: Remove any 1-3 letter + digits combination (e.g., "ABC10")
             baseName = baseName.replace(/\s+[A-Z]{1,3}\d+$/, '');
             
             baseName = baseName.trim();
@@ -155,20 +158,23 @@ export class JobService {
         const jobMap = new Map();
         regularData.forEach((job: any) => {
           const jobPosition = job.job_position || job.name;
-          // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
+          // Extract base job name by removing grade suffix
           // Try multiple patterns to catch different formats
           let baseName = jobPosition;
           
-          // Pattern 1: Remove " U 5", " U 6", etc.
-          baseName = baseName.replace(/\s+U\s+\d+$/, '');
+          // Pattern 1: Remove " UG 10", " UD 9", etc. (two letters, space, digits)
+          baseName = baseName.replace(/\s+[A-Z]{2}\s+\d+$/, '');
           
-          // Pattern 2: Remove " U5", " U6", etc.
-          baseName = baseName.replace(/\s+U\d+$/, '');
+          // Pattern 2: Remove " U 5", " U 6", etc. (single letter, space, digits)
+          baseName = baseName.replace(/\s+[A-Z]\s+\d+$/, '');
           
-          // Pattern 3: Remove any single letter followed by digits at the end
+          // Pattern 3: Remove " U5", " U6", etc. (single letter, no space, digits)
           baseName = baseName.replace(/\s+[A-Z]\d+$/, '');
           
-          // Pattern 4: Remove any grade-like pattern at the end
+          // Pattern 4: Remove " UF9", " UF10", etc. (two letters, no space, digits)
+          baseName = baseName.replace(/\s+[A-Z]{2}\d+$/, '');
+          
+          // Pattern 5: Remove any 1-3 letter + digits combination (e.g., "ABC10")
           baseName = baseName.replace(/\s+[A-Z]{1,3}\d+$/, '');
           
           baseName = baseName.trim();
