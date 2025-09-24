@@ -96,17 +96,29 @@ export class JobService {
         
         if (adminData && adminData.length > 0) {
           console.log('Successfully fetched jobs with admin client:', adminData.length, 'jobs');
-          const transformedData = adminData.map((job: any): Job => ({
-            id: job.id,
-            name: job.job_position || job.name, // Handle both possible column names
-            code_prefix: job.code_prefix,
-            grades: job.grades,
-            category: job.category,
-            notes: job.notes,
-            is_active: job.is_active,
-            created_at: job.created_at,
-            updated_at: job.updated_at
-          }));
+          // Group jobs by base name (without grade) to avoid duplicates
+          const jobMap = new Map();
+          adminData.forEach((job: any) => {
+            const jobPosition = job.job_position || job.name;
+            // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
+            const baseName = jobPosition.replace(/\s+[A-Z]\d+$/, '').trim();
+            
+            if (!jobMap.has(baseName)) {
+              jobMap.set(baseName, {
+                id: job.id,
+                name: baseName,
+                code_prefix: job.code_prefix,
+                grades: job.grades,
+                category: job.category,
+                notes: job.notes,
+                is_active: job.is_active,
+                created_at: job.created_at,
+                updated_at: job.updated_at
+              });
+            }
+          });
+          
+          const transformedData = Array.from(jobMap.values());
           return transformedData;
         }
       }
@@ -122,17 +134,29 @@ export class JobService {
         console.error('Error fetching jobs with regular client:', regularError);
       } else if (regularData && regularData.length > 0) {
         console.log('Successfully fetched jobs with regular client:', regularData.length, 'jobs');
-        const transformedData = regularData.map((job: any): Job => ({
-          id: job.id,
-          name: job.job_position || job.name, // Handle both possible column names
-          code_prefix: job.code_prefix,
-          grades: job.grades,
-          category: job.category,
-          notes: job.notes,
-          is_active: job.is_active,
-          created_at: job.created_at,
-          updated_at: job.updated_at
-        }));
+        // Group jobs by base name (without grade) to avoid duplicates
+        const jobMap = new Map();
+        regularData.forEach((job: any) => {
+          const jobPosition = job.job_position || job.name;
+          // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
+          const baseName = jobPosition.replace(/\s+[A-Z]\d+$/, '').trim();
+          
+          if (!jobMap.has(baseName)) {
+            jobMap.set(baseName, {
+              id: job.id,
+              name: baseName,
+              code_prefix: job.code_prefix,
+              grades: job.grades,
+              category: job.category,
+              notes: job.notes,
+              is_active: job.is_active,
+              created_at: job.created_at,
+              updated_at: job.updated_at
+            });
+          }
+        });
+        
+        const transformedData = Array.from(jobMap.values());
         return transformedData;
       }
 
