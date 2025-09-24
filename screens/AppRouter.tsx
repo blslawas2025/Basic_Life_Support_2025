@@ -131,8 +131,16 @@ export default function AppRouter(props: AppRouterProps) {
 		);
 	}
 
-	if (currentScreen === 'registerParticipant' && userData) {
-		return <RegisterParticipantScreen onBack={props.onBackToManageParticipant} />;
+	if (currentScreen === 'registerParticipant') {
+		return <RegisterParticipantScreen onBack={() => {
+			// If user is logged in, go back to manage participant, otherwise go to login
+			if (userData) {
+				props.onBackToManageParticipant();
+			} else {
+				// For now, just go back to dashboard which will redirect to login
+				props.onBackToDashboard();
+			}
+		}} />;
 	}
 
 	if (currentScreen === 'bulkImport' && userData) {
