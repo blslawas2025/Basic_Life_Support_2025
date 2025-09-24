@@ -117,6 +117,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
   const [accessRequestId, setAccessRequestId] = useState<string | null>(null);
   const [showAccessRequest, setShowAccessRequest] = useState(false);
   const [requestReason, setRequestReason] = useState('');
+  const [hasShownTenMinuteWarning, setHasShownTenMinuteWarning] = useState(false);
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(40)).current;
@@ -169,6 +170,21 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
       handleSubmitTest();
     }
   }, [timeLeft, isTestCompleted, questions.length]);
+
+  // One-time 10-minute warning alert
+  useEffect(() => {
+    if (!hasShownTenMinuteWarning && timeLeft > 0 && timeLeft <= 600) {
+      setHasShownTenMinuteWarning(true);
+      try {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      } catch {}
+      Alert.alert(
+        '10 Minutes Remaining',
+        'You have less than 10 minutes left. Please review and submit your answers in time.',
+        [{ text: 'OK' }]
+      );
+    }
+  }, [timeLeft, hasShownTenMinuteWarning]);
 
   // Shuffle array function
   const shuffleArray = <T,>(array: T[]): T[] => {
