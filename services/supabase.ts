@@ -101,7 +101,24 @@ export class JobService {
           adminData.forEach((job: any) => {
             const jobPosition = job.job_position || job.name;
             // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
-            const baseName = jobPosition.replace(/\s+[A-Z]\d+$/, '').trim();
+            // Try multiple patterns to catch different formats
+            let baseName = jobPosition;
+            
+            // Pattern 1: Remove " U 5", " U 6", etc.
+            baseName = baseName.replace(/\s+U\s+\d+$/, '');
+            
+            // Pattern 2: Remove " U5", " U6", etc.
+            baseName = baseName.replace(/\s+U\d+$/, '');
+            
+            // Pattern 3: Remove any single letter followed by digits at the end
+            baseName = baseName.replace(/\s+[A-Z]\d+$/, '');
+            
+            // Pattern 4: Remove any grade-like pattern at the end
+            baseName = baseName.replace(/\s+[A-Z]{1,3}\d+$/, '');
+            
+            baseName = baseName.trim();
+            
+            console.log(`Original: "${jobPosition}" -> Base: "${baseName}"`);
             
             if (!jobMap.has(baseName)) {
               jobMap.set(baseName, {
@@ -139,7 +156,24 @@ export class JobService {
         regularData.forEach((job: any) => {
           const jobPosition = job.job_position || job.name;
           // Extract base job name by removing grade suffix (e.g., "JURURAWAT U 5" -> "JURURAWAT")
-          const baseName = jobPosition.replace(/\s+[A-Z]\d+$/, '').trim();
+          // Try multiple patterns to catch different formats
+          let baseName = jobPosition;
+          
+          // Pattern 1: Remove " U 5", " U 6", etc.
+          baseName = baseName.replace(/\s+U\s+\d+$/, '');
+          
+          // Pattern 2: Remove " U5", " U6", etc.
+          baseName = baseName.replace(/\s+U\d+$/, '');
+          
+          // Pattern 3: Remove any single letter followed by digits at the end
+          baseName = baseName.replace(/\s+[A-Z]\d+$/, '');
+          
+          // Pattern 4: Remove any grade-like pattern at the end
+          baseName = baseName.replace(/\s+[A-Z]{1,3}\d+$/, '');
+          
+          baseName = baseName.trim();
+          
+          console.log(`Original: "${jobPosition}" -> Base: "${baseName}"`);
           
           if (!jobMap.has(baseName)) {
             jobMap.set(baseName, {
