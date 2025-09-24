@@ -567,15 +567,14 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
     const matchesSearch = nameLc.includes(searchQuery.toLowerCase()) || descLc.includes(searchQuery.toLowerCase());
 
     if (filterType === 'pre_test') {
-      // Show only pre-test pools regardless of any legacy 'both' values
-      const isPreByType = pool.testType === 'pre_test';
-      const isPreByName = /\bpre\s*test\b/i.test(pool.name);
-      return matchesSearch && (isPreByType || isPreByName);
+      const isPre = pool.testType === 'pre_test' || nameLc.includes('pre test');
+      const isExplicitPost = nameLc.includes('post test');
+      return matchesSearch && isPre && !isExplicitPost;
     }
     if (filterType === 'post_test') {
-      const isPostByType = pool.testType === 'post_test';
-      const isPostByName = /\bpost\s*test\b/i.test(pool.name);
-      return matchesSearch && (isPostByType || isPostByName);
+      const isPost = pool.testType === 'post_test' || nameLc.includes('post test');
+      const isExplicitPre = nameLc.includes('pre test');
+      return matchesSearch && isPost && !isExplicitPre;
     }
     // All tab -> show everything
     return matchesSearch;
