@@ -139,6 +139,20 @@ export class OfflineService {
     }
   }
 
+  // Clear saved progress for a specific user/test/session
+  static async clearProgress(
+    userId: string,
+    testType: 'pre_test' | 'post_test',
+    courseSessionId?: string
+  ): Promise<void> {
+    try {
+      const progressKey = `${this.PROGRESS_PREFIX}${userId}_${testType}_${courseSessionId || 'default'}`;
+      await AsyncStorage.removeItem(progressKey);
+    } catch (error) {
+      console.error('Error clearing progress:', error);
+    }
+  }
+
   // Save submission for later sync
   static async saveOfflineSubmission(submission: Omit<OfflineSubmission, 'submittedAt' | 'synced'>): Promise<void> {
     try {

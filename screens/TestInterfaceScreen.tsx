@@ -131,9 +131,9 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
     fetchQuestions();
   }, []);
 
-  // Auto-save progress when offline
+  // Auto-save progress regardless of connectivity
   useEffect(() => {
-    if (isOffline && questions.length > 0) {
+    if (questions.length > 0) {
       const saveProgress = async () => {
         const testTypeForAPI = testType === 'pre' ? 'pre_test' : 'post_test';
         await OfflineService.saveProgress({
@@ -148,11 +148,15 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           startTime: new Date().toISOString()
         });
       };
-      
+
       const interval = setInterval(saveProgress, 30000); // Save every 30 seconds
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+        // Save once on unmount/navigation away to capture last state
+        saveProgress();
+      };
     }
-  }, [isOffline, answers, flaggedQuestions, skippedQuestions, currentQuestionIndex, timeLeft, questions.length]);
+  }, [answers, flaggedQuestions, skippedQuestions, currentQuestionIndex, timeLeft, questions.length]);
 
   useEffect(() => {
     // Timer countdown
@@ -361,18 +365,16 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
       // Apply session management settings
       applySessionManagement(fetchedQuestions);
       
-      // Try to restore offline progress
-      if (!online) {
-        const savedProgress = await OfflineService.getProgress(validUserId, testTypeForAPI, courseSessionId);
-        if (savedProgress) {
-          setOfflineProgress(savedProgress);
-          setAnswers(savedProgress.answers);
-          setFlaggedQuestions(new Set(savedProgress.flaggedQuestions));
-          setSkippedQuestions(new Set(savedProgress.skippedQuestions));
-          setCurrentQuestionIndex(savedProgress.currentQuestionIndex);
-          setTimeLeft(savedProgress.timeLeft);
-          setSelectedAnswer(savedProgress.answers[displayQuestions[savedProgress.currentQuestionIndex]?.id] || null);
-        }
+      // Try to restore saved progress regardless of connectivity
+      const savedProgress = await OfflineService.getProgress(validUserId, testTypeForAPI, courseSessionId);
+      if (savedProgress) {
+        setOfflineProgress(savedProgress);
+        setAnswers(savedProgress.answers);
+        setFlaggedQuestions(new Set(savedProgress.flaggedQuestions));
+        setSkippedQuestions(new Set(savedProgress.skippedQuestions));
+        setCurrentQuestionIndex(savedProgress.currentQuestionIndex);
+        setTimeLeft(savedProgress.timeLeft);
+        setSelectedAnswer(savedProgress.answers[displayQuestions[savedProgress.currentQuestionIndex]?.id] || null);
       }
       
       } catch (err) {
@@ -584,7 +586,6 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
     
     try {
       setIsSubmitting(true);
-      setIsTestCompleted(true);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       
       // Calculate score
@@ -606,6 +607,8 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           timeTaken,
           answers
         });
+        // Clear saved progress after successful offline submit (queued)
+        await OfflineService.clearProgress(validUserId, testTypeForAPI, courseSessionId);
         
         } else {
         // Save submission to database
@@ -618,7 +621,8 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           timeTaken,
           courseSessionId
         );
-        
+        // Clear saved progress after successful submit
+        await OfflineService.clearProgress(validUserId, testTypeForAPI, courseSessionId);
         }
       
       // Track access usage if access control is enabled
@@ -703,6 +707,10 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           ]
         );
       }
+
+      // Mark as completed after showing alerts and stop the submitting overlay
+      setIsTestCompleted(true);
+      setIsSubmitting(false);
     } catch (error) {
       console.error('Error submitting test:', error);
       setIsSubmitting(false);
@@ -1135,17 +1143,27 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
             const isFlagged = flaggedQuestions.has(question.id);
             const isSkipped = skippedQuestions.has(question.id);
             const isCurrent = index === currentQuestionIndex;
-            
+
+            // Single status style with precedence: current > skipped > answered > flagged
+            const containerStatusStyle = (
+              isCurrent ? styles.currentQuestionNavItem :
+              isSkipped ? styles.skippedQuestionNavItem :
+              isAnswered ? styles.answeredQuestionNavItem :
+              isFlagged ? styles.flaggedQuestionNavItem :
+              null
+            );
+            const numberStatusStyle = (
+              isCurrent ? styles.currentQuestionNavNumber :
+              isSkipped ? styles.skippedQuestionNavNumber :
+              isAnswered ? styles.answeredQuestionNavNumber :
+              isFlagged ? styles.flaggedQuestionNavNumber :
+              null
+            );
+
             return (
               <TouchableOpacity
                 key={question.id}
-                style={[
-                  styles.questionNavItem,
-                  isCurrent && styles.currentQuestionNavItem,
-                  isAnswered && !isSkipped && styles.answeredQuestionNavItem,
-                  isSkipped && styles.skippedQuestionNavItem,
-                  isFlagged && styles.flaggedQuestionNavItem,
-                ]}
+                style={[styles.questionNavItem, containerStatusStyle]}
                 onPress={() => {
                   if (!isReviewMode) {
                     setCurrentQuestionIndex(index);
@@ -1155,13 +1173,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                 }}
                 disabled={isReviewMode}
               >
-                <Text style={[
-                  styles.questionNavNumber,
-                  isCurrent && styles.currentQuestionNavNumber,
-                  isAnswered && !isSkipped && styles.answeredQuestionNavNumber,
-                  isSkipped && styles.skippedQuestionNavNumber,
-                  isFlagged && styles.flaggedQuestionNavNumber,
-                ]}>
+                <Text style={[styles.questionNavNumber, numberStatusStyle]}>
                   {index + 1}
                 </Text>
                 
@@ -1340,40 +1352,24 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
               <TouchableOpacity
                 style={[
                   styles.navButton, 
-                  styles.nextButton,
-                  currentQuestionIndex === displayQuestions.length - 1 && !areAllQuestionsAnswered() && styles.disabledButton
+                  styles.nextButton
                 ]}
-                onPress={currentQuestionIndex === displayQuestions.length - 1 ? handleSubmitTest : handleNextQuestion}
-                disabled={currentQuestionIndex === displayQuestions.length - 1 && !areAllQuestionsAnswered()}
+                onPress={currentQuestionIndex === displayQuestions.length - 1 ? (areAllQuestionsAnswered() ? handleSubmitTest : handleNextQuestion) : handleNextQuestion}
               >
-                <Text style={[
-                  styles.navButtonText,
-                  currentQuestionIndex === displayQuestions.length - 1 && !areAllQuestionsAnswered() && styles.disabledButtonText
-                ]}>
-                  {currentQuestionIndex === displayQuestions.length - 1 ? 'Submit' : 'Next'}
+                <Text style={styles.navButtonText}>
+                  {currentQuestionIndex === displayQuestions.length - 1 ? (areAllQuestionsAnswered() ? 'Submit' : 'Next') : 'Next'}
                 </Text>
                 <Ionicons 
-                  name="chevron-forward" 
+                  name={currentQuestionIndex === displayQuestions.length - 1 && areAllQuestionsAnswered() ? "checkmark-circle" : "chevron-forward"} 
                   size={24} 
-                  color={currentQuestionIndex === displayQuestions.length - 1 && !areAllQuestionsAnswered() ? "#666" : "#ffffff"} 
+                  color="#ffffff" 
                 />
               </TouchableOpacity>
             </>
           )}
         </View>
 
-        {/* Review Mode Button */}
-        {!isReviewMode && currentQuestionIndex === displayQuestions.length - 1 && areAllQuestionsAnswered() && (
-          <View style={styles.reviewModeContainer}>
-            <TouchableOpacity
-              style={styles.reviewModeButton}
-              onPress={handleReviewMode}
-            >
-              <Ionicons name="eye" size={24} color="#00d4ff" />
-              <Text style={styles.reviewModeText}>Review All Answers</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        {/* (Removed inline submit area; FAB is rendered fixed below) */}
 
         {/* Completion Status */}
         {!isReviewMode && (
@@ -1593,6 +1589,20 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
           </View>
         </View>
       </Modal>
+      {/* Floating Submit Button */}
+      {!isReviewMode && areAllQuestionsAnswered() && (
+        <View style={styles.fabContainer}>
+          <TouchableOpacity
+            style={styles.fabButton}
+            onPress={handleSubmitTest}
+            activeOpacity={0.9}
+          >
+            <Ionicons name="checkmark" size={24} color="#0a0a0a" />
+            <Text style={styles.fabText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
     </View>
     </SafeAreaView>
   );
@@ -1861,6 +1871,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#00d4ff',
+  },
+  // Floating Action Button
+  fabContainer: {
+    position: 'absolute',
+    right: 20,
+    bottom: isSmallScreen ? 20 : 24,
+  },
+  fabButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 999,
+    backgroundColor: '#00ff88',
+    borderWidth: 2,
+    borderColor: '#00d4ff',
+    shadowColor: '#00ff88',
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  fabText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0a0a0a',
   },
   progressContainer: {
     alignItems: 'center',
