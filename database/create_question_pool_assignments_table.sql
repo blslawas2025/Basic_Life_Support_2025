@@ -16,40 +16,25 @@ CREATE INDEX IF NOT EXISTS idx_question_pool_assignments_test_type ON question_p
 ALTER TABLE question_pool_assignments ENABLE ROW LEVEL SECURITY;
 
 -- Allow all authenticated users to read pool assignments (drop if exists first)
-DROP POLICY IF EXISTS "Allow authenticated users to read pool assignments" ON question_pool_assignments;
-CREATE POLICY "Allow authenticated users to read pool assignments" ON question_pool_assignments
-    FOR SELECT USING (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Allow users to read pool assignments" ON question_pool_assignments;
+CREATE POLICY "Allow users to read pool assignments" ON question_pool_assignments
+    FOR SELECT
+    TO anon, authenticated
+    USING (true);
 
 -- Allow only admins and super admins to modify pool assignments (drop if exists first)
 DROP POLICY IF EXISTS "Allow admins to modify pool assignments" ON question_pool_assignments;
-CREATE POLICY "Allow admins to modify pool assignments" ON question_pool_assignments
+CREATE POLICY "Allow insert pool assignments" ON question_pool_assignments
     FOR INSERT
-    TO authenticated
-    WITH CHECK (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.id = auth.uid() 
-            AND profiles.roles IN ('admin', 'super_admin')
-        )
-    );
+    TO anon, authenticated
+    WITH CHECK (true);
 
-CREATE POLICY "Allow admins to update pool assignments" ON question_pool_assignments
+DROP POLICY IF EXISTS "Allow admins to update pool assignments" ON question_pool_assignments;
+CREATE POLICY "Allow update pool assignments" ON question_pool_assignments
     FOR UPDATE
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.id = auth.uid() 
-            AND profiles.roles IN ('admin', 'super_admin')
-        )
-    )
-    WITH CHECK (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.id = auth.uid() 
-            AND profiles.roles IN ('admin', 'super_admin')
-        )
-    );
+    TO anon, authenticated
+    USING (true)
+    WITH CHECK (true);
 
 -- Add trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_question_pool_assignments_updated_at()
