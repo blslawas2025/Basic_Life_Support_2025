@@ -394,6 +394,7 @@ export default function AppRouter(props: AppRouterProps) {
 				userId={userData.id}
 				courseSessionId={undefined}
 				isSuperAdmin={userData.isSuperAdmin}
+				userRole={userData.roles}
 			/>
 		);
 	}

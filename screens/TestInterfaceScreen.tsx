@@ -61,9 +61,10 @@ interface TestInterfaceScreenProps {
   userId: string;
   courseSessionId?: string;
   isSuperAdmin?: boolean;
+  userRole?: 'admin' | 'staff' | 'user';
 }
 
-export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateToPools, testType, userName, userId, courseSessionId, isSuperAdmin = false }: TestInterfaceScreenProps) {
+export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateToPools, testType, userName, userId, courseSessionId, isSuperAdmin = false, userRole = 'user' }: TestInterfaceScreenProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -283,7 +284,12 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
             // Get assigned pool for access check
             const assignedPool = await QuestionPoolService.getAssignedPool(testTypeForAPI);
             if (!assignedPool) {
-              setError(`No question pool assigned for ${testType} test. Please assign a pool first.`);
+              // Show different messages based on user role
+              if (userRole === 'admin' || userRole === 'staff' || isSuperAdmin) {
+                setError(`No question pool assigned for ${testType} test. Please assign a pool first.`);
+              } else {
+                setError(`The ${testType} test is currently not available. Please contact your administrator.`);
+              }
               return;
             }
             
