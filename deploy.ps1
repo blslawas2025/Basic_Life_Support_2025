@@ -22,8 +22,8 @@ git commit -m "$Message"
 
 # Step 4: Push to GitHub
 Write-Host "Pushing to GitHub..." -ForegroundColor Yellow
-# Push to main branch (default in this repo)
-git push origin main
+# Push to master branch per project preference
+git push origin master
 
 # Step 5: Confirm deployment
 Write-Host "Changes pushed to GitHub!" -ForegroundColor Green
