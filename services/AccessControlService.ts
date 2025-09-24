@@ -194,8 +194,7 @@ export class AccessControlService {
       };
 
       // Save the request to Supabase (fallback to local on error)
-      const { error } = await supabase.from('access_requests').insert({
-        id: requestId,
+      const { data: inserted, error } = await supabase.from('access_requests').insert({
         user_id: userId,
         test_type: testType,
         pool_id: poolId,
@@ -207,12 +206,14 @@ export class AccessControlService {
         approved_at: newRequest.approvedAt || null,
         approved_by: newRequest.approvedBy || null,
         expires_at: newRequest.expiresAt || null,
-      });
+      }).select('id').single();
 
       if (error) {
         const allRequests = await this.getAllAccessRequests();
         allRequests.push(newRequest);
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(allRequests));
+      } else if (inserted && inserted.id) {
+        newRequest.id = inserted.id;
       }
 
       return { 
