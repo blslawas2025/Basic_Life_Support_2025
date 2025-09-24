@@ -56,6 +56,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
   const [showPostTestPoolSelector, setShowPostTestPoolSelector] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [poolToDelete, setPoolToDelete] = useState<QuestionPool | null>(null);
+  const [hiddenPoolIds, setHiddenPoolIds] = useState<string[]>([]);
   // Save result modal
   const [showSaveResult, setShowSaveResult] = useState(false);
   const [saveResultTitle, setSaveResultTitle] = useState('');
@@ -74,6 +75,13 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
 
   useEffect(() => {
     startAnimations();
+    // Load hidden pool ids from localStorage first
+    try {
+      const hidden = localStorage.getItem('hiddenQuestionPoolIds');
+      if (hidden) {
+        setHiddenPoolIds(JSON.parse(hidden));
+      }
+    } catch {}
     loadQuestionPools();
     loadCurrentPoolAssignments();
   }, []);
@@ -130,10 +138,9 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
     try {
       setIsLoading(true);
       const pools = await QuestionPoolService.getAllQuestionPools();
-      setQuestionPools(pools);
-      
-      // Auto-sync: Create pools for question sets that don't have pools yet
-      await syncQuestionSetsWithPools();
+      // Filter out any pools the user chose to hide/delete
+      const filtered = pools.filter(p => !hiddenPoolIds.includes(p.id));
+      setQuestionPools(filtered);
     } catch (error) {
       console.error('Error loading question pools:', error);
       Alert.alert('Error', 'Failed to load question pools');
@@ -292,6 +299,12 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       const filtered = prev.filter(p => p.id !== poolToDelete.id);
       return filtered;
     });
+    // Persistently hide this pool so it won't reappear on reload
+    try {
+      const newHidden = Array.from(new Set([...hiddenPoolIds, poolToDelete.id]));
+      setHiddenPoolIds(newHidden);
+      localStorage.setItem('hiddenQuestionPoolIds', JSON.stringify(newHidden));
+    } catch {}
     
     // Close modal and reset state
     setShowDeleteConfirm(false);
