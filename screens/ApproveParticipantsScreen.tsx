@@ -144,6 +144,10 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
         }
       ]
     );
+    } catch (error) {
+      console.error('Error showing confirmation alert:', error);
+      Alert.alert('Error', 'Failed to show confirmation dialog');
+    }
   };
 
   const handleApprove = async (participantId: string) => {
