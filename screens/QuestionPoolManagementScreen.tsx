@@ -34,6 +34,7 @@ const getResponsiveFontSize = (small: number, medium: number, large: number) => 
 export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolManagementScreenProps) {
   const containerMaxWidth = useContainerMaxWidth();
   const [questionPools, setQuestionPools] = useState<QuestionPool[]>([]);
+  const [visiblePools, setVisiblePools] = useState<QuestionPool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'pre_test' | 'post_test'>('all');
@@ -85,6 +86,27 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
     loadQuestionPools();
     loadCurrentPoolAssignments();
   }, []);
+
+  // Recompute visible pools whenever data or filters change (defensive against stale UI)
+  useEffect(() => {
+    const nameMatches = (pool: QuestionPool) => {
+      const nameLc = (pool.name || '').toLowerCase();
+      const descLc = (pool.description || '').toLowerCase();
+      return nameLc.includes(searchQuery.toLowerCase()) || descLc.includes(searchQuery.toLowerCase());
+    };
+
+    let next: QuestionPool[] = questionPools.filter(nameMatches);
+
+    if (filterType === 'pre_test') {
+      next = next.filter(p => p.testType === 'pre_test' || (p.name || '').toLowerCase().includes('pre test'))
+                 .filter(p => !((p.name || '').toLowerCase().includes('post test')));
+    } else if (filterType === 'post_test') {
+      next = next.filter(p => p.testType === 'post_test' || (p.name || '').toLowerCase().includes('post test'))
+                 .filter(p => !((p.name || '').toLowerCase().includes('pre test')));
+    }
+
+    setVisiblePools(next);
+  }, [questionPools, filterType, searchQuery]);
 
   const loadCurrentPoolAssignments = async () => {
     try {
@@ -141,6 +163,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
       // Filter out any pools the user chose to hide/delete
       const filtered = pools.filter(p => !hiddenPoolIds.includes(p.id));
       setQuestionPools(filtered);
+      setVisiblePools(filtered); // initialize
     } catch (error) {
       console.error('Error loading question pools:', error);
       Alert.alert('Error', 'Failed to load question pools');
@@ -798,7 +821,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
 
       {/* Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={containerMaxWidth ? { maxWidth: containerMaxWidth, alignSelf: 'center', width: '100%' } : undefined}>
-        {filteredPools.length === 0 ? (
+        {visiblePools.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="library-outline" size={24} color="#666" />
             <Text style={styles.emptyTitle}>No Question Pools Found</Text>
@@ -816,7 +839,7 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
             )}
           </View>
         ) : (
-          filteredPools.map(renderPoolCard)
+          visiblePools.map(renderPoolCard)
         )}
       </ScrollView>
 
