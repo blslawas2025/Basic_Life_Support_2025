@@ -23,30 +23,33 @@ CREATE POLICY "Allow authenticated users to read pool assignments" ON question_p
 -- Allow only admins and super admins to modify pool assignments (drop if exists first)
 DROP POLICY IF EXISTS "Allow admins to modify pool assignments" ON question_pool_assignments;
 CREATE POLICY "Allow admins to modify pool assignments" ON question_pool_assignments
-    FOR INSERT WITH CHECK (
+    FOR INSERT
+    TO authenticated
+    WITH CHECK (
         EXISTS (
             SELECT 1 FROM profiles 
             WHERE profiles.id = auth.uid() 
             AND profiles.roles IN ('admin', 'super_admin')
         )
-    )
-    TO authenticated;
+    );
 
 CREATE POLICY "Allow admins to update pool assignments" ON question_pool_assignments
-    FOR UPDATE USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.id = auth.uid() 
-            AND profiles.roles IN ('admin', 'super_admin')
-        )
-    ) WITH CHECK (
+    FOR UPDATE
+    TO authenticated
+    USING (
         EXISTS (
             SELECT 1 FROM profiles 
             WHERE profiles.id = auth.uid() 
             AND profiles.roles IN ('admin', 'super_admin')
         )
     )
-    TO authenticated;
+    WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE profiles.id = auth.uid() 
+            AND profiles.roles IN ('admin', 'super_admin')
+        )
+    );
 
 -- Add trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_question_pool_assignments_updated_at()
