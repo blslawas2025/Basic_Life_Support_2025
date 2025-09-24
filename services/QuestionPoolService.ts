@@ -120,8 +120,47 @@ export class QuestionPoolService {
       }
       
       const pools: QuestionPool[] = [];
-      
-      // Group questions by question_set for more granular pools
+
+      // Prefer canonical Supabase tag-based sets first (exact match to your DB)
+      const buildTaggedSet = async (
+        type: 'pre_test' | 'post_test',
+        letter: 'A' | 'B' | 'C'
+      ) => {
+        const tag = `${type === 'pre_test' ? 'Pre Test' : 'Post Test'} Set ${letter}`;
+        try {
+          const { data } = await supabase
+            .from('questions')
+            .select('id')
+            .eq('test_type', type)
+            .contains('tags', [tag]);
+          if (data && data.length > 0) {
+            const ids = (data as any[]).map(d => d.id).slice(0, 30);
+            pools.push({
+              id: `pool_${type === 'pre_test' ? 'pre' : 'post'}_test_set_${letter.toLowerCase()}`,
+              name: `Basic Life Support - ${type === 'pre_test' ? 'Pre Test' : 'Post Test'} Set ${letter}`,
+              description: `Questions for BLS ${type === 'pre_test' ? 'pre' : 'post'}-test evaluation - Set ${letter} (${ids.length} questions)`,
+              testType: type,
+              questionIds: ids,
+              isActive: true,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              createdBy: 'admin',
+              tags: ['bls', type === 'pre_test' ? 'pre-test' : 'post-test', `set ${letter.toLowerCase()}`],
+              difficultyDistribution: { easy: 0, medium: 0, hard: 0 },
+              categoryDistribution: {},
+            });
+          }
+        } catch (e) {}
+      };
+
+      await buildTaggedSet('pre_test', 'A');
+      await buildTaggedSet('pre_test', 'B');
+      await buildTaggedSet('pre_test', 'C');
+      await buildTaggedSet('post_test', 'A');
+      await buildTaggedSet('post_test', 'B');
+      await buildTaggedSet('post_test', 'C');
+
+      // Group questions by question_set for more granular pools (fallback)
       const preTestQuestions = allQuestions.filter(q => q.test_type === 'pre_test');
       const postTestQuestions = allQuestions.filter(q => q.test_type === 'post_test');
       
