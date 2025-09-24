@@ -1544,7 +1544,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
         </View>
       )}
 
-      {/* Access Request Modal */}
+      {/* Access Request Modal - streamlined professional UI */}
       <Modal
         visible={showAccessRequest}
         transparent={true}
@@ -1553,23 +1553,13 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
         <View style={styles.modalOverlay}>
           <View style={styles.accessRequestModal}>
             <View style={styles.accessRequestHeader}>
-              <Ionicons name="shield-checkmark" size={24} color="#667eea" />
+              <Ionicons name="shield-checkmark" size={24} color="#7aa2ff" />
               <Text style={styles.accessRequestTitle}>Request Test Access</Text>
             </View>
             
             <Text style={styles.accessRequestMessage}>
-              This test requires approval-based access control. Please provide a reason for requesting access to this test.
+              This test is protected. Submit a request and an admin will grant access.
             </Text>
-            
-            <TextInput
-              style={styles.accessRequestInput}
-              placeholder="Enter reason for test access..."
-              placeholderTextColor="rgba(0, 0, 0, 0.5)"
-              value={requestReason}
-              onChangeText={setRequestReason}
-              multiline
-              numberOfLines={3}
-            />
             
             <View style={styles.accessRequestButtons}>
               <TouchableOpacity
@@ -2469,13 +2459,16 @@ const styles = StyleSheet.create({
   },
   // Access Request Modal Styles
   accessRequestModal: {
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#0f172a',
     borderRadius: 24,
     padding: 24,
     width: '90%',
     maxWidth: 400,
     borderWidth: 1,
-    borderColor: 'rgba(102, 126, 234, 0.3)',
+    borderColor: 'rgba(122, 162, 255, 0.35)',
+    shadowColor: '#7aa2ff',
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
   },
   accessRequestHeader: {
     alignItems: 'center',
@@ -2490,20 +2483,10 @@ const styles = StyleSheet.create({
   },
   accessRequestMessage: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.85)',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 24,
-  },
-  accessRequestInput: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 24,
-    padding: 24,
-    fontSize: 16,
-    color: '#ffffff',
-    textAlignVertical: 'top',
-    marginBottom: 24,
-    minHeight: 24,
   },
   accessRequestButtons: {
     flexDirection: 'row',
