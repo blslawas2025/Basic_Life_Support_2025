@@ -407,7 +407,30 @@ export class QuestionPoolService {
   // Get assigned pool for a specific test type
   static async getAssignedPool(testType: 'pre_test' | 'post_test'): Promise<QuestionPool | null> {
     try {
-      // Check localStorage for assigned pools
+      // First try to get from database
+      try {
+        const { data, error } = await supabase
+          .from('question_pool_assignments')
+          .select('pool_id')
+          .eq('test_type', testType)
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+          console.error('Database error, falling back to localStorage:', error);
+          throw error;
+        }
+        
+        if (data && data.pool_id) {
+          console.log(`Found assigned pool ${data.pool_id} for ${testType} in database`);
+          const allPools = await this.getAllQuestionPools();
+          const assignedPool = allPools.find(pool => pool.id === data.pool_id);
+          return assignedPool || null;
+        }
+      } catch (dbError) {
+        console.log('Database not available, using localStorage fallback');
+      }
+      
+      // Fallback to localStorage
       const storedAssignments = localStorage.getItem('questionPoolAssignments');
       let assignments: { preTest: string | null; postTest: string | null } = {
         preTest: null,
@@ -440,27 +463,51 @@ export class QuestionPoolService {
   // Assign a pool to a test type
   static async assignPoolToTest(testType: 'pre_test' | 'post_test', poolId: string | null): Promise<boolean> {
     try {
-      const storedAssignments = localStorage.getItem('questionPoolAssignments');
-      let assignments: { preTest: string | null; postTest: string | null } = {
-        preTest: null,
-        postTest: null,
-      };
-      
-      if (storedAssignments) {
-        try {
-          assignments = JSON.parse(storedAssignments);
-        } catch (e) {
+      // First try to save to database
+      try {
+        const { error } = await supabase
+          .from('question_pool_assignments')
+          .upsert({
+            test_type: testType,
+            pool_id: poolId,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'test_type'
+          });
+
+        if (error) {
+          console.error('Database error, falling back to localStorage:', error);
+          throw error;
         }
+        
+        console.log(`Successfully assigned pool ${poolId} to ${testType} in database`);
+        return true;
+      } catch (dbError) {
+        console.log('Database not available, using localStorage fallback');
+        
+        // Fallback to localStorage if database fails
+        const storedAssignments = localStorage.getItem('questionPoolAssignments');
+        let assignments: { preTest: string | null; postTest: string | null } = {
+          preTest: null,
+          postTest: null,
+        };
+        
+        if (storedAssignments) {
+          try {
+            assignments = JSON.parse(storedAssignments);
+          } catch (e) {
+          }
+        }
+        
+        if (testType === 'pre_test') {
+          assignments.preTest = poolId;
+        } else {
+          assignments.postTest = poolId;
+        }
+        
+        localStorage.setItem('questionPoolAssignments', JSON.stringify(assignments));
+        return true;
       }
-      
-      if (testType === 'pre_test') {
-        assignments.preTest = poolId;
-      } else {
-        assignments.postTest = poolId;
-      }
-      
-      localStorage.setItem('questionPoolAssignments', JSON.stringify(assignments));
-      return true;
     } catch (error) {
       console.error('Error assigning pool to test:', error);
       return false;
