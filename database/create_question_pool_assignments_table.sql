@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS question_pool_assignments (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     test_type VARCHAR(20) NOT NULL UNIQUE, -- 'pre_test' or 'post_test'
-    pool_id UUID REFERENCES question_pools(id) ON DELETE SET NULL,
+    pool_id VARCHAR(255) NOT NULL, -- Store pool ID as string since pools are generated dynamically
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
