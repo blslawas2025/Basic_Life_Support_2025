@@ -562,15 +562,23 @@ export default function QuestionPoolManagementScreen({ onBack }: QuestionPoolMan
   };
 
   const filteredPools = questionPools.filter(pool => {
-    const matchesSearch = pool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         pool.description.toLowerCase().includes(searchQuery.toLowerCase());
-    let matchesFilter = true;
+    const nameLc = pool.name.toLowerCase();
+    const descLc = pool.description.toLowerCase();
+    const matchesSearch = nameLc.includes(searchQuery.toLowerCase()) || descLc.includes(searchQuery.toLowerCase());
+
     if (filterType === 'pre_test') {
-      matchesFilter = pool.testType === 'pre_test';
-    } else if (filterType === 'post_test') {
-      matchesFilter = pool.testType === 'post_test';
+      // Show only pre-test pools regardless of any legacy 'both' values
+      const isPreByType = pool.testType === 'pre_test';
+      const isPreByName = /\bpre\s*test\b/i.test(pool.name);
+      return matchesSearch && (isPreByType || isPreByName);
     }
-    return matchesSearch && matchesFilter;
+    if (filterType === 'post_test') {
+      const isPostByType = pool.testType === 'post_test';
+      const isPostByName = /\bpost\s*test\b/i.test(pool.name);
+      return matchesSearch && (isPostByType || isPostByName);
+    }
+    // All tab -> show everything
+    return matchesSearch;
   });
 
   const renderPoolCard = (pool: QuestionPool) => (
