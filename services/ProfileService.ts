@@ -94,9 +94,18 @@ export class ProfileService {
   // Create a new profile
   static async createProfile(profileData: CreateProfile): Promise<Profile> {
     try {
+      console.log('=== ProfileService.createProfile called ===');
+      console.log('Input profileData:', JSON.stringify(profileData, null, 2));
+      
+      // Validate required fields
+      if (!profileData.email || !profileData.name) {
+        throw new Error('Email and name are required fields');
+      }
+      
       // Handle job_position_id - if it's a string number, convert to null to avoid UUID error
       let jobPositionId = profileData.job_position_id;
       if (jobPositionId && !this.isValidUUID(jobPositionId)) {
+        console.log('Invalid UUID for job_position_id, setting to null:', jobPositionId);
         jobPositionId = null;
       }
       
@@ -129,7 +138,24 @@ export class ProfileService {
         notes: profileData.notes || null,
       };
       
+      console.log('Prepared insertData:', JSON.stringify(insertData, null, 2));
+      
+      // Test Supabase connection first
+      console.log('Testing Supabase connection...');
+      const { data: testData, error: testError } = await supabase
+        .from('profiles')
+        .select('id')
+        .limit(1);
+      
+      if (testError) {
+        console.error('Supabase connection test failed:', testError);
+        throw new Error(`Database connection failed: ${testError.message}`);
+      }
+      
+      console.log('Supabase connection test successful');
+      
       // Insert into Supabase
+      console.log('Inserting profile data...');
       const { data, error } = await supabase
         .from('profiles')
         .insert([insertData])
@@ -137,13 +163,29 @@ export class ProfileService {
         .single();
 
       if (error) {
-        console.error('Supabase error:', error);
+        console.error('Supabase insert error:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
         throw new Error(`Failed to create profile: ${error.message}`);
       }
       
+      console.log('Profile created successfully:', data);
       return data;
     } catch (error) {
       console.error('Error creating profile:', error);
+      console.error('Error type:', typeof error);
+      console.error('Error constructor:', error?.constructor?.name);
+      
+      // Provide more specific error messages
+      if (error instanceof Error) {
+        if (error.message.includes('Load failed')) {
+          throw new Error('Network connection failed. Please check your internet connection and try again.');
+        } else if (error.message.includes('fetch')) {
+          throw new Error('Unable to connect to the server. Please try again later.');
+        } else if (error.message.includes('CORS')) {
+          throw new Error('Browser security error. Please try refreshing the page.');
+        }
+      }
+      
       throw error;
     }
   }
