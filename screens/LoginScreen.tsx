@@ -782,9 +782,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   logoContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
@@ -792,9 +792,9 @@ const styles = StyleSheet.create({
   },
   logoGlow: {
     position: 'absolute',
-    width: 24,
-    height: 24,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
     backgroundColor: 'rgba(0, 212, 255, 0.2)',
     ...Platform.select({
       ios: {
@@ -809,9 +809,9 @@ const styles = StyleSheet.create({
     elevation: 25,
   },
   logoGradient: {
-    width: 24,
-    height: 24,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
@@ -828,10 +828,10 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   blsInsideCircle: {
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: '900',
     color: '#ffffff',
-    letterSpacing: 2,
+    letterSpacing: 3,
     ...Platform.select({
       ios: {
         textShadowOffset: { width: 0, height: 2 },
