@@ -1553,8 +1553,11 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
         <View style={styles.modalOverlay}>
           <View style={styles.accessRequestModal}>
             <View style={styles.accessRequestHeader}>
-              <Ionicons name="shield-checkmark" size={24} color="#7aa2ff" />
+              <View style={styles.accessBadge}>
+                <Ionicons name="shield-checkmark" size={24} color="#2563eb" />
+              </View>
               <Text style={styles.accessRequestTitle}>Request Test Access</Text>
+              <Text style={styles.accessRequestSubtitle}>Secure access required</Text>
             </View>
             
             <Text style={styles.accessRequestMessage}>
@@ -1576,7 +1579,7 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
                 style={[styles.accessRequestButton, styles.submitAccessButton]}
                 onPress={handleRequestAccess}
               >
-                <Ionicons name="send" size={24} color="#ffffff" />
+                <Ionicons name="send" size={20} color="#ffffff" />
                 <Text style={styles.submitAccessButtonText}>Request Access</Text>
               </TouchableOpacity>
             </View>
@@ -2474,11 +2477,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
+  accessBadge: {
+    width: 64,
+    height: 64,
+    borderRadius: 64,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(37, 99, 235, 0.12)',
+    borderWidth: 2,
+    borderColor: 'rgba(37, 99, 235, 0.35)'
+  },
   accessRequestTitle: {
     fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
     marginTop: 24,
+    textAlign: 'center',
+  },
+  accessRequestSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginTop: 12,
     textAlign: 'center',
   },
   accessRequestMessage: {
@@ -2502,17 +2521,17 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   cancelAccessButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(148, 163, 184, 0.25)',
   },
   submitAccessButton: {
-    backgroundColor: '#667eea',
+    backgroundColor: '#2563eb',
   },
   cancelAccessButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#ffffff',
+    color: '#e2e8f0',
   },
   submitAccessButtonText: {
     fontSize: 16,
