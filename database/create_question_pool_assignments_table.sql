@@ -15,11 +15,13 @@ CREATE INDEX IF NOT EXISTS idx_question_pool_assignments_test_type ON question_p
 -- Add RLS (Row Level Security) policies
 ALTER TABLE question_pool_assignments ENABLE ROW LEVEL SECURITY;
 
--- Allow all authenticated users to read pool assignments
+-- Allow all authenticated users to read pool assignments (drop if exists first)
+DROP POLICY IF EXISTS "Allow authenticated users to read pool assignments" ON question_pool_assignments;
 CREATE POLICY "Allow authenticated users to read pool assignments" ON question_pool_assignments
     FOR SELECT USING (auth.role() = 'authenticated');
 
--- Allow only admins and super admins to modify pool assignments
+-- Allow only admins and super admins to modify pool assignments (drop if exists first)
+DROP POLICY IF EXISTS "Allow admins to modify pool assignments" ON question_pool_assignments;
 CREATE POLICY "Allow admins to modify pool assignments" ON question_pool_assignments
     FOR ALL USING (
         EXISTS (
@@ -38,6 +40,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Drop trigger if exists before creating
+DROP TRIGGER IF EXISTS update_question_pool_assignments_updated_at ON question_pool_assignments;
 CREATE TRIGGER update_question_pool_assignments_updated_at
     BEFORE UPDATE ON question_pool_assignments
     FOR EACH ROW
