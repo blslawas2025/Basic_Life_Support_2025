@@ -1552,35 +1552,40 @@ export default function TestInterfaceScreen({ onBack, onShowResults, onNavigateT
       >
         <View style={styles.modalOverlay}>
           <View style={styles.accessRequestModal}>
-            <View style={styles.accessRequestHeader}>
-              <View style={styles.accessBadge}>
-                <Ionicons name="shield-checkmark" size={24} color="#2563eb" />
+            <LinearGradient
+              colors={["rgba(37,99,235,0.25)", "rgba(14,165,233,0.25)"]}
+              style={styles.accessHero}
+            >
+              <View style={styles.accessHeroBadge}>
+                <Ionicons name="shield-checkmark" size={28} color="#0ea5e9" />
               </View>
-              <Text style={styles.accessRequestTitle}>Request Test Access</Text>
-              <Text style={styles.accessRequestSubtitle}>Secure access required</Text>
-            </View>
-            
-            <Text style={styles.accessRequestMessage}>
-              This test is protected. Submit a request and an admin will grant access.
-            </Text>
-            
-            <View style={styles.accessRequestButtons}>
+              <Text style={styles.accessHeroTitle}>Access Required</Text>
+              <Text style={styles.accessHeroSubtitle}>Tap below to send a request</Text>
+            </LinearGradient>
+
+            <View style={styles.accessBody}>
+              <Text style={styles.accessBodyText}>
+                Your administrator reviews requests quickly. You’ll get notified once approved.
+              </Text>
+
               <TouchableOpacity
-                style={[styles.accessRequestButton, styles.cancelAccessButton]}
+                style={styles.primaryCTA}
+                onPress={handleRequestAccess}
+                activeOpacity={0.9}
+              >
+                <Ionicons name="paper-plane" size={20} color="#0f172a" />
+                <Text style={styles.primaryCTAText}>Request Access</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.secondaryCTA}
                 onPress={() => {
                   setShowAccessRequest(false);
                   setRequestReason('');
                 }}
+                activeOpacity={0.9}
               >
-                <Text style={styles.cancelAccessButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={[styles.accessRequestButton, styles.submitAccessButton]}
-                onPress={handleRequestAccess}
-              >
-                <Ionicons name="send" size={20} color="#ffffff" />
-                <Text style={styles.submitAccessButtonText}>Request Access</Text>
+                <Text style={styles.secondaryCTAText}>Not now</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -2472,6 +2477,73 @@ const styles = StyleSheet.create({
     shadowColor: '#7aa2ff',
     shadowOpacity: 0.2,
     shadowRadius: 20,
+  },
+  accessHero: {
+    borderRadius: 24,
+    paddingVertical: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  accessHeroBadge: {
+    width: 72,
+    height: 72,
+    borderRadius: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(14,165,233,0.18)',
+    borderWidth: 2,
+    borderColor: 'rgba(14,165,233,0.4)'
+  },
+  accessHeroTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#ffffff',
+    marginTop: 24,
+  },
+  accessHeroSubtitle: {
+    fontSize: 16,
+    color: 'rgba(226,232,240,0.9)',
+    marginTop: 12,
+  },
+  accessBody: {
+    paddingTop: 24,
+    alignItems: 'center',
+    gap: 24,
+  },
+  accessBodyText: {
+    fontSize: 16,
+    color: 'rgba(226,232,240,0.75)',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  primaryCTA: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#38bdf8',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(56,189,248,0.8)'
+  },
+  primaryCTAText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0f172a',
+  },
+  secondaryCTA: {
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(148,163,184,0.25)'
+  },
+  secondaryCTAText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#e2e8f0',
   },
   accessRequestHeader: {
     alignItems: 'center',
