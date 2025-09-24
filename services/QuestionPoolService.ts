@@ -177,6 +177,46 @@ export class QuestionPoolService {
       
       // Comprehensive pool removed - only show specific test sets
       
+      // Also create dedicated pools for important tagged groups (e.g., Chain Of Survival)
+      try {
+        const importantTags = ['chain of survival'];
+        const lower = (s: string) => (s || '').toLowerCase();
+        for (const tag of importantTags) {
+          const taggedQuestions = allQuestions.filter(q => Array.isArray(q.tags) && q.tags.some((t: string) => lower(t) === tag));
+          if (taggedQuestions.length > 0) {
+            const tagTitle = tag
+              .split(' ')
+              .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+              .join(' ');
+            const tagId = `pool_tag_${tag.replace(/\s+/g, '_')}`;
+            const testTypes = [...new Set(taggedQuestions.map(q => q.test_type).filter(Boolean))];
+            const resolvedType = testTypes.length === 1 && (testTypes[0] === 'pre_test' || testTypes[0] === 'post_test')
+              ? (testTypes[0] as 'pre_test' | 'post_test')
+              : 'both';
+            pools.push({
+              id: tagId,
+              name: `${tagTitle}`,
+              description: `${tagTitle} question set (${taggedQuestions.length} questions)`,
+              testType: resolvedType,
+              questionIds: taggedQuestions.map(q => q.id),
+              isActive: true,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              createdBy: 'admin',
+              tags: [tag.replace(/\s+/g, '-')],
+              difficultyDistribution: {
+                easy: Math.floor(taggedQuestions.length * 0.3),
+                medium: Math.floor(taggedQuestions.length * 0.5),
+                hard: Math.floor(taggedQuestions.length * 0.2),
+              },
+              categoryDistribution: this.calculateCategoryDistribution(taggedQuestions),
+            });
+          }
+        }
+      } catch (e) {
+        // no-op; tagging is best-effort
+      }
+      
       return pools;
     } catch (error) {
       console.error('Error fetching question pools:', error);
