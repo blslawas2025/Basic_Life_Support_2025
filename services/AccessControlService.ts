@@ -377,7 +377,7 @@ export class AccessControlService {
         .update({
           status: 'approved',
           approved_at: new Date().toISOString(),
-          approved_by: approvedBy,
+          approved_by: null,
           admin_notes: adminNotes || null,
           expires_at: new Date(Date.now() + settings.expirySettings.defaultExpiryHours * 60 * 60 * 1000).toISOString()
         })
@@ -412,7 +412,7 @@ export class AccessControlService {
     try {
       const { error } = await supabase
         .from('access_requests')
-        .update({ status: 'rejected', approved_by: rejectedBy, admin_notes: reason || null })
+        .update({ status: 'rejected', approved_by: null, admin_notes: reason || null })
         .filter('id', 'eq', requestId);
 
       if (error) {
