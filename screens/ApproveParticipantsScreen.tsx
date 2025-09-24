@@ -83,22 +83,30 @@ export default function ApproveParticipantsScreen({ onBack }: ApproveParticipant
     console.log('Found participant:', participant);
     
     if (!participant) {
+      console.log('Participant not found, showing error alert');
       Alert.alert('Error', 'Participant not found');
       return;
     }
     
-    Alert.alert(
-      'Confirm Payment',
-      `Mark ${participant?.name}'s payment as completed?\n\nThis will enable the approve button.`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        },
-        {
-          text: 'Mark as Paid',
-          style: 'default',
-          onPress: async () => {
+    console.log('About to show confirmation alert for participant:', participant.name);
+    
+    try {
+      Alert.alert(
+        'Confirm Payment',
+        `Mark ${participant?.name}'s payment as completed?\n\nThis will enable the approve button.`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+            onPress: () => {
+              console.log('User cancelled payment confirmation');
+            }
+          },
+          {
+            text: 'Mark as Paid',
+            style: 'default',
+            onPress: async () => {
+              console.log('User confirmed payment, starting update process');
             try {
               console.log('Starting payment update for participant:', participantId);
               setProcessingIds(prev => new Set(prev).add(participantId));
