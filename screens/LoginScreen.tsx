@@ -45,9 +45,10 @@ const getCardWidth = () => {
 
 interface LoginScreenProps {
   onLogin: (userData: { id: string; email: string; isSuperAdmin: boolean; userName: string; roles: 'admin' | 'staff' | 'user' }) => void;
+  onNavigateToRegisterParticipant?: () => void;
 }
 
-export default function LoginScreen({ onLogin }: LoginScreenProps) {
+export default function LoginScreen({ onLogin, onNavigateToRegisterParticipant }: LoginScreenProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
@@ -673,10 +674,17 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               </TouchableOpacity>
 
               {/* Footer */}
-              <Text style={styles.footerText}>
-                New to the system?{' '}
-                <Text style={styles.linkText}>Create Account</Text>
-              </Text>
+              <View style={styles.footerContainer}>
+                <Text style={styles.footerText}>
+                  New to the system?{' '}
+                </Text>
+                <TouchableOpacity onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  onNavigateToRegisterParticipant?.();
+                }}>
+                  <Text style={styles.linkText}>Create Account</Text>
+                </TouchableOpacity>
+              </View>
             </Animated.View>
           </Animated.View>
         </KeyboardAvoidingView>
@@ -1056,8 +1064,13 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     letterSpacing: 0.5,
   },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
   footerText: {
-    textAlign: 'center',
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.6)',
     lineHeight: 20,
@@ -1066,6 +1079,7 @@ const styles = StyleSheet.create({
   linkText: {
     color: '#00d4ff',
     fontWeight: '700',
+    fontSize: 14,
   },
   suggestionsBox: {
     marginTop: 8,

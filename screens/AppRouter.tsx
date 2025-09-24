@@ -117,7 +117,7 @@ export default function AppRouter(props: AppRouterProps) {
 	const { currentScreen, isLoggedIn, userData, testResults, currentTestType, currentChecklistType, selectedCourse } = props;
 
 	if (currentScreen === 'login') {
-		return <LoginScreen onLogin={props.onLogin} />;
+		return <LoginScreen onLogin={props.onLogin} onNavigateToRegisterParticipant={props.onNavigateToRegisterParticipant} />;
 	}
 
 	if (currentScreen === 'manageParticipant' && userData) {
@@ -173,6 +173,7 @@ export default function AppRouter(props: AppRouterProps) {
 				onLogout={props.onLogout}
 				onNavigateToRegisterStaff={props.onNavigateToRegisterStaff}
 				onNavigateToViewStaff={props.onNavigateToViewStaff}
+				onNavigateToApproveParticipants={props.onNavigateToApproveParticipants}
 			/>
 		);
 	}
@@ -471,6 +472,6 @@ export default function AppRouter(props: AppRouterProps) {
 		return <AttendanceMonitoringScreen onBack={props.onBackToDashboard} />;
 	}
 
-	return <LoginScreen onLogin={props.onLogin} />;
+	return <LoginScreen onLogin={props.onLogin} onNavigateToRegisterParticipant={props.onNavigateToRegisterParticipant} />;
 }
 

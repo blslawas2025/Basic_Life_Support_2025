@@ -450,8 +450,8 @@ export default function RegisterParticipantScreenModern({ onBack }: RegisterPart
       // Success feedback
       // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // Removed notification feedback
       
-      // Show success modal
-      setModalMessage(`🎉 Registration Successful!\n\nParticipant "${formData.name}" has been registered successfully!`);
+      // Show success modal with approval waiting message
+      setModalMessage(`🎉 Registration Successful!\n\nParticipant "${formData.name}" has been registered successfully!\n\n⏳ Your account is now pending approval from an administrator. You will be notified once your account is approved and you can access the training portal.`);
       setShowSuccessModal(true);
     } catch (error: any) {
       console.error('=== Registration error occurred ===');

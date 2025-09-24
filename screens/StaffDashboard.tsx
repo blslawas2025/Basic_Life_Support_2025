@@ -40,6 +40,7 @@ interface StaffDashboardProps {
   onLogout: () => void;
   onNavigateToRegisterStaff: () => void;
   onNavigateToViewStaff: () => void;
+  onNavigateToApproveParticipants?: () => void;
 }
 
 interface StaffStats {
@@ -56,7 +57,8 @@ export default function StaffDashboard({
   userName, 
   onLogout, 
   onNavigateToRegisterStaff, 
-  onNavigateToViewStaff
+  onNavigateToViewStaff,
+  onNavigateToApproveParticipants
 }: StaffDashboardProps) {
   const { width: rw, isTablet } = useResponsive();
   const containerMaxWidth = isTablet ? Math.min(1100, rw * 0.92) : undefined;
@@ -69,6 +71,7 @@ export default function StaffDashboard({
     recentRegistrations: 0,
     staffByDepartment: []
   });
+  const [pendingParticipantsCount, setPendingParticipantsCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -81,6 +84,7 @@ export default function StaffDashboard({
 
   useEffect(() => {
     loadStaffStatistics();
+    loadPendingParticipantsCount();
     startAnimations();
   }, []);
 
@@ -196,6 +200,16 @@ export default function StaffDashboard({
       console.error('Error loading staff statistics:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadPendingParticipantsCount = async () => {
+    try {
+      const count = await ProfileService.getPendingParticipantsCount();
+      setPendingParticipantsCount(count);
+    } catch (error) {
+      console.error('Error loading pending participants count:', error);
+      setPendingParticipantsCount(0);
     }
   };
 
@@ -623,6 +637,61 @@ export default function StaffDashboard({
           </Animated.View>
         )}
 
+        {/* Pending Participants Panel */}
+        {onNavigateToApproveParticipants && (
+          <Animated.View style={[
+            styles.pendingSection,
+            {
+              opacity: fadeAnim,
+              transform: [
+                { 
+                  translateY: slideAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [130, 0]
+                  })
+                }
+              ]
+            }
+          ]}>
+            <TouchableOpacity 
+              style={styles.pendingPanel}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                onNavigateToApproveParticipants();
+              }}
+              activeOpacity={0.8}
+            >
+              <LinearGradient 
+                colors={["rgba(0, 255, 136, 0.1)", "rgba(0, 255, 136, 0.05)"]} 
+                style={styles.pendingPanelGradient}
+              >
+                <View style={styles.pendingPanelHeader}>
+                  <View style={styles.pendingIcon}>
+                    <Ionicons name="checkmark-circle" size={24} color="#00ff88" />
+                    {pendingParticipantsCount > 0 && (
+                      <View style={styles.notificationBadge}>
+                        <Text style={styles.badgeText}>
+                          {pendingParticipantsCount > 99 ? '99+' : pendingParticipantsCount.toString()}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                  <View style={styles.pendingPanelContent}>
+                    <Text style={styles.pendingPanelTitle}>Pending Participants</Text>
+                    <Text style={styles.pendingPanelSubtitle}>
+                      {pendingParticipantsCount} participant{pendingParticipantsCount !== 1 ? 's' : ''} awaiting approval
+                    </Text>
+                  </View>
+                  <View style={styles.pendingPanelAction}>
+                    <Text style={styles.pendingPanelButton}>Review</Text>
+                    <Ionicons name="chevron-forward" size={16} color="#00ff88" />
+                  </View>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+
         {/* Quick Actions */}
         <Animated.View style={[
           styles.actionsSection,
@@ -976,5 +1045,70 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
     lineHeight: 24,
+  },
+  // Pending Participants Panel Styles
+  pendingSection: {
+    marginBottom: 24,
+  },
+  pendingPanel: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#00ff88',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  pendingPanelGradient: {
+    padding: 20,
+  },
+  pendingPanelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pendingIcon: {
+    position: 'relative',
+    marginRight: 16,
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#ff0080',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#0f0f23',
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  pendingPanelContent: {
+    flex: 1,
+  },
+  pendingPanelTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#ffffff',
+    marginBottom: 4,
+  },
+  pendingPanelSubtitle: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+  pendingPanelAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pendingPanelButton: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#00ff88',
+    marginRight: 8,
   },
 });
