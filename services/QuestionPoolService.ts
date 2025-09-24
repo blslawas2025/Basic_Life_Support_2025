@@ -585,6 +585,23 @@ export class QuestionPoolService {
           `${type}_set_${setLetter}`,
           `${type}_${setLetter.toLowerCase()}`,
         ];
+        
+        // 1) Try to fetch directly from Supabase using the canonical tag (most reliable)
+        try {
+          const canonicalTag = `${type === 'pre_test' ? 'Pre Test' : 'Post Test'} Set ${setLetter}`;
+          const { data } = await supabase
+            .from('questions')
+            .select('*')
+            .eq('test_type', type)
+            .contains('tags', [canonicalTag])
+            .limit(30);
+          if (data && data.length > 0) {
+            return data as unknown as Question[];
+          }
+        } catch (e) {
+          // fall through to local filter
+        }
+
         const filtered = allQuestions
           .filter(q => q.test_type === type && acceptedSetNames.map(s => s.toLowerCase()).includes((q.question_set || '').toLowerCase()))
           // Stable order by question number if present
