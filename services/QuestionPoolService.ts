@@ -130,23 +130,25 @@ export class QuestionPoolService {
       
       // Use the grouped sets (now handles both single sets and multiple sets properly)
       preTestSets.forEach((questions, setName) => {
+        // Hard cap to 30 questions per pre-test set to avoid mixing extra items
+        const limited = questions.slice(0, 30);
         pools.push({
           id: `pool_pre_test_${setName.toLowerCase().replace(' ', '_')}`,
           name: `Basic Life Support - Pre Test ${setName}`,
-          description: `Questions for BLS pre-test evaluation - ${setName} (${questions.length} questions)`,
+          description: `Questions for BLS pre-test evaluation - ${setName} (${limited.length} questions)`,
           testType: 'pre_test',
-          questionIds: questions.map(q => q.id),
+          questionIds: limited.map(q => q.id),
           isActive: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           createdBy: 'admin',
           tags: ['bls', 'pre-test', setName.toLowerCase()],
           difficultyDistribution: {
-            easy: Math.floor(questions.length * 0.3),
-            medium: Math.floor(questions.length * 0.5),
-            hard: Math.floor(questions.length * 0.2),
+            easy: Math.floor(limited.length * 0.3),
+            medium: Math.floor(limited.length * 0.5),
+            hard: Math.floor(limited.length * 0.2),
           },
-          categoryDistribution: this.calculateCategoryDistribution(questions),
+          categoryDistribution: this.calculateCategoryDistribution(limited),
         });
       });
       
@@ -155,23 +157,24 @@ export class QuestionPoolService {
       
       // Use the grouped sets (now handles both single sets and multiple sets properly)
       postTestSets.forEach((questions, setName) => {
+        const limited = questions.slice(0, 30);
         pools.push({
           id: `pool_post_test_${setName.toLowerCase().replace(' ', '_')}`,
           name: `Basic Life Support - Post Test ${setName}`,
-          description: `Questions for BLS post-test evaluation - ${setName} (${questions.length} questions)`,
+          description: `Questions for BLS post-test evaluation - ${setName} (${limited.length} questions)`,
           testType: 'post_test',
-          questionIds: questions.map(q => q.id),
+          questionIds: limited.map(q => q.id),
           isActive: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           createdBy: 'admin',
           tags: ['bls', 'post-test', setName.toLowerCase()],
           difficultyDistribution: {
-            easy: Math.floor(questions.length * 0.3),
-            medium: Math.floor(questions.length * 0.5),
-            hard: Math.floor(questions.length * 0.2),
+            easy: Math.floor(limited.length * 0.3),
+            medium: Math.floor(limited.length * 0.5),
+            hard: Math.floor(limited.length * 0.2),
           },
-          categoryDistribution: this.calculateCategoryDistribution(questions),
+          categoryDistribution: this.calculateCategoryDistribution(limited),
         });
       });
       
