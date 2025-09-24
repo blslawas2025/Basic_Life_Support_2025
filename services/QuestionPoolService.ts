@@ -1,4 +1,5 @@
 import { Question } from '../types/Question';
+import { supabase } from '../config/supabase';
 
 export interface QuestionPool {
   id: string;
