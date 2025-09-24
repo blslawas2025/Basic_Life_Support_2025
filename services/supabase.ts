@@ -92,7 +92,7 @@ export class JobService {
         const { data: adminData, error: adminError } = await supabaseAdmin
           .from('jobs')
           .select('*')
-          .order('name');
+          .order('job_position');
         
         if (adminData && adminData.length > 0) {
           console.log('Successfully fetched jobs with admin client:', adminData.length, 'jobs');
@@ -116,7 +116,7 @@ export class JobService {
       const { data: regularData, error: regularError } = await supabase
         .from('jobs')
         .select('*')
-        .order('name');
+        .order('job_position');
 
       if (regularError) {
         console.error('Error fetching jobs with regular client:', regularError);
